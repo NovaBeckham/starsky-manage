@@ -13,6 +13,25 @@ import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 
 // https://vitejs.dev/config/
 export default defineConfig({
+	server: {
+    // hostname: '0.0.0.0',
+    // host: "localhost",
+    // port: 8080,
+    // // 是否自动在浏览器打开
+    // open: true,
+    // // 是否开启 https
+    // https: false,
+    // // 服务端渲染
+    // ssr: false,
+    proxy: {
+      '/api': {
+        target: 'http://localhost:8080',
+        changeOrigin: true,
+        ws: true,
+        rewrite: (path: string) => path.replace(/^\/api/, ''),
+      },
+    },
+  },
 	resolve: {
 		alias: {
 			'@': resolve(__dirname, './src'),
