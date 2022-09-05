@@ -9,10 +9,7 @@ import './style.scss'
 import App from './App'
 import { createPinia } from 'pinia'
 import 'element-plus/dist/index.css'
-import service from './utils/https'
 
 const app = createApp(App)
-
-app.config.globalProperties.$https = service
 
 app.use(router).use(createPinia()).mount('#app')

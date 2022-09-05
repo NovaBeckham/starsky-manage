@@ -24,10 +24,6 @@ service = axios.create({
 // request 拦截器 axios 的一些配置
 service.interceptors.request.use(
 	(config: AxiosRequestConfig) => {
-		config.headers = {
-			'Content-Type': 'multipart/form-data',
-		}
-
 		return config
 	},
 	(error: any) => {
