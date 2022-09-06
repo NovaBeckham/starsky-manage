@@ -5,7 +5,7 @@
  */
 import { createApp } from 'vue'
 import router from '@/router'
-import './style.scss'
+import './styles/main.scss'
 import App from './App'
 import { createPinia } from 'pinia'
 import 'element-plus/dist/index.css'
