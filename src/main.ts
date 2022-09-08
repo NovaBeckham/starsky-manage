@@ -5,11 +5,12 @@
  */
 import { createApp } from 'vue'
 import router from '@/router'
-import './styles/main.scss'
 import App from './App'
 import { createPinia } from 'pinia'
-import 'element-plus/dist/index.css'
+import { useAnt } from '@/plugin/element-plus'
 
 const app = createApp(App)
 
 app.use(router).use(createPinia()).mount('#app')
+
+useAnt(app)

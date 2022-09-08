@@ -6,7 +6,7 @@
 
 import { login } from '@/api/login'
 import { Lock, User } from '@element-plus/icons-vue'
-import { ElButton, ElForm, ElFormItem, ElIcon, ElInput, FormInstance, FormRules } from 'element-plus'
+import { FormInstance, FormRules } from 'element-plus'
 import { defineComponent, reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import $styles from './index.module.scss'
@@ -24,6 +24,7 @@ export default defineComponent({
 			await loginRef.value?.validate()
 			login({ username: ruleForm.username, password: ruleForm.password }).then((res) => {
 				localStorage.setItem('starToken', res.data)
+				localStorage.setItem('user', ruleForm.username)
 				$router.push('/')
 			})
 		}
@@ -34,52 +35,52 @@ export default defineComponent({
 			password: '',
 		})
 		return () => (
-			<div class={$styles.wrap}>
+			<div class={$styles.loginWrap}>
 				<div class={$styles.login}>
 					<div class={$styles.title}>后台管理系统</div>
-					<ElForm model={ruleForm} rules={rules} ref={loginRef} labelWidth="0px" class={$styles.content}>
-						<ElFormItem prop="username">
-							<ElInput
+					<el-form model={ruleForm} rules={rules} ref={loginRef} labelWidth="0px" class={$styles.loginContent}>
+						<el-form-item prop="username">
+							<el-input
 								v-model={ruleForm.username}
-								placeholder="username"
+								placeholder="账号"
 								v-slots={{
 									prepend: () => (
-										<ElButton
+										<el-button
 											icon={
-												<ElIcon>
+												<el-icon>
 													<User />
-												</ElIcon>
+												</el-icon>
 											}
-										></ElButton>
+										></el-button>
 									),
 								}}
 							/>
-						</ElFormItem>
-						<ElFormItem prop="password">
-							<ElInput
+						</el-form-item>
+						<el-form-item prop="password">
+							<el-input
 								type="password"
-								placeholder="password"
+								placeholder="密码"
 								v-model={ruleForm.password}
 								v-slots={{
 									prepend: () => (
-										<ElButton
+										<el-button
 											icon={
-												<ElIcon>
+												<el-icon>
 													<Lock />
-												</ElIcon>
+												</el-icon>
 											}
-										></ElButton>
+										></el-button>
 									),
 								}}
 							/>
-						</ElFormItem>
-						<div class={$styles.btn}>
-							<ElButton type="primary" loading={loading.value} onClick={loginIn}>
+						</el-form-item>
+						<div class={$styles.loginBtn}>
+							<el-button type="primary" loading={loading.value} onClick={loginIn}>
 								登录
-							</ElButton>
+							</el-button>
 						</div>
-						<p class={$styles.tips}>Tips : 用户名和密码随便填。</p>
-					</ElForm>
+						<p class={$styles.loginTips}>Tips : 用户名和密码随便填。</p>
+					</el-form>
 				</div>
 			</div>
 		)

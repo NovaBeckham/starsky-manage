@@ -6,6 +6,8 @@
 
 import { defineComponent } from 'vue'
 import { RouterView } from 'vue-router'
+import './styles/main.scss'
+import './styles/dark.scss'
 
 export default defineComponent({
 	name: 'App',

@@ -3,6 +3,7 @@
  * @Author: hyx
  * @Date: 2022-08-25 18:03:31
  */
+
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 
 // 路由配置 和以前一样

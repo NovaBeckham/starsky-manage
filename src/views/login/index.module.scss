@@ -1,4 +1,7 @@
-.wrap {
+@import '../../styles/dark.scss';
+@import '../../styles/main.scss';
+
+.loginWrap {
 	position: relative;
 	width: 100%;
 	height: 100%;
@@ -24,11 +27,11 @@
 			border-bottom: 1px solid #ddd;
 		}
 
-		.content {
+		.loginContent {
 			padding: 30px 30px;
 		}
 
-		.btn {
+		.loginBtn {
 			text-align: center;
 
 			button {
@@ -38,7 +41,7 @@
 			}
 		}
 
-		.tips {
+		.loginTips {
 			font-size: 12px;
 			line-height: 30px;
 			color: #fff;
