@@ -1,7 +1,7 @@
 /*
- * @Description: Home
+ * @Description: Article
  * @Author: hyx
- * @Date: 2022-08-25 16:42:05
+ * @Date: 2022-09-09 15:59:22
  */
 
 import MyHeader from '@/components/header'
@@ -9,17 +9,13 @@ import MySidebar from '@/components/sidebar'
 import { defineComponent } from 'vue'
 
 export default defineComponent({
-	name: 'Home',
+	name: 'Article',
 	setup() {
 		return () => (
 			<div>
 				<MyHeader />
 				<MySidebar />
-				<div class="content-box">
-					<div class="content">
-						<h1>Home</h1>
-					</div>
-				</div>
+				<h1>Article</h1>
 			</div>
 		)
 	},
