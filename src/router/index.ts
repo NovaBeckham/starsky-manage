@@ -4,25 +4,30 @@
  * @Date: 2022-08-25 18:03:31
  */
 
+import Layout from '@/layout'
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 
 // 路由配置 和以前一样
 const routes: RouteRecordRaw[] = [
 	{
 		path: '/',
-		name: 'Home',
-		meta: {
-			title: 'home',
-		},
-		component: () => import('@/views/home'),
-	},
-	{
-		path: '/article',
-		name: 'Article',
-		meta: {
-			title: 'article',
-		},
-		component: () => import('@/views/article'),
+		component: Layout,
+		name: 'index',
+		redirect: '/home',
+		children: [
+			{
+				path: '/home',
+				component: () => import('@/views/home'),
+				meta: { title: '首页', alwaysShow: true },
+				name: 'Home',
+			},
+			{
+				path: '/article',
+				component: () => import('@/views/article'),
+				meta: { title: '文章', alwaysShow: true },
+				name: 'Article',
+			},
+		],
 	},
 	{
 		path: '/login',
