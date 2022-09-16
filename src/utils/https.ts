@@ -24,6 +24,10 @@ const service = axios.create({
 // request 拦截器 axios 的一些配置
 service.interceptors.request.use(
 	(config: AxiosRequestConfig) => {
+		const starToken = localStorage.getItem('starToken') ?? ''
+		config.headers = {
+			auth: starToken,
+		}
 		return config
 	},
 	(error: any) => {
