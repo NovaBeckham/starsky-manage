@@ -26,7 +26,7 @@ service.interceptors.request.use(
 	(config: AxiosRequestConfig) => {
 		const starToken = localStorage.getItem('starToken') ?? ''
 		config.headers = {
-			auth: starToken,
+			Authorization: `Bearer ${starToken}`,
 		}
 		return config
 	},

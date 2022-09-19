@@ -5,7 +5,8 @@
  */
 
 import { getArticleList } from '@/api/articles'
-import { defineComponent, onActivated, onMounted, ref } from 'vue'
+import { defineComponent, onMounted, ref } from 'vue'
+import { useRouter } from 'vue-router'
 
 interface ArticleList {
 	title: string
@@ -24,12 +25,23 @@ export default defineComponent({
 	setup() {
 		onMounted(() => {
 			getArticleList().then((res) => {
-				console.log(res)
+				if (res.data) {
+					tableData.value = res.data
+				}
 			})
 		})
+		const $router = useRouter()
+		const add = () => {
+			$router.push({
+				name: 'ArticleDetails',
+			})
+		}
 		const tableData = ref<ArticleList[]>([])
 		return () => (
 			<div>
+				<el-button type="primary" onClick={add}>
+					添加
+				</el-button>
 				<el-table data={tableData.value} style={{ width: '100%' }}>
 					<el-table-column prop="title" label="标题" />
 					<el-table-column prop="createdAt" label="发布日期" />
