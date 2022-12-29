@@ -6,7 +6,7 @@
 
 import 'element-plus/dist/index.css'
 import { App } from 'vue'
-import { ElButton, ElForm, ElIcon, ElInput, ElAvatar, ElDropdown, ElMenu, ElTable } from 'element-plus'
+import { ElButton, ElForm, ElIcon, ElInput, ElAvatar, ElDropdown, ElMenu, ElTable, ElCard } from 'element-plus'
 
 export function useAnt(app: App) {
 	app.use(ElButton)
@@ -17,4 +17,5 @@ export function useAnt(app: App) {
 	app.use(ElDropdown)
 	app.use(ElMenu)
 	app.use(ElTable)
+	app.use(ElCard)
 }
