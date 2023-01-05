@@ -8,15 +8,15 @@ import { defineComponent, reactive, ref } from 'vue'
 import MdEditor from 'md-editor-v3'
 import 'md-editor-v3/lib/style.css'
 import $styles from './index.module.scss'
-import { createArticle } from '@/api/articles'
+import { and, findIndex, isEmpty, isNil, map, or } from 'ramda'
+import { getTagList } from '@/api/tags'
 
 interface ArticleData {
 	id?: number
 	title?: string
 	content?: string
 	cover?: string
-	categoryName?: string
-	tagNames?: string[]
+	tags?: string[]
 	isTop?: number
 	type?: number
 	status?: number
@@ -27,14 +27,25 @@ export default defineComponent({
 	setup() {
 		const visible = ref(false)
 		const searchForm = reactive<ArticleData>({})
-		const categorys = reactive<string[]>([])
+		const tagsList = ref<{ name: string; id: number }[]>([])
 
-		const openModel = () => {
-			console.log('title', searchForm.title)
-			console.log('content', searchForm.content)
+		const openModel = async () => {
+			if (isNil(tagsList.value) || isEmpty(tagsList.value)) {
+				const { data } = await getTagList()
+				console.log('data', data)
+				if (!isNil(data)) {
+					tagsList.value = data
+				}
+			}
+			visible.value = true
 		}
-		const removeCategory = () => {
-			searchForm.categoryName = undefined
+		const removeCategory = (item: string) => {
+			if (searchForm.tags) {
+				const index = findIndex((val) => val === item, searchForm.tags)
+				if (index > -1) {
+					searchForm.tags.splice(index, 1)
+				}
+			}
 		}
 		return () => (
 			<el-card>
@@ -47,17 +58,40 @@ export default defineComponent({
 				<MdEditor v-model={searchForm.content} />
 				<el-dialog v-model={visible.value}>
 					<el-form model={searchForm}>
-						<el-form-item label="文章分类">
-							<el-tag type="success" v-show={searchForm.categoryName} closable={true} onClose={removeCategory}>
-								{searchForm.categoryName}
-							</el-tag>
-							<el-popover placement="bottom-start" width="460" trigger="click" v-if="!article.categoryName">
-								<div class="popover-title">分类</div>
-								<div class="popover-container">{categorys.map((item) => item)}</div>
-								<el-button type="success" plain slot="reference" size="small">
-									添加分类
-								</el-button>
-							</el-popover>
+						<el-form-item label="文章标签" prop="tag">
+							{!isNil(searchForm.tags) &&
+								!isEmpty(searchForm.tags) &&
+								map((item) => {
+									return (
+										<el-tag type="success" style="margin: 0 1rem 0 0" closable onClose={() => removeCategory(item)}>
+											{item}
+										</el-tag>
+									)
+								}, searchForm.tags)}
+							{or(isNil(searchForm.tags), searchForm.tags && searchForm.tags.length < 3) && (
+								<el-popover
+									placement="bottom-start"
+									width="460"
+									trigger="click"
+									v-slots={{
+										reference: () => {
+											return (
+												<el-button type="success" plain size="small">
+													添加标签
+												</el-button>
+											)
+										},
+									}}
+								>
+									<div class="popover-container">
+										<el-select v-model={searchForm.tags} multiple>
+											{map((item) => {
+												return <el-option key={item.id} label={item.name} value={item.name} />
+											}, tagsList.value)}
+										</el-select>
+									</div>
+								</el-popover>
+							)}
 						</el-form-item>
 					</el-form>
 				</el-dialog>

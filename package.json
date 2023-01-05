@@ -14,11 +14,13 @@
 		"element-plus": "^2.2.14",
 		"md-editor-v3": "^2.7.2",
 		"pinia": "^2.0.20",
+		"ramda": "^0.28.0",
 		"vue": "^3.2.37",
 		"vue-router": "^4.1.4"
 	},
 	"devDependencies": {
 		"@types/node": "^18.7.13",
+		"@types/ramda": "^0.28.20",
 		"@typescript-eslint/eslint-plugin": "^5.35.1",
 		"@typescript-eslint/parser": "^5.35.1",
 		"@vitejs/plugin-vue": "^3.0.3",
