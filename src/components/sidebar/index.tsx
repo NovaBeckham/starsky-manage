@@ -28,6 +28,7 @@ const MySidebar = defineComponent({
 				>
 					<el-menu-item index="/" key="/" v-slots={{ title: () => '首页' }} />
 					<el-menu-item index="article" v-slots={{ title: () => '文章' }} />
+					<el-menu-item index="tags" v-slots={{ title: () => '标签' }} />
 				</el-menu>
 			</div>
 		)

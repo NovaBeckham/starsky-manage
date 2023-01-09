@@ -28,6 +28,12 @@ const routes: RouteRecordRaw[] = [
 				name: 'Article',
 			},
 			{
+				path: '/tags',
+				component: () => import('@/views/tags'),
+				meta: { title: '标签', alwaysShow: true },
+				name: 'Tags',
+			},
+			{
 				path: '/details',
 				component: () => import('@/views/articleDetails'),
 				meta: { title: '添加文章', alwaysShow: true },
