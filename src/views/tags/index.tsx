@@ -4,8 +4,9 @@
  * @Date: 2023-01-09 16:23:54
  */
 
-import { getTagList } from '@/api/tags'
+import { createTag, getTagList } from '@/api/tags'
 import { ElTableColumnProp } from '@/interface'
+import { timeFormat } from '@/utils'
 import { buttonEmits, ElNotification } from 'element-plus'
 import { isEmpty, isNil } from 'ramda'
 import { defineComponent, onMounted, ref } from 'vue'
@@ -13,6 +14,7 @@ import { defineComponent, onMounted, ref } from 'vue'
 interface TagList {
 	name: string
 	createdAt: string
+	updatedAt: string
 }
 
 export default defineComponent({
@@ -28,28 +30,43 @@ export default defineComponent({
 				}
 			})
 		})
-		const saveTag = () => {
+		const saveTag = async () => {
 			if (isNil(tag.value) || isEmpty(tag.value)) {
 				ElNotification({
 					title: '错误',
 					message: '请输入标签名',
 					type: 'error',
 				})
+				return
 			}
+			const res = await createTag({ name: tag.value })
+			console.log('res', res)
+			visible.value = false
 		}
 		return () => (
 			<el-card>
-				<el-button type="primary" onClick={() => (visible.value = true)}>
+				<el-button type="primary" onClick={() => (visible.value = true)} style={{ marginBottom: '15px' }}>
 					新增
 				</el-button>
 				<el-table data={tableData.value} rowKey="id" border style={{ width: '100%' }}>
 					<el-table-column prop="name" label="标签名" align="center" />
-					<el-table-column prop="createdAt" label="创建时间" align="center" />
 					<el-table-column
 						prop="createdAt"
+						label="创建时间"
+						align="center"
+						formatter={(row: TagList) => timeFormat(row.createdAt)}
+					/>
+					<el-table-column
+						prop="updatedAt"
+						label="更新时间"
+						align="center"
+						formatter={(row: TagList) => timeFormat(row.updatedAt)}
+					/>
+					<el-table-column
+						prop="action"
 						label="操作"
 						v-slots={{
-							default: ({ row }: ElTableColumnProp<TagList>) => (
+							default: (row: any) => (
 								<>
 									<el-button type="primary" onClick={() => console.log('row', row)}>
 										编辑
@@ -80,7 +97,10 @@ export default defineComponent({
 						),
 					}}
 				>
-					<el-input v-model={tag.value} style="width: 220px" />
+					<div>
+						<label>标签名：</label>
+						<el-input v-model={tag.value} style="width: 220px" />
+					</div>
 				</el-dialog>
 			</el-card>
 		)
