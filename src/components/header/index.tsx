@@ -5,6 +5,7 @@
  */
 
 import { defineComponent } from 'vue'
+import { useRouter } from 'vue-router'
 import imageUrl from '../../assets/image/img.jpg'
 import $styles from './index.module.scss'
 
@@ -13,8 +14,12 @@ const username = localStorage.getItem('user')
 const MyHeader = defineComponent({
 	name: 'my-header',
 	setup() {
-		const handleCommand = (command: string) => {
-			console.log(command)
+		const $router = useRouter()
+		const handleCommand = (command: 'user' | 'loginout') => {
+			if (command === 'loginout') {
+				localStorage.clear()
+				$router.push('/login')
+			}
 		}
 		return () => (
 			<div class={$styles.header}>

@@ -4,18 +4,12 @@
  * @Date: 2023-01-09 16:23:54
  */
 
-import { createTag, getTagList } from '@/api/tags'
+import { createTag, getTagList, TagList, updateTag } from '@/api/tags'
 import { ElTableColumnProp } from '@/interface'
 import { timeFormat } from '@/utils'
-import { buttonEmits, ElNotification } from 'element-plus'
+import { ElNotification } from 'element-plus'
 import { isEmpty, isNil } from 'ramda'
 import { defineComponent, onMounted, ref } from 'vue'
-
-interface TagList {
-	name: string
-	createdAt: string
-	updatedAt: string
-}
 
 export default defineComponent({
 	name: 'Tags',
@@ -23,10 +17,11 @@ export default defineComponent({
 		const tableData = ref<TagList[]>([])
 		const visible = ref(false)
 		const tag = ref('')
+		const id = ref<number>()
 		onMounted(() => {
-			getTagList().then((res) => {
-				if (res.data) {
-					tableData.value = res.data
+			getTagList().then(({ data, code }) => {
+				if (code === 200) {
+					tableData.value = data
 				}
 			})
 		})
@@ -39,10 +34,30 @@ export default defineComponent({
 				})
 				return
 			}
-			const res = await createTag({ name: tag.value })
-			console.log('res', res)
-			visible.value = false
+			if (isNil(id.value)) {
+				const { code } = await createTag({ name: tag.value })
+				if (code === 200) {
+					ElNotification({
+						title: '成功',
+						message: '创建成功',
+						type: 'success',
+					})
+					visible.value = false
+				}
+			} else {
+				const { code } = await updateTag({ name: tag.value, id: id.value })
+				if (code === 200) {
+					ElNotification({
+						title: '成功',
+						message: '更新成功',
+						type: 'success',
+					})
+					id.value = undefined
+					visible.value = false
+				}
+			}
 		}
+
 		return () => (
 			<el-card>
 				<el-button type="primary" onClick={() => (visible.value = true)} style={{ marginBottom: '15px' }}>
@@ -66,9 +81,16 @@ export default defineComponent({
 						prop="action"
 						label="操作"
 						v-slots={{
-							default: (row: any) => (
+							default: ({ row }: ElTableColumnProp<TagList>) => (
 								<>
-									<el-button type="primary" onClick={() => console.log('row', row)}>
+									<el-button
+										type="primary"
+										onClick={() => {
+											id.value = row.id
+											tag.value = row.name
+											visible.value = true
+										}}
+									>
 										编辑
 									</el-button>
 									<el-button type="danger" onClick={() => console.log('row', row)}>

@@ -11,8 +11,8 @@ interface CreateParams {
   category: string
 }
 
-import https from '@/utils/https'
+import { request } from '@/utils/https'
 
-export const getArticleList = () => https.get('/api/articles/getList')
+export const getArticleList = () => request.get('/api/articles/getList')
 
-export const createArticle = (params: CreateParams) => https.post('/api/articles/create', params)
+export const createArticle = (params: CreateParams) => request.post('/api/articles/create', params)
