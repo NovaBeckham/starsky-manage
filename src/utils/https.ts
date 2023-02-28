@@ -3,7 +3,7 @@
  * @Author: hyx
  * @Date: 2022-08-27 14:02:14
  */
-import axios, { AxiosInstance, AxiosRequestConfig } from 'axios'
+import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios'
 import { ElMessage } from 'element-plus'
 
 export interface ResponseData<T extends any> {
@@ -13,10 +13,16 @@ export interface ResponseData<T extends any> {
 	msg: string
 }
 
+export interface MyResponse<T extends any> extends AxiosResponse {
+	message: string
+	total: number
+	data: T
+}
+
 const createAxiosByinterceptors = (config?: AxiosRequestConfig): AxiosInstance => {
 	// 创建 axios 实例
 	const service = axios.create({
-		// baseURL: 'http://localhost:8080', // api 的 base_url
+		baseURL: 'http://localhost:3000/api/v1', // api 的 base_url
 		timeout: 50000, // 请求超时时间
 		...config,
 	})

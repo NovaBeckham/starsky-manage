@@ -21,6 +21,7 @@ import {
 	ElPopover,
 	ElTag,
 	ElOption,
+	ElPagination,
 } from 'element-plus'
 
 export function useAnt(app: App) {
@@ -38,4 +39,5 @@ export function useAnt(app: App) {
 	app.use(ElPopover)
 	app.use(ElTag)
 	app.use(ElOption)
+	app.use(ElPagination)
 }

@@ -22,16 +22,16 @@ const routes: RouteRecordRaw[] = [
 				name: 'Home',
 			},
 			{
+				path: '/user',
+				component: () => import('@/views/user'),
+				meta: { title: '用户', alwaysShow: true },
+				name: 'User',
+			},
+			{
 				path: '/article',
 				component: () => import('@/views/article'),
 				meta: { title: '文章', alwaysShow: true },
 				name: 'Article',
-			},
-			{
-				path: '/tags',
-				component: () => import('@/views/tags'),
-				meta: { title: '标签', alwaysShow: true },
-				name: 'Tags',
 			},
 			{
 				path: '/details',

@@ -25,14 +25,14 @@ export default (): UserConfigExport => {
 			// https: false,
 			// // 服务端渲染
 			// ssr: false,
-			proxy: {
-				'/api': {
-					target: 'http://localhost:8080',
-					changeOrigin: true,
-					ws: true,
-					rewrite: (path: string) => path.replace(/^\/api/, ''),
-				},
-			},
+			// proxy: {
+			// 	'/api': {
+			// 		target: 'http://localhost:3000',
+			// 		changeOrigin: true,
+			// 		ws: true,
+			// 		rewrite: (path: string) => path.replace(/^\/api/, ''),
+			// 	},
+			// },
 		},
 		resolve: {
 			alias: {

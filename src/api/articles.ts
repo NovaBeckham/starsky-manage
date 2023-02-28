@@ -13,6 +13,6 @@ interface CreateParams {
 
 import { request } from '@/utils/https'
 
-export const getArticleList = () => request.get('/api/articles/getList')
+export const getArticleList = () => request.get('/article')
 
-export const createArticle = (params: CreateParams) => request.post('/api/articles/create', params)
+export const createArticle = (params: CreateParams) => request.post('/article/add', params)

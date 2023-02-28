@@ -6,4 +6,4 @@
 
 import { request } from '@/utils/https'
 
-export const login = (params: { username: string; password: string }) => request.post('/api/login', params)
+export const login = (params: { username: string; password: string }) => request.post('/login', params)
