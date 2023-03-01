@@ -23,7 +23,7 @@ export default defineComponent({
 		const loginIn = async () => {
 			await loginRef.value?.validate()
 			login({ username: ruleForm.username, password: ruleForm.password }).then((res) => {
-				localStorage.setItem('starToken', res.data)
+				localStorage.setItem('starToken', res.token ?? '')
 				localStorage.setItem('user', ruleForm.username)
 				$router.push('/')
 			})

@@ -3,7 +3,7 @@
  * @Author: hyx
  * @Date: 2022-08-27 14:02:14
  */
-import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios'
+import axios, { AxiosInstance, AxiosRequestConfig } from 'axios'
 import { ElMessage } from 'element-plus'
 
 export interface ResponseData<T extends any> {
@@ -13,10 +13,12 @@ export interface ResponseData<T extends any> {
 	msg: string
 }
 
-export interface MyResponse<T extends any> extends AxiosResponse {
+export interface MyResponse<T extends any> {
 	message: string
+	status: number
 	total: number
-	data: T
+	data?: T
+	token?: string
 }
 
 const createAxiosByinterceptors = (config?: AxiosRequestConfig): AxiosInstance => {
