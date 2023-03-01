@@ -7,7 +7,8 @@ import { createApp } from 'vue'
 import router from '@/router'
 import App from './App'
 import { createPinia } from 'pinia'
-import { useAnt } from '@/plugin/element-plus'
+import { useAnt } from '@/plugin/ant-design'
+import './styles/index.scss'
 
 const app = createApp(App)
 

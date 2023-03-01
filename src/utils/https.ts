@@ -4,7 +4,7 @@
  * @Date: 2022-08-27 14:02:14
  */
 import axios, { AxiosInstance, AxiosRequestConfig } from 'axios'
-import { ElMessage } from 'element-plus'
+import { notification } from 'ant-design-vue'
 
 export interface ResponseData<T extends any> {
 	time: string
@@ -54,9 +54,8 @@ const createAxiosByinterceptors = (config?: AxiosRequestConfig): AxiosInstance =
 			if (res.status === 200) {
 				return res.data
 			} else {
-				ElMessage({
-					message,
-					type: 'error',
+				notification.error({
+					message: '错误',
 				})
 				return Promise.reject(new Error(message || 'Error'))
 			}

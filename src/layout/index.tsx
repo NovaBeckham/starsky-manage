@@ -12,15 +12,15 @@ export default defineComponent({
 	name: 'Layout',
 	setup() {
 		return () => (
-			<div>
+			<a-layout style={{ height: '100%' }}>
 				<MyHeader />
-				<MySidebar />
-				<div class="content-box">
-					<div class="content">
+				<a-layout>
+					<MySidebar />
+					<a-layout-content>
 						<RouterView />
-					</div>
-				</div>
-			</div>
+					</a-layout-content>
+				</a-layout>
+			</a-layout>
 		)
 	},
 })

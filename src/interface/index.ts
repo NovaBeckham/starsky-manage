@@ -9,8 +9,13 @@ export interface Options {
 	label: string | number
 }
 
-export interface ElTableColumnProp<T extends any> {
-	row: T
-	columns: any
-	$index: number
+export interface ColumnProp {
+	key: string
+}
+
+export interface ATableColumnProp<T extends any> {
+	text: string | number
+	record: T
+	index: number
+	column: ColumnProp
 }

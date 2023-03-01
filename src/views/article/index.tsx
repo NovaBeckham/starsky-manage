@@ -45,13 +45,13 @@ export default defineComponent({
 		const tableData = ref<ArticleList[]>([])
 		return () => (
 			<div>
-				<el-button type="primary" onClick={add}>
+				<a-button type="primary" onClick={add}>
 					添加
-				</el-button>
-				<el-table data={tableData.value} style={{ width: '100%' }}>
-					<el-table-column prop="title" label="标题" align="center" />
-					<el-table-column prop="createdAt" label="发布日期" align="center" />
-					<el-table-column
+				</a-button>
+				<a-table data={tableData.value} style={{ width: '100%' }}>
+					<a-table-column prop="title" label="标题" align="center" />
+					<a-table-column prop="createdAt" label="发布日期" align="center" />
+					<a-table-column
 						prop="category"
 						label="分类"
 						align="center"
@@ -59,7 +59,7 @@ export default defineComponent({
 							default: ({ row }: ElTableColumnProp<ArticleList>) => row.category.name,
 						}}
 					/>
-				</el-table>
+				</a-table>
 			</div>
 		)
 	},

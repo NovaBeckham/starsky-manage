@@ -5,13 +5,13 @@
  */
 
 import { login } from '@/api/login'
-import { Lock, User } from '@element-plus/icons-vue'
-import { FormInstance, FormRules } from 'element-plus'
+import { LockOutlined, UserOutlined } from '@ant-design/icons-vue'
+import { FormInstance } from 'ant-design-vue'
 import { defineComponent, reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import $styles from './index.module.scss'
 
-const rules: FormRules = {
+const rules = {
 	username: [{ required: true, message: '请输入账号', trigger: 'blur' }],
 	password: [{ required: true, message: '请输入密码', trigger: 'blur' }],
 }
@@ -38,49 +38,32 @@ export default defineComponent({
 			<div class={$styles.loginWrap}>
 				<div class={$styles.login}>
 					<div class={$styles.title}>后台管理系统</div>
-					<el-form model={ruleForm} rules={rules} ref={loginRef} labelWidth="0px" class={$styles.loginContent}>
-						<el-form-item prop="username">
-							<el-input
-								v-model={ruleForm.username}
+					<a-form model={ruleForm} rules={rules} ref={loginRef} class={$styles.loginContent}>
+						<a-form-item name="username">
+							<a-input
+								v-model={[ruleForm.username, 'value']}
 								placeholder="账号"
 								v-slots={{
-									prepend: () => (
-										<el-button
-											icon={
-												<el-icon>
-													<User />
-												</el-icon>
-											}
-										></el-button>
-									),
+									prefix: () => <UserOutlined />
 								}}
 							/>
-						</el-form-item>
-						<el-form-item prop="password">
-							<el-input
+						</a-form-item>
+						<a-form-item name="password">
+							<a-input
 								type="password"
 								placeholder="密码"
-								v-model={ruleForm.password}
+								v-model={[ruleForm.password, 'value']}
 								v-slots={{
-									prepend: () => (
-										<el-button
-											icon={
-												<el-icon>
-													<Lock />
-												</el-icon>
-											}
-										></el-button>
-									),
+									prefix: () => <LockOutlined />,
 								}}
 							/>
-						</el-form-item>
+						</a-form-item>
 						<div class={$styles.loginBtn}>
-							<el-button type="primary" loading={loading.value} onClick={loginIn}>
+							<a-button type="primary" loading={loading.value} onClick={loginIn}>
 								登录
-							</el-button>
+							</a-button>
 						</div>
-						<p class={$styles.loginTips}>Tips : 用户名和密码随便填。</p>
-					</el-form>
+					</a-form>
 				</div>
 			</div>
 		)

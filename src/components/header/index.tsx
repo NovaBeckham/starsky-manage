@@ -9,41 +9,42 @@ import { useRouter } from 'vue-router'
 import imageUrl from '../../assets/image/img.jpg'
 import $styles from './index.module.scss'
 
-const username = localStorage.getItem('user')
-
 const MyHeader = defineComponent({
 	name: 'my-header',
 	setup() {
 		const $router = useRouter()
-		const handleCommand = (command: 'user' | 'loginout') => {
-			if (command === 'loginout') {
-				localStorage.clear()
-				$router.push('/login')
-			}
-		}
+		const username = localStorage.getItem('user')
+
 		return () => (
-			<div class={$styles.header}>
+			<a-layout-header class={$styles.header}>
 				<div class={$styles.logo}>后台管理系统</div>
 				<div class={$styles.headerRight}>
-					<el-avatar class={$styles.avator} size={30} src={imageUrl} />
-					<el-dropdown
-						class={$styles.userName}
-						onCommand={handleCommand}
+					<a-avatar class={$styles.avator} size={30} src={imageUrl} />
+					<a-dropdown
+						class={$styles.dropdown}
 						v-slots={{
-							dropdown: () => (
-								<el-dropdown-menu>
-									<el-dropdown-item command="user">个人中心</el-dropdown-item>
-									<el-dropdown-item divided command="loginout">
+							overlay: () => (
+								<a-menu>
+									<a-menu-item key="user">
+										个人中心
+									</a-menu-item>
+									<a-menu-item
+										key="loginout"
+										onClick={() => {
+											localStorage.clear()
+											$router.push('/login')
+										}}
+									>
 										退出登录
-									</el-dropdown-item>
-								</el-dropdown-menu>
+									</a-menu-item>
+								</a-menu>
 							),
 						}}
 					>
-						<span class={$styles.link}>{username}</span>
-					</el-dropdown>
+						<a>{username}</a>
+					</a-dropdown>
 				</div>
-			</div>
+			</a-layout-header>
 		)
 	},
 })

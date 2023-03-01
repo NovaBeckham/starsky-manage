@@ -48,54 +48,54 @@ export default defineComponent({
 			}
 		}
 		return () => (
-			<el-card>
+			<a-card>
 				<div class={$styles.title}>
-					<el-input v-model={searchForm.title} size="large" placeholder="输入文章标题" />
-					<el-button type="danger" size="large" onClick={openModel} style="margin-left: 10px">
+					<a-input v-model={searchForm.title} size="large" placeholder="输入文章标题" />
+					<a-button type="danger" size="large" onClick={openModel} style="margin-left: 10px">
 						发布文章
-					</el-button>
+					</a-button>
 				</div>
 				<MdEditor v-model={searchForm.content} />
-				<el-dialog v-model={visible.value}>
-					<el-form model={searchForm}>
-						<el-form-item label="文章标签" prop="tag">
+				<a-dialog v-model={visible.value}>
+					<a-form model={searchForm}>
+						<a-form-item label="文章标签" prop="tag">
 							{!isNil(searchForm.tags) &&
 								!isEmpty(searchForm.tags) &&
 								map((item) => {
 									return (
-										<el-tag type="success" style="margin: 0 1rem 0 0" closable onClose={() => removeCategory(item)}>
+										<a-tag type="success" style="margin: 0 1rem 0 0" closable onClose={() => removeCategory(item)}>
 											{item}
-										</el-tag>
+										</a-tag>
 									)
 								}, searchForm.tags)}
 							{or(isNil(searchForm.tags), searchForm.tags && searchForm.tags.length < 3) && (
-								<el-popover
+								<a-popover
 									placement="bottom-start"
 									width="460"
 									trigger="click"
 									v-slots={{
 										reference: () => {
 											return (
-												<el-button type="success" plain size="small">
+												<a-button type="success" plain size="small">
 													添加标签
-												</el-button>
+												</a-button>
 											)
 										},
 									}}
 								>
 									<div class="popover-container">
-										<el-select v-model={searchForm.tags} multiple>
+										<a-select v-model={searchForm.tags} multiple>
 											{map((item) => {
-												return <el-option key={item.id} label={item.name} value={item.name} />
+												return <a-option key={item.id} label={item.name} value={item.name} />
 											}, tagsList.value)}
-										</el-select>
+										</a-select>
 									</div>
-								</el-popover>
+								</a-popover>
 							)}
-						</el-form-item>
-					</el-form>
-				</el-dialog>
-			</el-card>
+						</a-form-item>
+					</a-form>
+				</a-dialog>
+			</a-card>
 		)
 	},
 })
