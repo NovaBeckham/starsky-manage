@@ -9,7 +9,8 @@ import { ATableColumnProp } from '@/interface'
 import { timeFormat } from '@/utils'
 import { notification } from 'ant-design-vue'
 import { isNil } from 'ramda'
-import { defineComponent, onMounted, reactive, ref } from 'vue'
+import { computed, defineComponent, onMounted, reactive, ref } from 'vue'
+import UserDetails from './components/details'
 
 const columns = [
 	{
@@ -41,14 +42,21 @@ const columns = [
 	},
 ]
 
+interface State {
+	searchForm: UserRequest
+	tableData: User[]
+	detailsUser: { id?: number; visible: boolean }
+}
+
 export default defineComponent({
 	name: 'User',
 	setup() {
 		const total = ref(0)
 		const loading = ref(false)
-		const state = reactive<{ searchForm: UserRequest; tableData: User[] }>({
-			searchForm: { pageNum: 1, pageSize: 2 },
+		const state = reactive<State>({
+			searchForm: { pageNum: 1, pageSize: 10 },
 			tableData: [],
+			detailsUser: { visible: false },
 		})
 		const search = async () => {
 			loading.value = true
@@ -63,10 +71,10 @@ export default defineComponent({
 			search()
 		})
 		const add = () => {
-			console.log('1')
+			state.detailsUser = { visible: true }
 		}
 		const edit = (row: User) => {
-			console.log('row', row)
+			state.detailsUser = { id: row.id, visible: true }
 		}
 		const deleteUserById = async (id: number) => {
 			loading.value = true
@@ -80,22 +88,40 @@ export default defineComponent({
 				search()
 			}
 		}
+		const pagination = computed(() => ({
+			total: total.value,
+			current: state.searchForm.pageNum,
+			pageSize: state.searchForm.pageSize,
+			defaultPageSize: 2,
+			pageSizeOptions: ['2', '5', '10'],
+			showSizeChanger: true,
+			showTotal: (total: number) => `共 ${total} 条`,
+		}))
 		const clear = () => {
-			state.searchForm = { pageNum: 1, pageSize: 2 }
+			state.searchForm = { pageNum: 1, pageSize: 10 }
+			search()
+		}
+		const onChange = (pag: { pageSize: number; current: number }) => {
+			state.searchForm.pageNum = pag.current
+			state.searchForm.pageSize = pag.pageSize
 			search()
 		}
 		return () => (
 			<a-card>
 				<a-form layout="inline" model={state.searchForm} style={{ marginBottom: '10px' }}>
 					<a-form-item label="用户名">
-						<a-input v-model={state.searchForm.username} />
+						<a-input v-model={[state.searchForm.username, 'value']} />
 					</a-form-item>
-					<a-form-item label="角色">
-						<a-select v-model={state.searchForm.role} style={{ width: '200px' }}>
-							<a-select-option label="管理员" value={1} />
-							<a-select-option label="游客" value={2} />
-						</a-select>
-					</a-form-item>
+					{/* <a-form-item label="角色">
+						<a-select
+							v-model={[state.searchForm.role, 'value']}
+							options={[
+								{ value: 1, label: '管理员' },
+								{ value: 2, label: '订阅者' },
+							]}
+							style={{ width: '200px' }}
+						/>
+					</a-form-item> */}
 					<a-form-item>
 						<a-button type="primary" onClick={search}>
 							查询
@@ -117,13 +143,27 @@ export default defineComponent({
 							if (column.key === 'action') {
 								return (
 									<>
-										<a-button type="link" onClick={() => edit(record)}>编辑</a-button>
-										<a-button type="link" danger onClick={() => deleteUserById(record.id)}>删除</a-button>
+										<a-button type="link" onClick={() => edit(record)}>
+											编辑
+										</a-button>
+										<a-button type="link" danger onClick={() => deleteUserById(record.id)}>
+											删除
+										</a-button>
 									</>
 								)
 							}
 						},
 					}}
+					pagination={pagination.value}
+					onChange={onChange}
+				/>
+				<UserDetails
+					visible={state.detailsUser.visible}
+					id={state.detailsUser.id}
+					onCancel={() => {
+						state.detailsUser = { visible: false }
+					}}
+					onSearch={search}
 				/>
 			</a-card>
 		)

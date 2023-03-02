@@ -17,7 +17,7 @@ const MyHeader = defineComponent({
 
 		return () => (
 			<a-layout-header class={$styles.header}>
-				<div class={$styles.logo}>后台管理系统</div>
+				<div class={$styles.logo}>BLOG</div>
 				<div class={$styles.headerRight}>
 					<a-avatar class={$styles.avator} size={30} src={imageUrl} />
 					<a-dropdown
