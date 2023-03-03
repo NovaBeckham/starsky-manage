@@ -26,6 +26,7 @@ const MySidebar = defineComponent({
 					<a-menu-item key="/home">首页</a-menu-item>
 					<a-menu-item key="/user">用户</a-menu-item>
 					<a-menu-item key="/article">文章</a-menu-item>
+					<a-menu-item key="/category">分类</a-menu-item>
 				</a-menu>
 			</a-layout-sider>
 		)

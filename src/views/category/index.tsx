@@ -1,38 +1,14 @@
-/*
- * @Description: 用户列表
- * @Author: hyx
- * @Date: 2023-02-28 17:25:22
- */
-
-import { deleteUser, getUserList, User, UserRequest } from '@/api/user'
+import { addCategory, Category, CategoryRequest, deleteCategory, getCategoryList, updateCategory } from '@/api/category'
 import { ATableColumnProp } from '@/interface'
-import { timeFormat } from '@/utils'
 import { notification } from 'ant-design-vue'
-import { isNil } from 'ramda'
+import { isEmpty, isNil } from 'ramda'
 import { computed, defineComponent, onMounted, reactive, ref } from 'vue'
-import UserDetails from './components/details'
 
 const columns = [
 	{
-		title: '用户名',
-		dataIndex: 'username',
-		key: 'username',
-		align: 'center',
-	},
-	{
-		title: '角色',
-		dataIndex: 'role',
-		key: 'role',
-		customRender: ({ text }: ATableColumnProp<User>) => (
-			<a-tag color={text === 1 ? 'error' : 'success'}>{text === 1 ? '管理员' : '游客'}</a-tag>
-		),
-		align: 'center',
-	},
-	{
-		title: '创建时间',
-		dataIndex: 'createdAt',
-		key: 'createdAt',
-		customRender: ({ text }: ATableColumnProp<User>) => timeFormat(text as string),
+		title: '分类名',
+		dataIndex: 'name',
+		key: 'name',
 		align: 'center',
 	},
 	{
@@ -43,24 +19,25 @@ const columns = [
 ]
 
 interface State {
-	searchForm: UserRequest
-	tableData: User[]
-	detailsUser: { id?: number; visible: boolean }
+	searchForm: CategoryRequest
+	tableData: Category[]
 }
 
 export default defineComponent({
-	name: 'User',
+	name: 'Category',
 	setup() {
 		const total = ref(0)
 		const loading = ref(false)
+		const visible = ref(false)
+		const id = ref<number>()
+		const name = ref<string>('')
 		const state = reactive<State>({
 			searchForm: { pageNum: 1, pageSize: 10 },
 			tableData: [],
-			detailsUser: { visible: false },
 		})
 		const search = async () => {
 			loading.value = true
-			const res = await getUserList(state.searchForm)
+			const res = await getCategoryList(state.searchForm)
 			loading.value = false
 			if (res.status === 200 && !isNil(res.data)) {
 				state.tableData = res.data
@@ -71,14 +48,16 @@ export default defineComponent({
 			search()
 		})
 		const add = () => {
-			state.detailsUser = { visible: true }
+			visible.value = true
 		}
-		const edit = (row: User) => {
-			state.detailsUser = { id: row.id, visible: true }
+		const edit = (row: Category) => {
+			id.value = row.id
+			name.value = row.name
+			visible.value = true
 		}
 		const deleteUserById = async (id: number) => {
 			loading.value = true
-			const data = await deleteUser(id)
+			const data = await deleteCategory(id)
 			loading.value = false
 			if (data.status === 200) {
 				notification.success({
@@ -106,22 +85,17 @@ export default defineComponent({
 			state.searchForm.pageSize = pag.pageSize
 			search()
 		}
+		const onCancel = () => {
+			id.value = undefined
+			name.value = ''
+			visible.value = false
+		}
 		return () => (
 			<a-card>
 				<a-form layout="inline" model={state.searchForm} style={{ marginBottom: '10px' }}>
-					<a-form-item label="用户名">
-						<a-input v-model={[state.searchForm.username, 'value']} />
+					<a-form-item label="分类名">
+						<a-input v-model={[state.searchForm.name, 'value']} />
 					</a-form-item>
-					{/* <a-form-item label="角色">
-						<a-select
-							v-model={[state.searchForm.role, 'value']}
-							options={[
-								{ value: 1, label: '管理员' },
-								{ value: 2, label: '订阅者' },
-							]}
-							style={{ width: '200px' }}
-						/>
-					</a-form-item> */}
 					<a-form-item>
 						<a-button type="primary" onClick={search}>
 							查询
@@ -140,7 +114,7 @@ export default defineComponent({
 					rowKey="id"
 					bordered
 					v-slots={{
-						bodyCell: ({ column, record }: ATableColumnProp<User>) => {
+						bodyCell: ({ column, record }: ATableColumnProp<Category>) => {
 							if (column.key === 'action') {
 								return (
 									<a-space>
@@ -158,14 +132,49 @@ export default defineComponent({
 					pagination={pagination.value}
 					onChange={onChange}
 				/>
-				<UserDetails
-					visible={state.detailsUser.visible}
-					id={state.detailsUser.id}
-					onCancel={() => {
-						state.detailsUser = { visible: false }
+				<a-modal
+					visible={visible.value}
+					title={isNil(id.value) ? '添加用户' : '编辑用户'}
+					confirmLoading={loading.value}
+					destroyOnClose
+					onOk={async () => {
+						if (isNil(name.value) || isEmpty(name.value)) {
+							notification.error({
+								message: '错误',
+								description: '请输入分类名',
+							})
+							return
+						}
+						if (isNil(id.value)) {
+							loading.value = true
+							const { status } = await addCategory({ name: name.value })
+							loading.value = false
+							if (status === 200) {
+								notification.success({
+									message: '成功',
+									description: '创建成功',
+								})
+								onCancel()
+								search()
+							}
+						} else {
+							loading.value = true
+							const { status } = await updateCategory(id.value, { name: name.value })
+							loading.value = false
+							if (status === 200) {
+								notification.success({
+									message: '成功',
+									description: '修改成功',
+								})
+								onCancel()
+								search()
+							}
+						}
 					}}
-					onSearch={search}
-				/>
+					onCancel={onCancel}
+				>
+					<a-input v-model={[name.value, 'value']} style={{ width: '200px' }} />
+				</a-modal>
 			</a-card>
 		)
 	},

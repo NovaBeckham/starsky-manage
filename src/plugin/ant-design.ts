@@ -22,6 +22,7 @@ import {
 	Pagination,
 	ConfigProvider,
 	Layout,
+	Space,
 } from 'ant-design-vue'
 
 export function useAnt(app: App) {
@@ -40,4 +41,5 @@ export function useAnt(app: App) {
 	app.use(Pagination)
 	app.use(ConfigProvider)
 	app.use(Layout)
+	app.use(Space)
 }

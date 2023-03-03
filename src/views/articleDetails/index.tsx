@@ -9,7 +9,6 @@ import MdEditor from 'md-editor-v3'
 import 'md-editor-v3/lib/style.css'
 import $styles from './index.module.scss'
 import { and, findIndex, isEmpty, isNil, map, or } from 'ramda'
-import { getTagList } from '@/api/tags'
 
 interface ArticleData {
 	id?: number
@@ -29,16 +28,16 @@ export default defineComponent({
 		const searchForm = reactive<ArticleData>({})
 		const tagsList = ref<{ name: string; id: number }[]>([])
 
-		const openModel = async () => {
-			if (isNil(tagsList.value) || isEmpty(tagsList.value)) {
-				const { data } = await getTagList()
-				console.log('data', data)
-				if (!isNil(data)) {
-					tagsList.value = data
-				}
-			}
-			visible.value = true
-		}
+		// const openModel = async () => {
+		// 	if (isNil(tagsList.value) || isEmpty(tagsList.value)) {
+		// 		const { data } = await getTagList()
+		// 		console.log('data', data)
+		// 		if (!isNil(data)) {
+		// 			tagsList.value = data
+		// 		}
+		// 	}
+		// 	visible.value = true
+		// }
 		const removeCategory = (item: string) => {
 			if (searchForm.tags) {
 				const index = findIndex((val) => val === item, searchForm.tags)
@@ -51,9 +50,9 @@ export default defineComponent({
 			<a-card>
 				<div class={$styles.title}>
 					<a-input v-model={searchForm.title} size="large" placeholder="输入文章标题" />
-					<a-button type="danger" size="large" onClick={openModel} style="margin-left: 10px">
+					{/* <a-button type="danger" size="large" onClick={openModel} style="margin-left: 10px">
 						发布文章
-					</a-button>
+					</a-button> */}
 				</div>
 				<MdEditor v-model={searchForm.content} />
 				<a-dialog v-model={visible.value}>

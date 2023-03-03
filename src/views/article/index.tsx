@@ -1,40 +1,75 @@
-/*
- * @Description: Article
- * @Author: hyx
- * @Date: 2022-09-09 15:59:22
- */
-
-import { getArticleList } from '@/api/articles'
-import { ElTableColumnProp } from '@/interface'
-import { defineComponent, onMounted, ref } from 'vue'
+import { Article, ArticleRequest, getArticleList } from '@/api/articles'
+import { ATableColumnProp } from '@/interface'
+import { timeFormat } from '@/utils'
+import { isNil } from 'ramda'
+import { computed, defineComponent, onMounted, reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
 
-interface Category {
-	id: number
-	name: string
-}
+const columns = [
+	{
+		title: '标题',
+		dataIndex: 'title',
+		key: 'title',
+		align: 'center',
+	},
+	{
+		title: '内容',
+		dataIndex: 'content',
+		key: 'content',
+		align: 'center',
+	},
+	{
+		title: '分类',
+		key: 'category',
+		customRender: ({ record }: ATableColumnProp<Article>) => record.category.name,
+		align: 'center',
+	},
+	{
+		title: '创建时间',
+		dataIndex: 'createdAt',
+		key: 'createdAt',
+		customRender: ({ text }: ATableColumnProp<Article>) => timeFormat(text as string),
+		align: 'center',
+	},
+	{
+		title: '更新时间',
+		dataIndex: 'updatedAt',
+		key: 'updatedAt',
+		customRender: ({ text }: ATableColumnProp<Article>) => timeFormat(text as string),
+		align: 'center',
+	},
+	{
+		title: '操作',
+		key: 'action',
+		align: 'center',
+	},
+]
 
-interface ArticleList {
-	title: string
-	content: string
-	desc?: string
-	author?: string
-	tags?: string
-	category: Category
-	love?: number
-	watch?: number
-	createdAt: string
+interface State {
+	searchForm: ArticleRequest
+	tableData: Article[]
 }
 
 export default defineComponent({
 	name: 'Article',
 	setup() {
+		const total = ref(0)
+		const loading = ref(false)
+		const state = reactive<State>({
+			searchForm: { pageNum: 1, pageSize: 10 },
+			tableData: [],
+		})
+		const search = async () => {
+			loading.value = true
+			const { status, data, total: pageTotal } = await getArticleList(state.searchForm)
+			loading.value = false
+			if (status === 200 && !isNil(data)) {
+				state.tableData = data
+			}
+			total.value = pageTotal
+		}
 		onMounted(() => {
-			getArticleList().then((res) => {
-				if (res.data) {
-					tableData.value = res.data
-				}
-			})
+			search()
 		})
 		const $router = useRouter()
 		const add = () => {
@@ -42,25 +77,49 @@ export default defineComponent({
 				name: 'ArticleDetails',
 			})
 		}
-		const tableData = ref<ArticleList[]>([])
+		const pagination = computed(() => ({
+			total: total.value,
+			current: state.searchForm.pageNum,
+			pageSize: state.searchForm.pageSize,
+			defaultPageSize: 2,
+			pageSizeOptions: ['2', '5', '10'],
+			showSizeChanger: true,
+			showTotal: (total: number) => `共 ${total} 条`,
+		}))
+		const onChange = (pag: { pageSize: number; current: number }) => {
+			state.searchForm.pageNum = pag.current
+			state.searchForm.pageSize = pag.pageSize
+			search()
+		}
 		return () => (
-			<div>
-				<a-button type="primary" onClick={add}>
+			<a-card>
+				<a-button type="primary" onClick={add} style={{ marginBottom: '10px' }}>
 					添加
 				</a-button>
-				<a-table data={tableData.value} style={{ width: '100%' }}>
-					<a-table-column prop="title" label="标题" align="center" />
-					<a-table-column prop="createdAt" label="发布日期" align="center" />
-					<a-table-column
-						prop="category"
-						label="分类"
-						align="center"
-						v-slots={{
-							default: ({ row }: ElTableColumnProp<ArticleList>) => row.category.name,
-						}}
-					/>
-				</a-table>
-			</div>
+				<a-table
+					dataSource={state.tableData}
+					columns={columns}
+					rowKey="id"
+					bordered
+					scroll={{ x: 'max-content' }}
+					v-slots={{
+						bodyCell: ({ column, record }: ATableColumnProp<Article>) => {
+							if (column.key === 'action') {
+								return (
+									<a-space>
+										<a-button type="primary">编辑</a-button>
+										<a-button type="primary" danger>
+											删除
+										</a-button>
+									</a-space>
+								)
+							}
+						},
+					}}
+					pagination={pagination.value}
+					onChange={onChange}
+				/>
+			</a-card>
 		)
 	},
 })
