@@ -23,6 +23,7 @@ import {
 	ConfigProvider,
 	Layout,
 	Space,
+	Upload,
 } from 'ant-design-vue'
 
 export function useAnt(app: App) {
@@ -42,4 +43,5 @@ export function useAnt(app: App) {
 	app.use(ConfigProvider)
 	app.use(Layout)
 	app.use(Space)
+	app.use(Upload)
 }

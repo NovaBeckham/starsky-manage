@@ -1,0 +1,6 @@
+import Editor from '@tinymce/tinymce-vue'
+import tinymce from './tinymce.min.js'
+import './icons/default/icons.min.js'
+import './themes/silver/themes.min.js'
+import './langs/zh_Cn'
+import './skins/ui/oxide/skin.min.css'

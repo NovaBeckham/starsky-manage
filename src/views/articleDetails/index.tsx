@@ -1,99 +1,79 @@
-/*
- * @Description: Article
- * @Author: hyx
- * @Date: 2022-09-09 15:59:22
- */
-
-import { defineComponent, reactive, ref } from 'vue'
-import MdEditor from 'md-editor-v3'
-import 'md-editor-v3/lib/style.css'
-import $styles from './index.module.scss'
-import { and, findIndex, isEmpty, isNil, map, or } from 'ramda'
-
-interface ArticleData {
-	id?: number
-	title?: string
-	content?: string
-	cover?: string
-	tags?: string[]
-	isTop?: number
-	type?: number
-	status?: number
-}
+import { ArticleRequest } from '@/api/articles'
+import { getCategoryList } from '@/api/category'
+import { Options } from '@/interface'
+import { isNil, map } from 'ramda'
+import { defineComponent, onMounted, ref } from 'vue'
+import { UploadOutlined } from '@ant-design/icons-vue'
+import { message, UploadChangeParam } from 'ant-design-vue'
 
 export default defineComponent({
 	name: 'ArticleDetails',
 	setup() {
-		const visible = ref(false)
-		const searchForm = reactive<ArticleData>({})
-		const tagsList = ref<{ name: string; id: number }[]>([])
-
-		// const openModel = async () => {
-		// 	if (isNil(tagsList.value) || isEmpty(tagsList.value)) {
-		// 		const { data } = await getTagList()
-		// 		console.log('data', data)
-		// 		if (!isNil(data)) {
-		// 			tagsList.value = data
-		// 		}
-		// 	}
-		// 	visible.value = true
-		// }
-		const removeCategory = (item: string) => {
-			if (searchForm.tags) {
-				const index = findIndex((val) => val === item, searchForm.tags)
-				if (index > -1) {
-					searchForm.tags.splice(index, 1)
-				}
+		const loading = ref(false)
+		const searchForm = ref<ArticleRequest>({})
+		const categoryList = ref<Options[]>([])
+		onMounted(async () => {
+			loading.value = true
+			const { status, data } = await getCategoryList({})
+			loading.value = false
+			if (status === 200 && !isNil(data)) {
+				categoryList.value = map((item) => {
+					return {
+						value: item.id,
+						label: item.name,
+					}
+				}, data)
+			}
+		})
+		const upChange = (info: UploadChangeParam) => {
+			if (info.file.status !== 'uploading') {
+				console.log(info.file, info.fileList)
+			}
+			if (info.file.status === 'done') {
+				message.success('图片上传成功')
+				searchForm.value.img = info.file.response.url
+			} else if (info.file.status === 'error') {
+				message.error('图片上传失败')
+				searchForm.value.img = ''
 			}
 		}
 		return () => (
 			<a-card>
-				<div class={$styles.title}>
-					<a-input v-model={searchForm.title} size="large" placeholder="输入文章标题" />
-					{/* <a-button type="danger" size="large" onClick={openModel} style="margin-left: 10px">
-						发布文章
-					</a-button> */}
-				</div>
-				<MdEditor v-model={searchForm.content} />
-				<a-dialog v-model={visible.value}>
-					<a-form model={searchForm}>
-						<a-form-item label="文章标签" prop="tag">
-							{!isNil(searchForm.tags) &&
-								!isEmpty(searchForm.tags) &&
-								map((item) => {
-									return (
-										<a-tag type="success" style="margin: 0 1rem 0 0" closable onClose={() => removeCategory(item)}>
-											{item}
-										</a-tag>
-									)
-								}, searchForm.tags)}
-							{or(isNil(searchForm.tags), searchForm.tags && searchForm.tags.length < 3) && (
-								<a-popover
-									placement="bottom-start"
-									width="460"
-									trigger="click"
-									v-slots={{
-										reference: () => {
-											return (
-												<a-button type="success" plain size="small">
-													添加标签
-												</a-button>
-											)
-										},
-									}}
-								>
-									<div class="popover-container">
-										<a-select v-model={searchForm.tags} multiple>
-											{map((item) => {
-												return <a-option key={item.id} label={item.name} value={item.name} />
-											}, tagsList.value)}
-										</a-select>
-									</div>
-								</a-popover>
-							)}
-						</a-form-item>
-					</a-form>
-				</a-dialog>
+				<h3>文章详情</h3>
+				<a-form model={searchForm.value}>
+					<a-form-item name="title" label="标题">
+						<a-input v-model={[searchForm.value.title, 'value']} style={{ width: '200px' }} />
+					</a-form-item>
+					<a-form-item name="category" label="分类">
+						<a-select
+							v-model={[searchForm.value.category, 'value']}
+							options={categoryList.value}
+							style={{ width: '200px' }}
+						/>
+					</a-form-item>
+					<a-form-item name="desc" label="描述">
+						<a-textarea v-model={[searchForm.value.title, 'value']} />
+					</a-form-item>
+					<a-form-item name="img" label="文章缩略图">
+						<a-upload
+							name="file"
+							action="http://localhost:3000/api/v1/upload"
+							headers={{
+								Authorization: `Bearer ${localStorage.getItem('starToken')}`,
+								'AccessKey-ID': 'LTAI5tFXJ2bpdLmRvXpHZxu2',
+								'AccessKey-Secret': 'wsQ1ph4ymSkQXcA3nI883GP9wYQRsd',
+							}}
+							onChange={upChange}
+							listType="picture"
+						>
+							<a-button>
+								<UploadOutlined />
+								点击上传
+							</a-button>
+						</a-upload>
+					</a-form-item>
+					<a-form-item name="content" label="文章内容"></a-form-item>
+				</a-form>
 			</a-card>
 		)
 	},

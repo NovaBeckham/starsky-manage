@@ -13,9 +13,9 @@ const columns = [
 		align: 'center',
 	},
 	{
-		title: '内容',
-		dataIndex: 'content',
-		key: 'content',
+		title: '描述',
+		dataIndex: 'desc',
+		key: 'desc',
 		align: 'center',
 	},
 	{

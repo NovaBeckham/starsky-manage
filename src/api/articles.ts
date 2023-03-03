@@ -9,15 +9,22 @@ import { Category } from './category'
 
 export interface Article {
 	id: number
-	name: string
 	category: Category
+	desc: string
+	content: string
+	title: string
 	createdAt: string
+	img: string
 }
 
 export interface ArticleRequest {
 	id?: number
-	name?: string
+	title?: string
+	desc?: string
+	content?: string
+	category?: string
 	createdAt?: string
+	img?: string
 	pageSize?: number
 	pageNum?: number
 }
