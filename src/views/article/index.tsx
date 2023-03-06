@@ -21,7 +21,7 @@ const columns = [
 	{
 		title: '分类',
 		key: 'category',
-		customRender: ({ record }: ATableColumnProp<Article>) => record.category.name,
+		customRender: ({ record }: ATableColumnProp<Article>) => record.category?.name,
 		align: 'center',
 	},
 	{
@@ -73,8 +73,13 @@ export default defineComponent({
 		})
 		const $router = useRouter()
 		const add = () => {
+			$router.push('./details')
+		}
+		const edit = (id: number) => {
+			console.log('id', id)
 			$router.push({
 				name: 'ArticleDetails',
+				query: { id }
 			})
 		}
 		const pagination = computed(() => ({
@@ -107,7 +112,7 @@ export default defineComponent({
 							if (column.key === 'action') {
 								return (
 									<a-space>
-										<a-button type="primary">编辑</a-button>
+										<a-button type="primary" onClick={() => edit(record.id as number)}>编辑</a-button>
 										<a-button type="primary" danger>
 											删除
 										</a-button>

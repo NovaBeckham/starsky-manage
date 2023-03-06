@@ -40,7 +40,7 @@ const routes: RouteRecordRaw[] = [
 				name: 'Category',
 			},
 			{
-				path: '/details',
+				path: '/details/',
 				component: () => import('@/views/articleDetails'),
 				meta: { title: '添加文章', alwaysShow: true },
 				name: 'ArticleDetails',

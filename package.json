@@ -10,13 +10,14 @@
 	},
 	"dependencies": {
 		"@ant-design/icons-vue": "^6.1.0",
-		"@tinymce/tinymce-vue": "^5",
+		"@tinymce/tinymce-vue": "^5.0.1",
 		"ant-design-vue": "^3.2.15",
 		"axios": "^0.27.2",
 		"date-fns": "^2.29.3",
 		"md-editor-v3": "^2.7.2",
 		"pinia": "^2.0.20",
 		"ramda": "^0.28.0",
+		"tinymce": "^6.3.2",
 		"vue": "^3.2.37",
 		"vue-router": "^4.1.4"
 	},

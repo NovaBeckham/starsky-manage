@@ -8,13 +8,13 @@ import { MyResponse, request } from '@/utils/https'
 import { Category } from './category'
 
 export interface Article {
-	id: number
-	category: Category
-	desc: string
-	content: string
-	title: string
-	createdAt: string
-	img: string
+	id?: number
+	category?: Category
+	desc?: string
+	content?: string
+	title?: string
+	createdAt?: string
+	img?: string
 }
 
 export interface ArticleRequest {
@@ -22,7 +22,7 @@ export interface ArticleRequest {
 	title?: string
 	desc?: string
 	content?: string
-	category?: string
+	category?: number
 	createdAt?: string
 	img?: string
 	pageSize?: number
@@ -31,4 +31,8 @@ export interface ArticleRequest {
 
 export const getArticleList: (params: ArticleRequest) => Promise<MyResponse<Article[]>> = (params) => request.get('/article', { params })
 
-export const createArticle: (data: ArticleRequest) => Promise<MyResponse<null>> = (data) => request.post('/article/add', data)
+export const createArticle: (data: Article) => Promise<MyResponse<null>> = (data) => request.post('/article/add', data)
+
+export const getArticleInfo: (id: number) => Promise<MyResponse<Article>> = (id) => request.get(`/article/info/${id}`)
+
+export const updateArticle: (id: number, data: Article) => Promise<MyResponse<null>> = (id, data) => request.put(`/article/${id}`, data)

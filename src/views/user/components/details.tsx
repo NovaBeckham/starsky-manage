@@ -1,6 +1,6 @@
 import { addUser, getUserById, updateUser, UserRequest } from '@/api/user'
 import { notification } from 'ant-design-vue'
-import { isEmpty, isNil } from 'ramda'
+import { isNil } from 'ramda'
 import { computed, defineComponent, PropType, ref, watch } from 'vue'
 
 const rules = {
