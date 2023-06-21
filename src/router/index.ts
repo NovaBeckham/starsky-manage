@@ -21,12 +21,6 @@ const routes: RouteRecordRaw[] = [
 				meta: { title: '首页', alwaysShow: true },
 				name: 'Home',
 			},
-			{
-				path: '/user',
-				component: () => import('@/views/user'),
-				meta: { title: '用户', alwaysShow: true },
-				name: 'User',
-			}
 		],
 	},
 	{
