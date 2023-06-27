@@ -10,6 +10,7 @@ import { FormInstance } from 'ant-design-vue'
 import { defineComponent, reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import $styles from './index.module.scss'
+import { isNil } from 'ramda'
 
 const rules = {
 	username: [{ required: true, message: '请输入账号', trigger: 'blur' }],
@@ -22,11 +23,12 @@ export default defineComponent({
 		const $router = useRouter()
 		const loginIn = async () => {
 			await loginRef.value?.validate()
-			login({ username: ruleForm.username, password: ruleForm.password }).then((res) => {
-				localStorage.setItem('starToken', res.data)
+			const { success, data } = await login({ username: ruleForm.username, password: ruleForm.password })
+			if (success && !isNil(data)) {
+				localStorage.setItem('starskyToken', data)
 				localStorage.setItem('user', ruleForm.username)
 				$router.push('/')
-			})
+			}
 		}
 		const loading = ref(false)
 		const loginRef = ref<FormInstance>()

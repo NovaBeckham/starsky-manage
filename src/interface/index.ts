@@ -39,5 +39,41 @@ export interface Result<T> {
   /**
    * 返回数据
    */
-  data: T;
+  data?: T;
+}
+
+/**
+ * 分页参数
+ */
+export interface PageQuery {
+  /**
+   * 当前页
+   */
+  current: number;
+  /**
+   * 每页大小
+   */
+  size: number;
+}
+
+/**
+ * 分页返回接口
+ */
+export interface PageResult<T> {
+  /**
+   * 分页结果
+   */
+  record: T;
+  /**
+   * 总数
+   */
+  total: number;
+  /**
+   * 当前页数
+   */
+  current: number;
+  /**
+   * 每页个数
+   */
+  size: number;
 }

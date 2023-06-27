@@ -25,6 +25,7 @@ import {
 	Layout,
 	Space,
 	Upload,
+	Popconfirm,
 } from 'ant-design-vue'
 
 export function useAnt(app: App) {
@@ -45,4 +46,5 @@ export function useAnt(app: App) {
 	app.use(Layout)
 	app.use(Space)
 	app.use(Upload)
+	app.use(Popconfirm)
 }

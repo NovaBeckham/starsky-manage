@@ -55,7 +55,7 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-	const starToken = localStorage.getItem('starToken')
+	const starToken = localStorage.getItem('starskyToken')
 	if (!starToken && to.path !== '/login') {
 		next('/login')
 	} else {

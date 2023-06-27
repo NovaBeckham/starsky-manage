@@ -19,7 +19,6 @@ export default defineComponent({
 			)
 		}
 		const selectedKeys = computed(() => {
-			console.log('route', route)
 			return map((item) => item.name, route.matched)
 		})
 		return () => (
