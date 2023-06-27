@@ -5,21 +5,22 @@
  */
 
 import { defineComponent } from 'vue'
-import { RouterView } from 'vue-router'
+import SideBar from './components/SideBar'
+import Content from './components/Content'
 
 export default defineComponent({
 	name: 'Layout',
 	setup() {
 		return () => (
-			<a-layout style={{ height: '100%' }}>
-				{/* <MyHeader />
+			<a-layout class="app-wrapper">
+				<a-layout-sider width={200}>
+					<SideBar />
+				</a-layout-sider>
 				<a-layout>
-					<MySidebar />
-					<a-layout-content>
-						<RouterView />
-					</a-layout-content>
-				</a-layout> */}
-				<RouterView />
+					<div>
+						<Content />
+					</div>
+				</a-layout>
 			</a-layout>
 		)
 	},

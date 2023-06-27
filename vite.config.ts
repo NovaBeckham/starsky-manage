@@ -33,6 +33,16 @@ export default (): UserConfigExport => {
 				},
 			},
 		},
+		css: {
+			preprocessorOptions: {
+				less: {
+					javascriptEnabled: true
+				},
+				scss: {
+					javascriptEnabled: true,
+				},
+			}
+		},
 		resolve: {
 			alias: {
 				'@': resolve(__dirname, './src'),
@@ -41,9 +51,6 @@ export default (): UserConfigExport => {
 		plugins: [
 			vue(),
 			vueJsx(),
-			AutoImport({
-				resolvers: [AntDesignVueResolver()],
-			}),
 			Components({
 				resolvers: [AntDesignVueResolver()],
 			}),

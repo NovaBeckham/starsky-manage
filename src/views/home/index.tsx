@@ -5,13 +5,12 @@
  */
 
 import { defineComponent } from 'vue'
-import $styles from './index.module.scss'
 
 export default defineComponent({
 	name: 'Home',
 	setup() {
 		return () => (
-			<div class={$styles.home}></div>
+			<div>首页</div>
 		)
 	},
 })
