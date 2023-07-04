@@ -1,7 +1,7 @@
 import { constantRoutes } from '@/router'
-import { map } from 'ramda'
+import { map } from 'lodash'
 import { computed, defineComponent } from 'vue'
-import { RouteRecordRaw, RouterLink, useRoute } from 'vue-router'
+import { RouteRecordRaw, useRoute } from 'vue-router'
 import SideBarItem from './item'
 
 export default defineComponent({
@@ -19,7 +19,7 @@ export default defineComponent({
 			)
 		}
 		const selectedKeys = computed(() => {
-			return map((item) => item.name, route.matched)
+			return map(route.matched, (item) => item.name)
 		})
 		return () => (
 			<div>
@@ -27,9 +27,8 @@ export default defineComponent({
 					<h1>博客后台管理系统</h1>
 				</div>
 				<a-menu mode="inline" selectedKeys={selectedKeys.value}>
-					{map(
-						(item) => (item.children ? <SideBarItem key={item.name} menuInfo={item} /> : alwaysShow(item)),
-						constantRoutes
+					{map(constantRoutes, (item) =>
+						item.children ? <SideBarItem key={item.name} menuInfo={item} /> : alwaysShow(item)
 					)}
 				</a-menu>
 			</div>

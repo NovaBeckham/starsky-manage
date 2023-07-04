@@ -13,8 +13,8 @@ export interface ColumnProp {
 	key: string
 }
 
-export interface ATableColumnProp<T extends any> {
-	text: string | number
+export interface ATableColumnProp<T = any> {
+	text: T
 	record: T
 	index: number
 	column: ColumnProp

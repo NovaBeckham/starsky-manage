@@ -30,22 +30,22 @@ export interface Category {
  * 分类表单
  */
 interface CategoryForm {
-  /**
-   * 分类id
-   */
-  id?: number;
-  /**
-   * 分类名
-   */
-  name: string;
+	/**
+	 * 分类id
+	 */
+	id?: number
+	/**
+	 * 分类名
+	 */
+	name: string
 }
 
 /**
- * 查看分类列表
+ * 查看分类页
  * @param params 查询条件
- * @returns 分类列表
+ * @returns 分类页
  */
-export const getCategoryList: (params: PageQuery) => Promise<Result<PageResult<Category[]>>> = (params) => {
+export const getPage: (params: PageQuery) => Promise<Result<PageResult<Category[]>>> = (params) => {
 	return requests({
 		url: '/admin/category/page',
 		method: 'get',
@@ -70,11 +70,11 @@ export function deleteCategory(data: number[]): Promise<Result<null>> {
  * @param data 分类信息
  */
 export function addCategory(data: CategoryForm): Promise<Result<null>> {
-  return requests({
-    url: "/admin/category/add",
-    method: "post",
-    data,
-  });
+	return requests({
+		url: '/admin/category/add',
+		method: 'post',
+		data,
+	})
 }
 
 /**
@@ -82,9 +82,21 @@ export function addCategory(data: CategoryForm): Promise<Result<null>> {
  * @param data 分类信息
  */
 export function updateCategory(data: CategoryForm): Promise<Result<null>> {
-  return requests({
-    url: "/admin/category/update",
-    method: "put",
-    data,
-  });
+	return requests({
+		url: '/admin/category/update',
+		method: 'put',
+		data,
+	})
+}
+
+/**
+ * 查看分类页
+ * @param params 查询条件
+ * @returns 分类页
+ */
+export function getList(): Promise<Result<Category[]>> {
+	return requests({
+		url: '/category/list',
+		method: 'get',
+	})
 }

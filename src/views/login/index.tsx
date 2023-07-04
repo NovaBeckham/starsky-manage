@@ -10,7 +10,7 @@ import { FormInstance } from 'ant-design-vue'
 import { defineComponent, reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import $styles from './index.module.scss'
-import { isNil } from 'ramda'
+import { isNil } from 'lodash'
 
 const rules = {
 	username: [{ required: true, message: '请输入账号', trigger: 'blur' }],

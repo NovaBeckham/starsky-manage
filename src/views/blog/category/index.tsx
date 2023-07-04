@@ -4,10 +4,10 @@
  * @Date: 2023-06-26 15:23:02
  */
 
-import { Category, addCategory, deleteCategory, getCategoryList, updateCategory } from '@/api/category'
+import { Category, addCategory, deleteCategory, getPage, updateCategory } from '@/api/category'
 import { ATableColumnProp } from '@/interface'
 import { timeFormat } from '@/utils'
-import { isEmpty, isNil } from 'ramda'
+import { isEmpty, isNil } from 'lodash'
 import { computed, defineComponent, onMounted, ref } from 'vue'
 import { FormOutlined, DeleteOutlined } from '@ant-design/icons-vue'
 import { notification } from 'ant-design-vue'
@@ -52,7 +52,7 @@ export default defineComponent({
 		const visible = computed(() => !isEmpty(title.value))
 		const getList = async (current: number, size: number) => {
 			loading.value = true
-			const { success, data } = await getCategoryList({ current, size })
+			const { success, data } = await getPage({ current, size })
 			loading.value = false
 			if (success && !isNil(data) && !isNil(data.record)) {
 				tableData.value = data.record
