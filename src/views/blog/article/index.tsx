@@ -37,7 +37,7 @@ const columns = [
 		title: '创建时间',
 		key: 'createTime',
 		align: 'center',
-		customRender: ({ record }: ATableColumnProp<Article>) => timeFormat(record.createTime),
+		customRender: ({ record }: ATableColumnProp<Article>) => timeFormat(record.createTime ?? ''),
 	},
 	{
 		title: '操作',

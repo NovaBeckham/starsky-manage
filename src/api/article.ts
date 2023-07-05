@@ -7,27 +7,34 @@
 import { PageQuery, PageResult, Result } from '@/interface'
 import requests from '@/utils/request'
 
+/**
+ * 文章
+ */
 export interface Article {
 	/**
-   * 文章id
-   */
-  id: number;
-  /**
-   * 文章缩略图
-   */
-  cover: string;
-  /**
-   * 文章标题
-   */
-  title: string;
-  /**
-   * 文章分类
-   */
-  cid: number;
-  /**
-   * 发表时间
-   */
-  createTime: string;
+	 * 文章id
+	 */
+	id?: number
+	/**
+	 * 文章缩略图
+	 */
+	cover?: string
+	/**
+	 * 文章标题
+	 */
+	title?: string
+	/**
+	 * 文章内容
+	 */
+	content?: string
+	/**
+	 * 文章分类
+	 */
+	cid?: number
+	/**
+	 * 发表时间
+	 */
+	createTime?: string
 }
 
 /**
@@ -40,5 +47,29 @@ export const getArticleList: (params: PageQuery) => Promise<Result<PageResult<Ar
 		url: '/admin/article/list',
 		method: 'get',
 		params,
+	})
+}
+
+/**
+ * 文章详情
+ * @param articleId 文章id
+ */
+export function getInfo(articleId: number): Promise<Result<Article>> {
+	return requests({
+		url: `/admin/article/getInfo/${articleId}`,
+		method: 'get',
+	})
+}
+
+/**
+ * 上传文章图片
+ * @returns 图片链接
+ */
+export const uploadArticleCover: (data: FormData) => Promise<Result<string>> = (data) => {
+	return requests({
+		url: '/admin/article/upload',
+		headers: { 'content-type': 'multipart/form-data' },
+		method: 'post',
+		data,
 	})
 }
