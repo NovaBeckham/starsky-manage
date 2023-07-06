@@ -51,6 +51,30 @@ export const getArticleList: (params: PageQuery) => Promise<Result<PageResult<Ar
 }
 
 /**
+ * 添加文章
+ * @param data 文章信息
+ */
+export function addArticle(data: Article): Promise<Result<null>> {
+	return requests({
+		url: '/admin/article/add',
+		method: 'post',
+		data,
+	})
+}
+
+/**
+ * 修改文章
+ * @param data 文章信息
+ */
+export function updateArticle(data: Article): Promise<Result<null>> {
+	return requests({
+		url: '/admin/article/update',
+		method: 'put',
+		data,
+	})
+}
+
+/**
  * 文章详情
  * @param articleId 文章id
  */

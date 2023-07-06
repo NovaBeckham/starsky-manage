@@ -27,6 +27,8 @@ import {
 	Upload,
 	Popconfirm,
 	Image,
+	Row,
+	Col,
 } from 'ant-design-vue'
 
 export function useAnt(app: App) {
@@ -49,4 +51,6 @@ export function useAnt(app: App) {
 	app.use(Upload)
 	app.use(Popconfirm)
 	app.use(Image)
+	app.use(Row)
+	app.use(Col)
 }

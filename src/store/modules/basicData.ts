@@ -2,7 +2,7 @@ import { defineStore } from 'pinia'
 import { isNil, map, throttle } from 'lodash'
 import { getList } from '@/api/category'
 
-const getCategoryListThrottled = throttle(getList, 1000)
+const getCategoryListThrottled = throttle(getList, 500)
 
 export interface Options {
 	value: string | number

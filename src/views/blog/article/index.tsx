@@ -11,6 +11,7 @@ import { timeFormat } from '@/utils'
 import { isNil } from 'lodash'
 import { computed, defineComponent, onMounted, ref } from 'vue'
 import { FormOutlined } from '@ant-design/icons-vue'
+import { useRouter } from 'vue-router'
 
 const columns = [
 	{
@@ -49,6 +50,7 @@ const columns = [
 export default defineComponent({
 	name: 'Article',
 	setup() {
+		const $router = useRouter()
 		const tableData = ref<Article[]>([])
 		const total = ref(0)
 		const pageNum = ref(0)
@@ -79,6 +81,9 @@ export default defineComponent({
 		})
 		return () => (
 			<div class="app-container">
+				<a-button type="primary" onClick={() => $router.push('/details')} style={{ marginBottom: '10px' }}>
+					添加文章
+				</a-button>
 				<a-table
 					dataSource={tableData.value}
 					columns={columns}
@@ -94,7 +99,7 @@ export default defineComponent({
 											type="link"
 											loading={loading.value}
 											onClick={() => {
-												console.log('title', record.title)
+												$router.push(`/details?id=${record.id}`)
 											}}
 										>
 											<FormOutlined />

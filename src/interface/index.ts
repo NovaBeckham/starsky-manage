@@ -9,6 +9,11 @@ export interface Options {
 	label: string | number
 }
 
+export interface Files {
+  name: string
+  url: string
+}
+
 export interface ColumnProp {
 	key: string
 }

@@ -9,31 +9,37 @@ import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 
 export const constantRoutes: RouteRecordRaw[] = [
 	{
-		path: '/blog',
+		path: '/',
 		component: Layout,
-		redirect: '/blog/home',
+		redirect: '/home',
 		name: 'Blog',
 		meta: {
 			title: '博客信息',
 		},
 		children: [
 			{
-				path: '/blog/home',
+				path: '/home',
 				component: () => import('@/views/home'),
 				meta: { title: '首页' },
 				name: 'Home',
 			},
 			{
-				path: '/blog/article',
+				path: '/article',
 				component: () => import('@/views/blog/article'),
 				meta: { title: '文章列表' },
 				name: 'Article',
 			},
 			{
-				path: '/blog/category',
+				path: '/category',
 				component: () => import('@/views/blog/category'),
 				meta: { title: '分类列表' },
 				name: 'Category',
+			},
+			{
+				path: '/details',
+				component: () => import('@/views/blog/details'),
+				meta: { title: '文章详情' },
+				name: 'ArticleDetails',
 			},
 		],
 	},
