@@ -15,7 +15,7 @@ export interface Category {
 	/**
 	 * 分类名
 	 */
-	name: string
+	categoryName: string
 	/**
 	 * 文章数量
 	 */
@@ -37,7 +37,7 @@ interface CategoryForm {
 	/**
 	 * 分类名
 	 */
-	name: string
+	categoryName: string
 }
 
 /**

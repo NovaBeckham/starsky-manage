@@ -73,8 +73,8 @@ export default defineComponent({
 			})
 		}
 		const getImageRender = () => {
-			if (!isNil(detailsForm.value.cover) && !isEmpty(detailsForm.value.cover)) {
-				return <img src={detailsForm.value.cover} width={360} />
+			if (!isNil(detailsForm.value.articleCover) && !isEmpty(detailsForm.value.articleCover)) {
+				return <img src={detailsForm.value.articleCover} width={360} />
 			} else {
 				if (loading.value) {
 					return <LoadingOutlined />
@@ -105,28 +105,28 @@ export default defineComponent({
 			}
 		}
 		const save = async () => {
-			if (isNil(detailsForm.value.title) || isEmpty(detailsForm.value.title)) {
+			if (isNil(detailsForm.value.articleTitle) || isEmpty(detailsForm.value.articleTitle)) {
 				notification.info({
 					message: '提示',
 					description: '请输入文章标题',
 				})
 				return
 			}
-			if (isNil(detailsForm.value.cid)) {
+			if (isNil(detailsForm.value.categoryId)) {
 				notification.info({
 					message: '提示',
 					description: '请选择文章分类',
 				})
 				return
 			}
-			if (isNil(detailsForm.value.cover) || isEmpty(detailsForm.value.cover)) {
+			if (isNil(detailsForm.value.articleCover) || isEmpty(detailsForm.value.articleCover)) {
 				notification.info({
 					message: '提示',
 					description: '请上传缩略图',
 				})
 				return
 			}
-			if (isNil(detailsForm.value.content) || isEmpty(detailsForm.value.content)) {
+			if (isNil(detailsForm.value.articleContent) || isEmpty(detailsForm.value.articleContent)) {
 				notification.info({
 					message: '提示',
 					description: '请输入文章内容',
@@ -149,10 +149,10 @@ export default defineComponent({
 			<div class="app-container">
 				<a-form model={detailsForm.value} ref={articleFormRef}>
 					<a-form-item name="title" label="文章标题">
-						<a-input v-model={[detailsForm.value.title, 'value']} />
+						<a-input v-model={[detailsForm.value.articleTitle, 'value']} />
 					</a-form-item>
 					<a-form-item name="cid" label="文章分类">
-						<FormCategroy v-model={[detailsForm.value.cid, 'value']} />
+						<FormCategroy v-model={[detailsForm.value.categoryId, 'value']} />
 					</a-form-item>
 					<a-form-item name="cover" label="缩略图">
 						<a-upload
@@ -161,7 +161,7 @@ export default defineComponent({
 							action="/api/admin/article/upload"
 							beforeUpload={beforeUpload}
 							onChange={handleChange}
-							onRemove={() => (detailsForm.value.cover = '')}
+							onRemove={() => (detailsForm.value.articleCover = '')}
 						>
 							{getImageRender}
 						</a-upload>
@@ -170,7 +170,7 @@ export default defineComponent({
 				<div>
 					<MdEditor
 						ref={editorRef}
-						v-model={detailsForm.value.content}
+						v-model={detailsForm.value.articleContent}
 						theme="dark"
 						toolbars={toolbars}
 						v-slots={{ defToolbars: () => <EmojiExtension onInsert={insert} /> }}

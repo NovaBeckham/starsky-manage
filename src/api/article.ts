@@ -18,23 +18,35 @@ export interface Article {
 	/**
 	 * 文章缩略图
 	 */
-	cover?: string
+	articleCover?: string
 	/**
 	 * 文章标题
 	 */
-	title?: string
+	articleTitle?: string
 	/**
 	 * 文章内容
 	 */
-	content?: string
+	articleContent?: string
 	/**
 	 * 文章分类
 	 */
-	cid?: number
+	categoryId?: number
+	/**
+	 * 是否删除 (0否 1是)
+	 */
+	isDelete?: number
+	/**
+	 * 状态 (1公开 2私密 3草稿)
+	 */
+	status?: number
 	/**
 	 * 发表时间
 	 */
 	createTime?: string
+	/**
+	 * 更新时间
+	 */
+	updateTime?: string
 }
 
 /**

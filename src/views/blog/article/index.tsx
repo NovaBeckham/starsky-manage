@@ -16,23 +16,23 @@ import { useRouter } from 'vue-router'
 const columns = [
 	{
 		title: '标题',
-		dataIndex: 'title',
-		key: 'title',
+		dataIndex: 'articleTitle',
+		key: 'articleTitle',
 		align: 'center',
 	},
 	{
 		title: '分类',
-		key: 'cid',
+		key: 'categoryId',
 		align: 'center',
-		dataIndex: 'cid',
+		dataIndex: 'categoryId',
 		customRender: ({ text }: ATableColumnProp<number>) => <a-tag color="blue">{categoryFilter(text)}</a-tag>,
 	},
 	{
 		title: '缩略图',
-		key: 'cover',
+		key: 'articleCover',
 		align: 'center',
 		width: 180,
-		customRender: ({ record }: ATableColumnProp<Article>) => <a-image src={record.cover} />,
+		customRender: ({ record }: ATableColumnProp<Article>) => <a-image src={record.articleCover} />,
 	},
 	{
 		title: '创建时间',

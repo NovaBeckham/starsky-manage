@@ -15,8 +15,8 @@ import { notification } from 'ant-design-vue'
 const columns = [
 	{
 		title: '分类名',
-		dataIndex: 'name',
-		key: 'name',
+		dataIndex: 'categoryName',
+		key: 'categoryName',
 		align: 'center',
 	},
 	{
@@ -104,7 +104,7 @@ export default defineComponent({
 											onClick={() => {
 												title.value = '编辑'
 												editId.value = record.id
-												editName.value = record.name
+												editName.value = record.categoryName
 											}}
 										>
 											<FormOutlined />
@@ -144,7 +144,7 @@ export default defineComponent({
 						}
 						const func = title.value === '编辑' ? updateCategory : addCategory
 						loading.value = true
-						const { success } = await func({ id: editId.value, name: editName.value })
+						const { success } = await func({ id: editId.value, categoryName: editName.value })
 						loading.value = false
 						if (success) {
 							notification.success({
