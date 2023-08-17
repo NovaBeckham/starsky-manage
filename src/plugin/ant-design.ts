@@ -4,8 +4,7 @@
  * @Date: 2022-09-08 17:29:49
  */
 
-import 'ant-design-vue/dist/antd.variable.min.css'
-import 'ant-design-vue/dist/antd.dark.css'
+import 'ant-design-vue/dist/reset.css'
 import { App } from 'vue'
 import {
 	Button,

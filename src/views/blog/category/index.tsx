@@ -54,8 +54,8 @@ export default defineComponent({
 			loading.value = true
 			const { success, data } = await getPage({ current, size })
 			loading.value = false
-			if (success && !isNil(data) && !isNil(data.record)) {
-				tableData.value = data.record
+			if (success && !isNil(data) && !isNil(data.records)) {
+				tableData.value = data.records
 				total.value = data.total
 				pageNum.value = data.current
 				pageSize.value = data.size

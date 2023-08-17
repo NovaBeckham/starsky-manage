@@ -68,7 +68,7 @@ export interface PageResult<T> {
   /**
    * 分页结果
    */
-  record: T;
+  records: T;
   /**
    * 总数
    */
