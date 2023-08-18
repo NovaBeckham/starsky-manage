@@ -8,12 +8,19 @@ import { Article, getArticleList } from '@/api/article'
 import { categoryFilter } from '@/filter'
 import { ATableColumnProp } from '@/interface'
 import { timeFormat } from '@/utils'
-import { isNil } from 'lodash'
+import { isEmpty, isNil, map } from 'lodash'
 import { computed, defineComponent, onMounted, ref } from 'vue'
 import { FormOutlined } from '@ant-design/icons-vue'
 import { useRouter } from 'vue-router'
 
 const columns = [
+	{
+		title: '缩略图',
+		key: 'articleCover',
+		align: 'center',
+		width: 180,
+		customRender: ({ record }: ATableColumnProp<Article>) => <a-image src={record.articleCover} />,
+	},
 	{
 		title: '标题',
 		dataIndex: 'articleTitle',
@@ -25,14 +32,20 @@ const columns = [
 		key: 'categoryId',
 		align: 'center',
 		dataIndex: 'categoryId',
-		customRender: ({ text }: ATableColumnProp<number>) => <a-tag color="blue">{categoryFilter(text)}</a-tag>,
+		customRender: ({ text }: ATableColumnProp<number>) => categoryFilter(text),
 	},
 	{
-		title: '缩略图',
-		key: 'articleCover',
+		title: '标签',
+		key: 'tagList',
 		align: 'center',
-		width: 180,
-		customRender: ({ record }: ATableColumnProp<Article>) => <a-image src={record.articleCover} />,
+		customRender: ({ record }: ATableColumnProp<Article>) => {
+			if (!isNil(record.tagList) && !isEmpty(record.tagList)) {
+				return map(record.tagList, (item) => {
+					return <a-tag color="blue">{item.tagName}</a-tag>
+				})
+			}
+			return ''
+		},
 	},
 	{
 		title: '创建时间',

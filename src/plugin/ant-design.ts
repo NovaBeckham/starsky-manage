@@ -28,6 +28,7 @@ import {
 	Image,
 	Row,
 	Col,
+	Radio,
 } from 'ant-design-vue'
 
 export function useAnt(app: App) {
@@ -52,4 +53,5 @@ export function useAnt(app: App) {
 	app.use(Image)
 	app.use(Row)
 	app.use(Col)
+	app.use(Radio)
 }

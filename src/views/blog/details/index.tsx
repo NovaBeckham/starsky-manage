@@ -14,9 +14,22 @@ import $styles from './index.module.scss'
 import { toolbars } from '@/components/EmojiExtension/staticConfig'
 import { isEmpty, isNil } from 'lodash'
 import * as imageConversion from 'image-conversion'
-import { FormInstance, UploadChangeParam, notification } from 'ant-design-vue'
-import { FormCategroy } from '@/components'
+import { FormInstance, UploadChangeParam } from 'ant-design-vue'
+import { FormCategroy, FormTag } from '@/components'
 import { LoadingOutlined } from '@ant-design/icons-vue'
+import { errorTips, infoTips, successTips } from '@/utils'
+
+const StatusOptions = [
+	{ value: 1, label: '公开' },
+	{ value: 2, label: '私密' },
+	{ value: 3, label: '草稿' },
+]
+
+const Rules = {
+	categoryId: [{ required: true, message: '文章分类不能为空', trigger: 'change' }],
+	tagList: [{ required: true, message: '文章分类不能为空', trigger: 'change' }],
+	status: [{ required: true, message: '发布形式不能为空', trigger: 'change' }],
+}
 
 export default defineComponent({
 	name: 'ArticleDetails',
@@ -24,6 +37,7 @@ export default defineComponent({
 		const $route = useRoute()
 		const $router = useRouter()
 		const loading = ref(false)
+		const modalOpen = ref(false)
 		const { id } = $route.query
 		const editorRef = ref<ExposeParam>()
 		const articleFormRef = ref<FormInstance>()
@@ -98,75 +112,51 @@ export default defineComponent({
 			}
 			if (info.file.status === 'error') {
 				loading.value = false
-				notification.error({
-					message: '错误',
-					description: '上传失败',
-				})
+				errorTips('上传失败')
 			}
 		}
 		const save = async () => {
+			await articleFormRef.value?.validate()
+			// if (isNil(detailsForm.value.articleCover) || isEmpty(detailsForm.value.articleCover)) {
+			// 	infoTips('请上传缩略图')
+			// 	return
+			// }
+			// const func = isNil(id) ? addArticle : updateArticle
+			// loading.value = true
+			// const { success } = await func(detailsForm.value)
+			// loading.value = false
+			// if (success) {
+			// 	successTips('保存成功')
+			// 	$router.push('/article')
+			// }
+			console.log('detailsForm', detailsForm.value)
+		}
+		const openModal = () => {
 			if (isNil(detailsForm.value.articleTitle) || isEmpty(detailsForm.value.articleTitle)) {
-				notification.info({
-					message: '提示',
-					description: '请输入文章标题',
-				})
-				return
-			}
-			if (isNil(detailsForm.value.categoryId)) {
-				notification.info({
-					message: '提示',
-					description: '请选择文章分类',
-				})
-				return
-			}
-			if (isNil(detailsForm.value.articleCover) || isEmpty(detailsForm.value.articleCover)) {
-				notification.info({
-					message: '提示',
-					description: '请上传缩略图',
-				})
+				infoTips('文章标题不能为空')
 				return
 			}
 			if (isNil(detailsForm.value.articleContent) || isEmpty(detailsForm.value.articleContent)) {
-				notification.info({
-					message: '提示',
-					description: '请输入文章内容',
-				})
+				infoTips('文章内容不能为空')
 				return
 			}
-			const func = isNil(id) ? addArticle : updateArticle
-			loading.value = true
-			const { success } = await func(detailsForm.value)
-			loading.value = false
-			if (success) {
-				notification.success({
-					message: '成功',
-					description: '保存成功',
-				})
-				$router.push('/article')
-			}
+			modalOpen.value = true
+		}
+		const onCancel = () => {
+			detailsForm.value.categoryId = undefined
+			detailsForm.value.status = undefined
+			detailsForm.value.tagList = undefined
+			detailsForm.value.articleCover = undefined
+			modalOpen.value = false
 		}
 		return () => (
 			<div class="app-container">
-				<a-form model={detailsForm.value} ref={articleFormRef}>
-					<a-form-item name="title" label="文章标题">
-						<a-input v-model={[detailsForm.value.articleTitle, 'value']} />
-					</a-form-item>
-					<a-form-item name="cid" label="文章分类">
-						<FormCategroy v-model={[detailsForm.value.categoryId, 'value']} />
-					</a-form-item>
-					<a-form-item name="cover" label="缩略图">
-						<a-upload
-							accept="image/*"
-							headers={{ Authorization: authorization }}
-							action="/api/admin/article/upload"
-							beforeUpload={beforeUpload}
-							onChange={handleChange}
-							onRemove={() => (detailsForm.value.articleCover = '')}
-						>
-							{getImageRender}
-						</a-upload>
-					</a-form-item>
-				</a-form>
+				<div class={$styles.headerContainer}>
+					<a-input v-model={[detailsForm.value.articleTitle, 'value']} placeholder="请输入文章标题" />
+					<a-button type="primary" style={{ marginLeft: '10px' }} onClick={openModal}>
+						发布文章
+					</a-button>
+				</div>
 				<div>
 					<MdEditor
 						ref={editorRef}
@@ -178,11 +168,37 @@ export default defineComponent({
 						class={$styles.mdContainer}
 					/>
 				</div>
-				<div>
-					<a-button type="primary" onClick={save}>
-						保存
-					</a-button>
-				</div>
+				<a-modal title="发布文章" open={modalOpen.value} destroyOnClose onOk={save} onCancel={onCancel}>
+					<a-form
+						ref={articleFormRef}
+						model={detailsForm.value}
+						rules={Rules}
+						labelCol={{ span: 6 }}
+						wrapperCol={{ span: 16 }}
+					>
+						<a-form-item name="categoryId" label="文章分类">
+							<FormCategroy v-model={[detailsForm.value.categoryId, 'value']} />
+						</a-form-item>
+						<a-form-item name="tagList" label="文章标签">
+							<FormTag v-model={[detailsForm.value.tagList, 'value']} mode="tags" />
+						</a-form-item>
+						<a-form-item name="articleCover" label="缩略图">
+							<a-upload
+								accept="image/*"
+								headers={{ Authorization: authorization }}
+								action="/api/admin/article/upload"
+								beforeUpload={beforeUpload}
+								onChange={handleChange}
+								onRemove={() => (detailsForm.value.articleCover = '')}
+							>
+								{getImageRender}
+							</a-upload>
+						</a-form-item>
+						<a-form-item name="status" label="发布形式">
+							<a-radio-group v-model={[detailsForm.value.status, 'value']} options={StatusOptions} />
+						</a-form-item>
+					</a-form>
+				</a-modal>
 			</div>
 		)
 	},

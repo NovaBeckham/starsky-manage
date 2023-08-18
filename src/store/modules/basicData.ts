@@ -1,8 +1,10 @@
 import { defineStore } from 'pinia'
 import { isNil, map, throttle } from 'lodash'
-import { getList } from '@/api/category'
+import { getList as categoryListRequest } from '@/api/category'
+import { getList as tagListRequest } from '@/api/tag'
 
-const getCategoryListThrottled = throttle(getList, 500)
+const getCategoryListThrottled = throttle(categoryListRequest, 1000)
+const getTagListThrottled = throttle(tagListRequest, 100)
 
 export interface Options {
 	value: string | number
@@ -17,12 +19,14 @@ export interface Options {
 
 export interface BasicDataState {
 	categoryList: Array<Options>
+	tagList: Array<Options>
 }
 
 const useBasicDataStore = defineStore('basicDataStore', {
 	state: () => {
 		return {
 			categoryList: [],
+			tagList: []
 		} as BasicDataState
 	},
 	actions: {
@@ -40,6 +44,21 @@ const useBasicDataStore = defineStore('basicDataStore', {
 				}
 			}
 		},
+
+		async getTagList() {
+			const result = await getTagListThrottled()
+			if (result) {
+				const { success, data } = result
+				if (success && !isNil(data)) {
+					this.tagList = map(data, (item) => {
+						return {
+							value: item.id as number,
+							label: item.tagName ?? '',
+						}
+					})
+				}
+			}
+		}
 	},
 })
 

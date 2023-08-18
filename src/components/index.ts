@@ -5,5 +5,6 @@
  */
 
 import FormCategroy from './Form/Category'
+import FormTag from './Form/Tag'
 
-export { FormCategroy }
+export { FormCategroy, FormTag }

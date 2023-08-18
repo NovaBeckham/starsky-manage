@@ -132,7 +132,7 @@ export default defineComponent({
 					onChange={handleChange}
 				/>
 				<a-modal
-					visible={visible.value}
+					open={visible.value}
 					title={`${title.value}分类`}
 					onOk={async () => {
 						if (isNil(editName.value) || isEmpty(editName.value)) {

@@ -6,6 +6,7 @@
 
 import { PageQuery, PageResult, Result } from '@/interface'
 import requests from '@/utils/request'
+import { TagListOptions } from './tag'
 
 /**
  * 文章
@@ -39,6 +40,10 @@ export interface Article {
 	 * 状态 (1公开 2私密 3草稿)
 	 */
 	status?: number
+	/**
+	 * 标签
+	 */
+	tagList?: Array<TagListOptions>
 	/**
 	 * 发表时间
 	 */
