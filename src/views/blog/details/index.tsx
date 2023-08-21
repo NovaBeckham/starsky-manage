@@ -27,7 +27,7 @@ const StatusOptions = [
 
 const Rules = {
 	categoryId: [{ required: true, message: '文章分类不能为空', trigger: 'change' }],
-	tagList: [{ required: true, message: '文章分类不能为空', trigger: 'change' }],
+	tagIdList: [{ required: true, message: '文章分类不能为空', trigger: 'change' }],
 	status: [{ required: true, message: '发布形式不能为空', trigger: 'change' }],
 }
 
@@ -107,7 +107,7 @@ export default defineComponent({
 				return
 			}
 			if (info.file.status === 'done') {
-				console.log('info', info)
+				detailsForm.value.articleCover = info.file.response.data
 				loading.value = false
 			}
 			if (info.file.status === 'error') {
@@ -117,19 +117,18 @@ export default defineComponent({
 		}
 		const save = async () => {
 			await articleFormRef.value?.validate()
-			// if (isNil(detailsForm.value.articleCover) || isEmpty(detailsForm.value.articleCover)) {
-			// 	infoTips('请上传缩略图')
-			// 	return
-			// }
-			// const func = isNil(id) ? addArticle : updateArticle
-			// loading.value = true
-			// const { success } = await func(detailsForm.value)
-			// loading.value = false
-			// if (success) {
-			// 	successTips('保存成功')
-			// 	$router.push('/article')
-			// }
-			console.log('detailsForm', detailsForm.value)
+			if (isNil(detailsForm.value.articleCover) || isEmpty(detailsForm.value.articleCover)) {
+				infoTips('请上传缩略图')
+				return
+			}
+			const func = isNil(id) ? addArticle : updateArticle
+			loading.value = true
+			const { success } = await func(detailsForm.value)
+			loading.value = false
+			if (success) {
+				successTips('保存成功')
+				$router.push('/article')
+			}
 		}
 		const openModal = () => {
 			if (isNil(detailsForm.value.articleTitle) || isEmpty(detailsForm.value.articleTitle)) {
@@ -168,7 +167,7 @@ export default defineComponent({
 						class={$styles.mdContainer}
 					/>
 				</div>
-				<a-modal title="发布文章" open={modalOpen.value} destroyOnClose onOk={save} onCancel={onCancel}>
+				<a-modal title="发布文章" open={modalOpen.value} destroyOnClose onOk={save} onCancel={onCancel} width="50%">
 					<a-form
 						ref={articleFormRef}
 						model={detailsForm.value}
@@ -179,8 +178,8 @@ export default defineComponent({
 						<a-form-item name="categoryId" label="文章分类">
 							<FormCategroy v-model={[detailsForm.value.categoryId, 'value']} />
 						</a-form-item>
-						<a-form-item name="tagList" label="文章标签">
-							<FormTag v-model={[detailsForm.value.tagList, 'value']} mode="tags" />
+						<a-form-item name="tagIdList" label="文章标签">
+							<FormTag v-model={[detailsForm.value.tagIdList, 'value']} mode="tags" />
 						</a-form-item>
 						<a-form-item name="articleCover" label="缩略图">
 							<a-upload

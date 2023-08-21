@@ -7,6 +7,7 @@
 import { PageQuery, PageResult, Result } from '@/interface'
 import requests from '@/utils/request'
 import { TagListOptions } from './tag'
+import { InputNumberProps } from 'ant-design-vue'
 
 /**
  * 文章
@@ -44,6 +45,10 @@ export interface Article {
 	 * 标签
 	 */
 	tagList?: Array<TagListOptions>
+	/**
+	 * 标签ID
+	 */
+	tagIdList?: Array<InputNumberProps>
 	/**
 	 * 发表时间
 	 */
