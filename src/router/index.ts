@@ -36,6 +36,12 @@ export const constantRoutes: RouteRecordRaw[] = [
 				name: 'Category',
 			},
 			{
+				path: '/tag',
+				component: () => import('@/views/blog/tag'),
+				meta: { title: '标签列表' },
+				name: 'Tag',
+			},
+			{
 				path: '/details',
 				component: () => import('@/views/blog/details'),
 				meta: { title: '文章详情' },
