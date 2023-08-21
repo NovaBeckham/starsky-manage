@@ -7,19 +7,17 @@
 import { defineComponent } from 'vue'
 import SideBar from './components/SideBar'
 import Content from './components/Content'
+import Header from './components/Header'
 
 export default defineComponent({
 	name: 'Layout',
 	setup() {
 		return () => (
 			<a-layout class="app-wrapper">
-				<a-layout-sider width={200}>
-					<SideBar />
-				</a-layout-sider>
+				<SideBar />
 				<a-layout>
-					<div>
-						<Content />
-					</div>
+					<Header />
+					<Content />
 				</a-layout>
 			</a-layout>
 		)

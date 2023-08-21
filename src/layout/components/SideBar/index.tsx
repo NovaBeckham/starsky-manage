@@ -22,16 +22,18 @@ export default defineComponent({
 			return map(route.matched, (item) => item.name)
 		})
 		return () => (
-			<div>
-				<div class="sidebar-title">
-					<h1>博客后台管理系统</h1>
+			<a-layout-sider width={200}>
+				<div>
+					<div class="sidebar-title">
+						<div>博客后台管理系统</div>
+					</div>
+					<a-menu mode="inline" selectedKeys={selectedKeys.value}>
+						{map(constantRoutes, (item) =>
+							item.children ? <SideBarItem key={item.name} menuInfo={item} /> : alwaysShow(item)
+						)}
+					</a-menu>
 				</div>
-				<a-menu mode="inline" selectedKeys={selectedKeys.value}>
-					{map(constantRoutes, (item) =>
-						item.children ? <SideBarItem key={item.name} menuInfo={item} /> : alwaysShow(item)
-					)}
-				</a-menu>
-			</div>
+			</a-layout-sider>
 		)
 	},
 })

@@ -29,6 +29,7 @@ import {
 	Row,
 	Col,
 	Radio,
+	PageHeader,
 } from 'ant-design-vue'
 
 export function useAnt(app: App) {
@@ -54,4 +55,5 @@ export function useAnt(app: App) {
 	app.use(Row)
 	app.use(Col)
 	app.use(Radio)
+	app.use(PageHeader)
 }
