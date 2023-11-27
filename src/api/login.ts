@@ -6,9 +6,15 @@
 
 import { Result } from '@/interface'
 import requests from '@/utils/request'
+import { UserInfo } from './user'
+
+interface LoginUser {
+	userInfo: UserInfo
+	token: string
+}
 
 interface LoginForm {
-	username: string
+	nickname: string
 	password: string
 }
 

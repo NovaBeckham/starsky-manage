@@ -13,7 +13,7 @@ import $styles from './index.module.scss'
 import { isNil } from 'lodash'
 
 const rules = {
-	username: [{ required: true, message: '请输入账号', trigger: 'blur' }],
+	nickname: [{ required: true, message: '请输入账号', trigger: 'blur' }],
 	password: [{ required: true, message: '请输入密码', trigger: 'blur' }],
 }
 
@@ -23,17 +23,17 @@ export default defineComponent({
 		const $router = useRouter()
 		const loginIn = async () => {
 			await loginRef.value?.validate()
-			const { success, data } = await login({ username: ruleForm.username, password: ruleForm.password })
+			const { success, data } = await login({ nickname: ruleForm.nickname, password: ruleForm.password })
 			if (success && !isNil(data)) {
-				localStorage.setItem('starskyToken', data)
-				localStorage.setItem('user', ruleForm.username)
+				localStorage.setItem('xingToken', data)
+				localStorage.setItem('user', ruleForm.nickname)
 				$router.push('/')
 			}
 		}
 		const loading = ref(false)
 		const loginRef = ref<FormInstance>()
 		const ruleForm = reactive({
-			username: '',
+			nickname: '',
 			password: '',
 		})
 		return () => (
@@ -41,9 +41,9 @@ export default defineComponent({
 				<div class={$styles.login}>
 					<div class={$styles.title}>后台管理系统</div>
 					<a-form model={ruleForm} rules={rules} ref={loginRef} class={$styles.loginContent}>
-						<a-form-item name="username">
+						<a-form-item name="nickname">
 							<a-input
-								v-model={[ruleForm.username, 'value']}
+								v-model={[ruleForm.nickname, 'value']}
 								placeholder="账号"
 								v-slots={{
 									prefix: () => <UserOutlined />

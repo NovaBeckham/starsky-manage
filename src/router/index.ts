@@ -4,75 +4,58 @@
  * @Date: 2022-08-25 18:03:31
  */
 
-import Layout from '@/layout'
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
+import { asyncRoutes } from './asyncRoutes'
+import { Menu } from '@/api/menu'
 
 export const constantRoutes: RouteRecordRaw[] = [
 	{
 		path: '/',
-		component: Layout,
-		redirect: '/home',
-		name: 'Blog',
+		name: 'Admin',
+		component: () => import('@/layouts/admin.vue'),
 		meta: {
-			title: '博客信息',
+			keepAlive: false,
+			title: '首页',
 		},
-		children: [
-			{
-				path: '/home',
-				component: () => import('@/views/home'),
-				meta: { title: '首页' },
-				name: 'Home',
-			},
-			{
-				path: '/article',
-				component: () => import('@/views/blog/article'),
-				meta: { title: '文章列表' },
-				name: 'Article',
-			},
-			{
-				path: '/category',
-				component: () => import('@/views/blog/category'),
-				meta: { title: '分类列表' },
-				name: 'Category',
-			},
-			{
-				path: '/tag',
-				component: () => import('@/views/blog/tag'),
-				meta: { title: '标签列表' },
-				name: 'Tag',
-			},
-			{
-				path: '/details',
-				component: () => import('@/views/blog/details'),
-				meta: { title: '文章详情' },
-				name: 'ArticleDetails',
-			},
-		],
 	},
 	{
 		path: '/login',
 		name: 'Login',
+		component: () => import('@/views/login/index'),
 		meta: {
-			title: '登录',
-			alwaysShow: true,
+			keepAlive: false,
+			title: '登录页',
 		},
-		component: () => import('@/views/login'),
-	}
+	},
+	{
+		path: '/:catchAll(.*)',
+		name: '404',
+		component: () => import('@/views/404/index'),
+	},
 ]
 
 // 此处由【new VueRouter】的方式修改为【createRouter】的方式 其余无变化
-const router = createRouter({
+export const router = createRouter({
 	history: createWebHistory(), //路由模式的配置采用API调用的方式 不再是之前的字符串 此处采用的hash路由
 	routes: constantRoutes,
 })
 
-router.beforeEach((to, from, next) => {
-	const starToken = localStorage.getItem('starskyToken')
-	if (!starToken && to.path !== '/login') {
-		next('/login')
-	} else {
-		next()
+/** 定义动态添加路由方法 */
+export const addRoutes = (menus?: Menu[]) => {
+	/** 是否有新路由 */
+	let hasNewRoutes = false
+	const findAndAddRoutesByMenus = (arr?: Menu[]) => {
+		arr?.forEach((val: Menu) => {
+			const item = asyncRoutes.find((res: RouteRecordRaw) => val.path === res.path)
+			if (item && !router.hasRoute(item.name)) {
+				router.addRoute('admin', item)
+				hasNewRoutes = true
+			}
+			if (val.children && val.children.length > 0) {
+				findAndAddRoutesByMenus(val.children)
+			}
+		})
 	}
-})
-
-export default router
+	findAndAddRoutesByMenus(menus)
+	return hasNewRoutes
+}
