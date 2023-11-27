@@ -25,7 +25,7 @@ interface LoginForm {
  */
 export const login: (data: LoginForm) => Promise<Result<string>> = (data) => {
 	return requests({
-		url: '/login',
+		url: '/auth/login',
 		method: 'post',
 		data,
 	})

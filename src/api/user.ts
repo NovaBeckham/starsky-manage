@@ -6,23 +6,11 @@
 
 import { Result } from '@/interface'
 import requests from '@/utils/request'
+import { Menu } from './menu'
 
 interface UserRole {
 	id: number
 	roleName: string
-}
-
-export interface UserMenu {
-	id: number
-	name: string
-	path: string
-	component: string
-	icon: string
-	createTime: string
-	updateTime: string
-	orderNum: number
-	parentId?: any
-	isHidden: number
 }
 
 export interface UserInfo {
@@ -37,7 +25,7 @@ export interface UserInfo {
 	createTime?: string
 	updateTime?: string
 	userRole?: UserRole
-	menus?: UserMenu[]
+	menus?: Menu[]
 }
 
 /**

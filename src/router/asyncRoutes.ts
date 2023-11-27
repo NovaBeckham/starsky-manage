@@ -7,17 +7,8 @@
 export const asyncRoutes = [
 	{
 		path: '/',
-		name: '首页',
-		component: () => import('@/views/index.vue'),
-		meta: {
-			keepAlive: true,
-			title: '首页',
-		},
-	},
-	{
-		path: '/home',
-		name: 'home',
-		component: () => import('@/views/Home/index.vue'),
+		name: 'Home',
+		component: () => import('@/views/home/index'),
 		meta: {
 			keepAlive: true,
 			title: 'home',
@@ -25,7 +16,7 @@ export const asyncRoutes = [
 	},
 	{
 		path: '/user/userList',
-		name: 'userinfo',
+		name: 'user',
 		component: () => import('@/views/User/index.vue'),
 		meta: {
 			keepAlive: true,

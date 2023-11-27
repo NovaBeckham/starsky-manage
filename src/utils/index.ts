@@ -4,13 +4,8 @@
  * @Date: 2023-01-10 15:42:45
  */
 
-import { notification } from 'ant-design-vue'
-import { format } from 'date-fns'
+import { ElNotification } from 'element-plus'
 import { curry } from 'lodash'
-
-export const timeFormat = (utcTime: string) => {
-	return format(new Date(utcTime), 'yyyy-MM-dd HH:mm:ss')
-}
 
 type TipsStatus = 'success' | 'error' | 'warning' | 'info'
 
@@ -22,11 +17,8 @@ const tipsMap = {
 }
 
 /** 提示信息优化 */
-const notificationTips = (status: TipsStatus, description: string) => {
-	notification[status]({
-		message: tipsMap[status],
-		description,
-	})
+const notificationTips = (type: TipsStatus, message: string) => {
+	ElNotification({ title: tipsMap[type], message, type })
 }
 const curryTips = curry(notificationTips)
 export const successTips = curryTips('success')

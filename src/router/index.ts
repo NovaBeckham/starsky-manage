@@ -8,11 +8,11 @@ import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 import { asyncRoutes } from './asyncRoutes'
 import { Menu } from '@/api/menu'
 
-export const constantRoutes: RouteRecordRaw[] = [
+const constantRoutes: RouteRecordRaw[] = [
 	{
 		path: '/',
 		name: 'Admin',
-		component: () => import('@/layouts/admin.vue'),
+		component: () => import('@/layout/index.vue'),
 		meta: {
 			keepAlive: false,
 			title: '首页',
@@ -21,7 +21,7 @@ export const constantRoutes: RouteRecordRaw[] = [
 	{
 		path: '/login',
 		name: 'Login',
-		component: () => import('@/views/login/index'),
+		component: () => import('@/views/login/index.vue'),
 		meta: {
 			keepAlive: false,
 			title: '登录页',
