@@ -11,7 +11,7 @@ import { Menu } from '@/api/menu'
 const constantRoutes: RouteRecordRaw[] = [
 	{
 		path: '/',
-		name: 'Admin',
+		name: 'admin',
 		component: () => import('@/layout/index.vue'),
 		meta: {
 			keepAlive: false,
@@ -21,7 +21,7 @@ const constantRoutes: RouteRecordRaw[] = [
 	{
 		path: '/login',
 		name: 'Login',
-		component: () => import('@/views/login/index.vue'),
+		component: () => import('@/views/Login/index.vue'),
 		meta: {
 			keepAlive: false,
 			title: '登录页',

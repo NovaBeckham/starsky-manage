@@ -1,6 +1,6 @@
 <template>
 	<el-container>
-		<el-header>
+		<el-header style="padding: 0">
 			<Header></Header>
 		</el-header>
 		<el-container>
@@ -9,7 +9,7 @@
 			</el-aside>
 			<el-main>
 				<div>
-					<router-view v-slot="{ Component }">
+					<router-view v-slot="{ Component }" style="margin-top: 40px">
 						<transition name="fade-transform" mode="out-in">
 							<keep-alive :max="10" v-if="$route.meta.keepAlive">
 								<component :key="$route.name" :is="Component"></component>
