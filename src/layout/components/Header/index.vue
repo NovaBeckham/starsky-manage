@@ -1,12 +1,12 @@
 <template>
-	<div>
-		<span>后台</span>
-		<div>
-			<el-dropdown @command="handleCommand">
-				<span>
-					<el-avatar :src="userStore.userInfo.avatar" />
+	<div class="admin-header">
+		<span class="logo">xing~</span>
+		<div class="right-content">
+			<el-dropdown class="dropdown" @command="handleCommand">
+				<span class="user">
+					<el-avatar class="mr-2" :size="25" :src="userStore.userInfo.avatar" />
 					{{ userStore.userInfo.nickname }}
-					<el-icon><ArrowDown /></el-icon>
+					<el-icon class="el-icon--right"><ArrowDown /></el-icon>
 				</span>
 				<template #dropdown>
 					<el-dropdown-menu>
@@ -36,3 +36,45 @@ const handleCommand = (command: string) => {
 	}
 }
 </script>
+
+<style scoped lang="scss">
+.admin-header {
+	display: flex;
+	align-items: center;
+	background-color: rgb(67, 56, 202);
+	position: fixed;
+	top: 0px;
+	left: 0px;
+	right: 0px;
+	height: 64px;
+	z-index: 1000;
+
+	.dropdown {
+		height: 64px;
+		cursor: pointer;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		margin-left: 1.25rem;
+		margin-right: 1.25rem;
+	}
+}
+.logo {
+	width: 250px;
+	text-align: center;
+	font-size: 1.25rem;
+	line-height: 1.75rem;
+	font-weight: 100;
+}
+.right-content {
+	margin-left: auto;
+	display: flex;
+	align-items: center;
+
+	.user {
+		display: flex;
+		align-items: center;
+		color: rgb(253, 253, 253);
+	}
+}
+</style>

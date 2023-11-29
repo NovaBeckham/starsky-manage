@@ -1,6 +1,6 @@
 <template>
-	<div>
-		<el-menu :default-active="defaultActive" router>
+	<div class="admin-menu" style="width: 250px">
+		<el-menu :default-active="defaultActive" class="el-menu-vertical-demo menu" router>
 			<template v-for="menu in menus" :key="menu.id">
 				<el-sub-menu :index="String(menu.id)" v-if="menu.children && menu.children.length > 0">
 					<template #title>
@@ -41,3 +41,18 @@ onBeforeRouteUpdate((to) => {
 	defaultActive.value = to.path
 })
 </script>
+
+<style scoped>
+.admin-menu {
+	transition: all 0.2s;
+	top: 64px;
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	overflow-y: auto;
+	overflow-x: hidden;
+}
+.menu {
+  height: 100%;
+}
+</style>

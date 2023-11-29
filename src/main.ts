@@ -9,7 +9,7 @@ import { router } from '@/router'
 import App from './App.vue'
 import { createPinia } from 'pinia'
 import 'element-plus/theme-chalk/dark/css-vars.css'
-import './styles/index.scss'
+import '@/assets/styles/index.scss'
 import func from '@/utils/permission'
 
 const app = createApp(App)
