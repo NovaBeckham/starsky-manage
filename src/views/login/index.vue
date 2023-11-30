@@ -1,5 +1,5 @@
 <template>
-	<div class="lagin-wrap">
+	<div class="login-wrap">
 		<div class="login">
 			<div class="title">后台管理系统</div>
 			<el-form ref="loginRef" :model="ruleForm" :rules="rules" class="login-content">
@@ -7,10 +7,10 @@
 					<el-input v-model="ruleForm.nickname" :prefix-icon="UserFilled" />
 				</el-form-item>
 				<el-form-item prop="password">
-					<el-input v-model="ruleForm.password" :prefix-icon="Lock" />
+					<el-input v-model="ruleForm.password" type="password" show-password :prefix-icon="Lock" />
 				</el-form-item>
-				<el-form-item prop="password">
-					<el-button type="primary" :loading="loading" @click="loginIn(loginRef)" />
+				<el-form-item>
+					<el-button type="primary" style="width: 100%" :loading="loading" @click="loginIn(loginRef)">登录</el-button>
 				</el-form-item>
 			</el-form>
 		</div>
@@ -52,7 +52,7 @@ const loginIn = async (formEl: FormInstance | undefined) => {
 }
 </script>
 <style lang="scss" scoped>
-.lagin-wrap {
+.login-wrap {
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -68,6 +68,11 @@ const loginIn = async (formEl: FormInstance | undefined) => {
 		width: 350px;
 		border-radius: 5px;
 		background: rgba(0, 0, 0, 0.3);
+
+		.title {
+			text-align: center;
+			margin-top: 20px;
+		}
 
 		.login-content {
 			padding: 30px 30px;
