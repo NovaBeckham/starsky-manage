@@ -54,11 +54,11 @@ export interface PageQuery {
   /**
    * 当前页
    */
-  current: number;
+  current?: number;
   /**
    * 每页大小
    */
-  size: number;
+  size?: number;
 }
 
 /**

@@ -3,8 +3,8 @@
 		<div class="login">
 			<div class="title">后台管理系统</div>
 			<el-form ref="loginRef" :model="ruleForm" :rules="rules" class="login-content">
-				<el-form-item prop="nickname">
-					<el-input v-model="ruleForm.nickname" :prefix-icon="UserFilled" />
+				<el-form-item prop="username">
+					<el-input v-model="ruleForm.username" :prefix-icon="UserFilled" />
 				</el-form-item>
 				<el-form-item prop="password">
 					<el-input v-model="ruleForm.password" type="password" show-password :prefix-icon="Lock" />
@@ -25,7 +25,7 @@ import { isNil } from 'lodash'
 import { useRouter } from 'vue-router'
 
 const rules = {
-	nickname: [{ required: true, message: '请输入账号', trigger: 'blur' }],
+	username: [{ required: true, message: '请输入账号', trigger: 'blur' }],
 	password: [{ required: true, message: '请输入密码', trigger: 'blur' }],
 }
 
@@ -33,7 +33,7 @@ const $router = useRouter()
 const loading = ref(false)
 const loginRef = ref<FormInstance>()
 const ruleForm = reactive({
-	nickname: '',
+	username: '',
 	password: '',
 })
 const loginIn = async (formEl: FormInstance | undefined) => {
@@ -41,11 +41,11 @@ const loginIn = async (formEl: FormInstance | undefined) => {
 	const valid = await formEl.validate()
 	if (valid) {
 		loading.value = true
-		const { success, data } = await login({ nickname: ruleForm.nickname, password: ruleForm.password })
+		const { success, data } = await login({ username: ruleForm.username, password: ruleForm.password })
 		loading.value = false
 		if (success && !isNil(data)) {
-			localStorage.setItem('xingToken', data)
-			localStorage.setItem('user', ruleForm.nickname)
+			localStorage.setItem('xingToken', data.token ?? '')
+			localStorage.setItem('user', ruleForm.username)
 			$router.push('/')
 		}
 	}
