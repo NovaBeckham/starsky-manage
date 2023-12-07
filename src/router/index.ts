@@ -22,7 +22,7 @@ export const constantRoutes: RouteRecordRaw[] = [
 		name: 'Login',
 		component: () => import('@/views/login/index.vue'),
 		meta: {
-			alwaysShow: true,
+			alwaysShow: false,
 			title: '登录',
 		},
 	},
@@ -30,8 +30,10 @@ export const constantRoutes: RouteRecordRaw[] = [
 		path: '/article',
 		name: 'Article',
 		component: Layout,
+		redirect: '/article/list',
 		meta: {
 			title: '文章管理',
+			alwaysShow: true,
 		},
 		children: [
 			{
@@ -40,6 +42,7 @@ export const constantRoutes: RouteRecordRaw[] = [
 				component: () => import('@/views/article/list/index.vue'),
 				meta: {
 					title: '文章列表',
+					alwaysShow: true,
 				},
 			},
 		],

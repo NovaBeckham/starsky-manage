@@ -1,17 +1,15 @@
 <template>
-	<div class="admin-header">
-		<div class="right-content">
-			<el-dropdown class="dropdown" @command="handleCommand">
-				<span class="user">
-					<el-avatar :size="40" :src="userStore.userInfo.avatar" />
-				</span>
-				<template #dropdown>
-					<el-dropdown-menu>
-						<el-dropdown-item command="rePassword">修改密码</el-dropdown-item>
-						<el-dropdown-item command="logout">退出登录</el-dropdown-item>
-					</el-dropdown-menu>
+	<div class="nav-bar">
+		<div class="right-menu">
+			<a-dropdown class="dropdown">
+				<a-avatar :size="40" :src="userStore.userInfo.avatar" />
+				<template #overlay>
+					<a-menu>
+						<a-menu-item key="rePassword">修改密码</a-menu-item>
+						<a-menu-item key="logout">退出登录</a-menu-item>
+					</a-menu>
 				</template>
-			</el-dropdown>
+			</a-dropdown>
 		</div>
 	</div>
 </template>
@@ -20,30 +18,15 @@
 import { useUserStore } from '@/store/index'
 
 const userStore = useUserStore()
-
-const handleCommand = (command: string) => {
-	switch (command) {
-		case 'logout':
-			console.log('退出登录')
-			break
-		case 'rePassword':
-			console.log('退出登录')
-			break
-	}
-}
 </script>
 
 <style scoped lang="scss">
-.admin-header {
+.nav-bar {
 	display: flex;
-	align-items: center;
-	background-color: rgb(67, 56, 202);
-	position: fixed;
-	top: 0px;
-	left: 0px;
-	right: 0px;
-	height: 64px;
-	z-index: 1000;
+  align-items: center;
+  padding-left: 15px;
+  padding-right: 30px;
+  height: 50px;
 
 	.dropdown {
 		height: 64px;
@@ -55,22 +38,10 @@ const handleCommand = (command: string) => {
 		margin-right: 1.25rem;
 	}
 }
-.logo {
-	width: 250px;
-	text-align: center;
-	font-size: 1.25rem;
-	line-height: 1.75rem;
-	font-weight: 100;
-}
-.right-content {
+
+.right-menu {
 	margin-left: auto;
 	display: flex;
 	align-items: center;
-
-	.user {
-		display: flex;
-		align-items: center;
-		color: rgb(253, 253, 253);
-	}
 }
 </style>

@@ -2,23 +2,26 @@
 	<div class="login-wrap">
 		<div class="login">
 			<div class="title">后台管理系统</div>
-			<el-form ref="loginRef" :model="ruleForm" :rules="rules" class="login-content">
-				<el-form-item prop="username">
-					<el-input v-model="ruleForm.username" :prefix-icon="UserFilled" />
-				</el-form-item>
-				<el-form-item prop="password">
-					<el-input v-model="ruleForm.password" type="password" show-password :prefix-icon="Lock" />
-				</el-form-item>
-				<el-form-item>
-					<el-button type="primary" style="width: 100%" :loading="loading" @click="loginIn(loginRef)">登录</el-button>
-				</el-form-item>
-			</el-form>
+			<a-form ref="loginRef" :model="ruleForm" :rules="rules" class="login-content">
+				<a-form-item name="username">
+					<a-input v-model:value="ruleForm.username">
+						<template #prefix><UserOutlined /></template>
+					</a-input>
+				</a-form-item>
+				<a-form-item name="password">
+					<a-input-password v-model:value="ruleForm.password">
+						<template #prefix><LockOutlined /></template>
+					</a-input-password>
+				</a-form-item>
+				<a-form-item>
+					<a-button type="primary" style="width: 100%" :loading="loading" @click="loginIn">登录</a-button>
+				</a-form-item>
+			</a-form>
 		</div>
 	</div>
 </template>
 <script lang="ts" setup>
-import { FormInstance } from 'element-plus'
-import { UserFilled, Lock } from '@element-plus/icons-vue'
+import { UserOutlined, LockOutlined } from '@ant-design/icons-vue'
 import { reactive, ref } from 'vue'
 import { login } from '@/api/login'
 import { isNil } from 'lodash'
@@ -31,23 +34,23 @@ const rules = {
 
 const $router = useRouter()
 const loading = ref(false)
-const loginRef = ref<FormInstance>()
+const loginRef = ref()
 const ruleForm = reactive({
 	username: '',
 	password: '',
 })
-const loginIn = async (formEl: FormInstance | undefined) => {
-	if (!formEl) return
-	const valid = await formEl.validate()
-	if (valid) {
-		loading.value = true
-		const { success, data } = await login({ username: ruleForm.username, password: ruleForm.password })
-		loading.value = false
-		if (success && !isNil(data)) {
-			localStorage.setItem('xingToken', data.token ?? '')
-			localStorage.setItem('user', ruleForm.username)
-			$router.push('/')
-		}
+const loginIn = async () => {
+	await loginRef.value?.validate()
+	const formData = new FormData()
+	formData.append('username', ruleForm.username)
+	formData.append('password', ruleForm.password)
+	loading.value = true
+	const { flag, data } = await login(formData)
+	loading.value = false
+	if (flag && !isNil(data)) {
+		localStorage.setItem('xingToken', data.token ?? '')
+		localStorage.setItem('user', ruleForm.username)
+		$router.push('/')
 	}
 }
 </script>

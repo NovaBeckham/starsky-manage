@@ -1,8 +1,8 @@
 <template>
-	<el-config-provider :locale="zh_CN">
+	<a-config-provider :locale="zh_CN">
 		<router-view> </router-view>
-	</el-config-provider>
+	</a-config-provider>
 </template>
 <script lang="ts" setup>
-import zh_CN from 'element-plus/dist/locale/zh-cn.mjs'
+import zh_CN from 'ant-design-vue/es/locale/zh_CN'
 </script>

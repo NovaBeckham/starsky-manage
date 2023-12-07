@@ -20,7 +20,7 @@ export default function (router: Router) {
 			if (to.path === '/login') {
 				next({ path: '/' })
 			} else {
-				next(to.fullPath)
+				next()
 			}
 		}
 	})

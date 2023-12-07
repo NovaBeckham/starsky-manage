@@ -8,15 +8,10 @@ import { Result } from '@/interface'
 import requests from '@/utils/request'
 import { UserInfo } from './user'
 
-interface LoginForm {
-	username: string
-	password: string
-}
-
 /**
  * 用户登录
  */
-export const login: (params: LoginForm) => Promise<Result<UserInfo>> = (params) => requests.post('/users/login', params)
+export const login: (params: FormData) => Promise<Result<UserInfo>> = (params) => requests.post('/users/login', params)
 
 /**
  * 用户退出

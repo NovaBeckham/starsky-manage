@@ -7,9 +7,9 @@
 import { resolve } from 'path'
 import { UserConfigExport } from 'vite'
 import vue from '@vitejs/plugin-vue'
-import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
-import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
+import { AntDesignVueResolver } from 'unplugin-vue-components/resolvers'
+import vueJsx from '@vitejs/plugin-vue-jsx'
 
 // https://vitejs.dev/config/
 export default (): UserConfigExport => {
@@ -26,7 +26,7 @@ export default (): UserConfigExport => {
 			// ssr: false,
 			proxy: {
 				'/api': {
-					target: 'http://localhost:3000',
+					target: 'http://localhost:8080',
 					changeOrigin: true,
 					rewrite: (path: string) => path.replace(/^\/api/, ''),
 				},
@@ -35,12 +35,12 @@ export default (): UserConfigExport => {
 		css: {
 			preprocessorOptions: {
 				less: {
-					javascriptEnabled: true
+					javascriptEnabled: true,
 				},
 				scss: {
 					javascriptEnabled: true,
 				},
-			}
+			},
 		},
 		resolve: {
 			alias: {
@@ -49,11 +49,13 @@ export default (): UserConfigExport => {
 		},
 		plugins: [
 			vue(),
-			AutoImport({
-				resolvers: [ElementPlusResolver()],
-			}),
+			vueJsx(),
 			Components({
-				resolvers: [ElementPlusResolver()],
+				resolvers: [
+					AntDesignVueResolver({
+						importStyle: false,
+					}),
+				],
 			}),
 		],
 	}

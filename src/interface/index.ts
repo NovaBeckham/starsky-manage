@@ -32,7 +32,7 @@ export interface Result<T> {
   /**
    * 返回状态
    */
-  success: boolean;
+  flag: boolean;
   /**
    * 状态码
    */
