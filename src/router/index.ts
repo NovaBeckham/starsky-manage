@@ -5,16 +5,15 @@
  */
 
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
-import { asyncRoutes } from './asyncRoutes'
-import { Menu } from '@/api/menu'
+import Layout from '@/layout/index.vue'
 
-const constantRoutes: RouteRecordRaw[] = [
+export const constantRoutes: RouteRecordRaw[] = [
 	{
 		path: '/',
-		name: 'admin',
-		component: () => import('@/layout/index.vue'),
+		name: 'Home',
+		component: () => import('@/views/home/index.vue'),
 		meta: {
-			keepAlive: false,
+			alwaysShow: true,
 			title: '首页',
 		},
 	},
@@ -23,39 +22,31 @@ const constantRoutes: RouteRecordRaw[] = [
 		name: 'Login',
 		component: () => import('@/views/login/index.vue'),
 		meta: {
-			keepAlive: false,
-			title: '登录页',
+			alwaysShow: true,
+			title: '登录',
 		},
 	},
 	{
-		path: '/:catchAll(.*)',
-		name: '404',
-		component: () => import('@/views/404/index'),
-	},
+		path: '/article',
+		name: 'Article',
+		component: Layout,
+		meta: {
+			title: '文章管理',
+		},
+		children: [
+			{
+				path: '/article/list',
+				name: 'ArticleList',
+				component: () => import('@/views/article/list/index.vue'),
+				meta: {
+					title: '文章列表',
+				},
+			},
+		],
+	}
 ]
 
-// 此处由【new VueRouter】的方式修改为【createRouter】的方式 其余无变化
 export const router = createRouter({
-	history: createWebHistory(), //路由模式的配置采用API调用的方式 不再是之前的字符串 此处采用的hash路由
+	history: createWebHistory(),
 	routes: constantRoutes,
 })
-
-/** 定义动态添加路由方法 */
-export const addRoutes = (menus?: Menu[]) => {
-	/** 是否有新路由 */
-	let hasNewRoutes = false
-	const findAndAddRoutesByMenus = (arr?: Menu[]) => {
-		arr?.forEach((val: Menu) => {
-			const item = asyncRoutes.find((res: RouteRecordRaw) => val.path === res.path)
-			if (item && !router.hasRoute(item.name)) {
-				router.addRoute('admin', item)
-				hasNewRoutes = true
-			}
-			if (val.children && val.children.length > 0) {
-				findAndAddRoutesByMenus(val.children)
-			}
-		})
-	}
-	findAndAddRoutesByMenus(menus)
-	return hasNewRoutes
-}

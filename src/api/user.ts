@@ -18,18 +18,28 @@ interface UserParams extends PageQuery {
 }
 
 export interface UserInfo {
-	id?: number
-	email?: any
-	nickname?: string
+	/** 头像 */
 	avatar?: string
-	intro?: any
-	website?: any
-	isSubscribe?: any
-	isDisable?: number
-	createTime?: string
-	updateTime?: string
-	userRole?: UserRole
-	menus?: Menu[]
+	/** 邮箱 */
+	email?: string
+	/** id */
+	id?: number
+	/** 登录IP */
+	ipAddress?: string
+	/** 登录地址 */
+	ipSource?: string
+	/** 上次登录时间 */
+	lastLoginTime?: string
+	/** 登录状态 */
+	loginType?: number
+	/** 昵称 */
+	nickname?: string
+	/** token */
+	token?: string
+	/** userInfoId */
+	userInfoId?: string
+	/** 用户名 */
+	username?: string
 }
 
 /**

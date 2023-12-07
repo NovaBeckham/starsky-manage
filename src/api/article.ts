@@ -7,7 +7,6 @@
 import { PageQuery, PageResult, Result } from '@/interface'
 import requests from '@/utils/request'
 import { TagListOptions } from './tag'
-import { InputNumberProps } from 'ant-design-vue'
 
 /**
  * 文章
@@ -46,10 +45,6 @@ export interface Article {
 	 */
 	tagList?: Array<TagListOptions>
 	/**
-	 * 标签ID
-	 */
-	tagIdList?: Array<InputNumberProps>
-	/**
 	 * 发表时间
 	 */
 	createTime?: string
@@ -66,7 +61,7 @@ export interface Article {
  */
 export const getArticleList: (params: PageQuery) => Promise<Result<PageResult<Article[]>>> = (params) => {
 	return requests({
-		url: '/admin/article/list',
+		url: '/admin/articles',
 		method: 'get',
 		params,
 	})

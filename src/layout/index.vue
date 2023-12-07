@@ -1,12 +1,12 @@
 <template>
 	<el-container>
-		<el-header style="padding: 0">
-			<Header></Header>
-		</el-header>
-		<el-container>
-			<el-aside width="250px">
-				<Aside></Aside>
-			</el-aside>
+		<el-aside width="auto">
+			<Aside></Aside>
+		</el-aside>
+		<el-container class="main-container">
+			<el-header height="84px" style="padding: 0">
+        <Header :key="$route.fullPath"></Header>
+      </el-header>
 			<el-main>
 				<div class="fade-transform-box">
 					<router-view v-slot="{ Component }">
@@ -32,22 +32,27 @@ const $route = useRoute()
 </script>
 
 <style>
-.el-aside {
-  transition: all 0.2s;
+.main-container {
+  margin-left: 210px;
+  min-height: 100vh;
 }
 .fade-transform-enter-active,
 .fade-transform-leave-active {
-  transition: all 0.5s ease 0s;
+	transition: all 0.5s ease 0s;
 }
 .fade-transform-enter {
-  opacity: 0;
-  transform: translateX(-30px) !important;
+	opacity: 0;
+	transform: translateX(-30px) !important;
 }
 .fade-transform-leave-to {
-  opacity: 0;
-  transform: translateX(30px);
+	opacity: 0;
+	transform: translateX(30px);
 }
 .fade-transform-box {
-  overflow: hidden;
+	position: relative;
+  top: 0px;
+  bottom: 0px;
+  width: 100%;
+	overflow: hidden;
 }
 </style>

@@ -1,26 +1,16 @@
 <template>
-	<div class="admin-menu" style="width: 250px">
-		<el-menu :default-active="defaultActive" class="el-menu-vertical-demo menu" router>
-			<template v-for="menu in menus" :key="menu.id">
-				<el-sub-menu :index="String(menu.id)" v-if="menu.children && menu.children.length > 0">
+	<div>
+		<el-menu :default-active="defaultActive" class="side-nav-bar" router>
+			<template v-for="menu in constantRoutes" :key="menu.id">
+				<el-sub-menu :index="menu.path" v-if="menu.children && menu.children.length > 0">
 					<template #title>
-						<el-icon>
-							<component :is="menu.icon"></component>
-						</el-icon>
 						<span>{{ menu.name }}</span>
 					</template>
-					<el-menu-item v-for="son in menu.children" :key="son.id" :index="son.path">
-						<el-icon>
-							<component :is="son.icon"></component>
-						</el-icon>
+					<el-menu-item v-for="son in menu.children" :index="son.path">
 						<span>{{ son.name }}</span>
 					</el-menu-item>
 				</el-sub-menu>
-
 				<el-menu-item v-else :index="menu.path">
-					<el-icon>
-						<component :is="menu.icon"></component>
-					</el-icon>
 					<span>{{ menu.name }}</span>
 				</el-menu-item>
 			</template>
@@ -28,13 +18,11 @@
 	</div>
 </template>
 <script lang="ts" setup>
-import { useUserStore } from '@/store'
 import { ref } from 'vue'
 import { onBeforeRouteUpdate, useRoute } from 'vue-router'
+import { constantRoutes } from '@/router'
 
-const userStore = useUserStore()
 const $route = useRoute()
-const menus = userStore.userInfo.menus
 const defaultActive = ref($route.path)
 
 onBeforeRouteUpdate((to) => {
@@ -43,16 +31,20 @@ onBeforeRouteUpdate((to) => {
 </script>
 
 <style scoped>
-.admin-menu {
-	transition: all 0.2s;
-	top: 64px;
-	position: fixed;
-	bottom: 0;
-	left: 0;
-	overflow-y: auto;
-	overflow-x: hidden;
+.side-nav-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
-.menu {
-  height: 100%;
+*::-webkit-scrollbar {
+  width: 0.5rem;
+  height: 1px;
+}
+*::-webkit-scrollbar-thumb {
+  border-radius: 0.5rem;
+  background-color: rgba(144, 147, 153, 0.3);
 }
 </style>

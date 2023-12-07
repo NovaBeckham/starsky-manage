@@ -1,12 +1,9 @@
 <template>
 	<div class="admin-header">
-		<span class="logo">xing~</span>
 		<div class="right-content">
 			<el-dropdown class="dropdown" @command="handleCommand">
 				<span class="user">
-					<el-avatar class="mr-2" :size="25" :src="userStore.userInfo.avatar" />
-					{{ userStore.userInfo.nickname }}
-					<el-icon class="el-icon--right"><ArrowDown /></el-icon>
+					<el-avatar :size="40" :src="userStore.userInfo.avatar" />
 				</span>
 				<template #dropdown>
 					<el-dropdown-menu>
@@ -21,7 +18,6 @@
 
 <script lang="ts" setup>
 import { useUserStore } from '@/store/index'
-import { ArrowDown } from '@element-plus/icons-vue'
 
 const userStore = useUserStore()
 
