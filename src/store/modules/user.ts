@@ -5,8 +5,8 @@
  */
 
 import { logout } from '@/api/login'
-import { UserInfo, getInfo } from '@/api/user'
-import { isNil } from 'lodash'
+import { UserInfo } from '@/api/user'
+import { clone } from 'lodash'
 import { defineStore } from 'pinia'
 
 interface UserState {
@@ -21,23 +21,16 @@ const useUserStore = defineStore('useUserStore', {
 	}),
 	actions: {
 		async LogOut() {
-			const { success } = await logout()
-			if (success) {
+			const { flag } = await logout()
+			if (flag) {
 				this.userInfo = {}
 				localStorage.removeItem('xingToken')
 				localStorage.removeItem('user')
 			}
 		},
 
-		setGetInfo(hasGetInfo: boolean) {
-			this.hasGetInfo = hasGetInfo
-		},
-
-		async getUserInfo() {
-			const { success, data } = await getInfo()
-			if (success && !isNil(data)) {
-				this.userInfo = data
-			}
+		setUserInfo(data: UserInfo) {
+			this.userInfo = clone(data)
 		}
 	},
 })

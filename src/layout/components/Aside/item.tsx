@@ -22,14 +22,14 @@ const SidebarItem = defineComponent({
 				return null
 			}
 			return props.menuInfo.meta?.alwaysShow ? (
-				<SubMenu key={props.menuInfo.name} v-slots={{ title: () => <span>{props.menuInfo?.meta?.title}</span> } }>
+				<SubMenu key={props.menuInfo.path} v-slots={{ title: () => <span>{props.menuInfo?.meta?.title}</span> } }>
 					{isNil(props.menuInfo.children)
 						? null
 						: props.menuInfo.children.map((item) => {
 								return item.children ? (
-									<SidebarItem key={item.name as string} menuInfo={item as any} />
+									<SidebarItem key={item.path} menuInfo={item as any} />
 								) : item.meta?.alwaysShow ? (
-									<MenuItem key={item.name}>
+									<MenuItem key={item.path}>
 										<span>{item.meta.title}</span>
 									</MenuItem>
 								) : null

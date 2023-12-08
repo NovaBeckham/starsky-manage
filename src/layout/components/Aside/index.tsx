@@ -5,9 +5,9 @@
  */
 
 import { constantRoutes } from '@/router'
-import { map } from 'lodash'
+import { isNil, map } from 'lodash'
 import { computed, defineComponent } from 'vue'
-import { RouteRecordRaw, useRoute } from 'vue-router'
+import { RouteRecordRaw, useRoute, useRouter } from 'vue-router'
 import SidebarItem from './item'
 import { Menu, MenuItem } from 'ant-design-vue'
 import $styles from './index.module.scss'
@@ -15,24 +15,36 @@ import $styles from './index.module.scss'
 export default defineComponent({
 	setup() {
 		const $route = useRoute()
+		const $router = useRouter()
 		function alwaysShow(data: RouteRecordRaw) {
 			if (data.meta?.alwaysShow) {
-				return (
-					<MenuItem key={data.name}>
-						<span>{data.meta?.title}</span>
-					</MenuItem>
-				)
+				if (data.children) {
+					return (
+						<MenuItem key={data.path}>
+							<span>{data.children[0].meta?.title}</span>
+						</MenuItem>
+					)
+				}
 			}
 			return null
+		}
+		const handleMenuClick = (menuProp: any) => {
+			$router.push(menuProp.key)
 		}
 		const selectedKeys = computed(() => {
 			return map($route.matched, (item) => item.name)
 		})
 		const defaultOpenKeys = map($route.matched, (item) => item.name)
 		return () => (
-			<Menu mode="inline" selectedKeys={selectedKeys.value as any} openKeys={defaultOpenKeys as any} class={$styles.sideNavBar}>
+			<Menu
+				mode="inline"
+				selectedKeys={selectedKeys.value as any}
+				openKeys={defaultOpenKeys as any}
+				class={$styles.sideNavBar}
+				onClick={handleMenuClick}
+			>
 				{map(constantRoutes, (item) =>
-					item.children ? <SidebarItem key={item.name} menuInfo={item} /> : alwaysShow(item)
+					item.children && !isNil(item.meta?.title) ? <SidebarItem key={item.name} menuInfo={item} /> : alwaysShow(item)
 				)}
 			</Menu>
 		)

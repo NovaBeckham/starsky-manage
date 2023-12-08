@@ -26,6 +26,7 @@ import { reactive, ref } from 'vue'
 import { login } from '@/api/login'
 import { isNil } from 'lodash'
 import { useRouter } from 'vue-router'
+import { useUserStore } from '@/store'
 
 const rules = {
 	username: [{ required: true, message: '请输入账号', trigger: 'blur' }],
@@ -35,6 +36,7 @@ const rules = {
 const $router = useRouter()
 const loading = ref(false)
 const loginRef = ref()
+const userStore = useUserStore()
 const ruleForm = reactive({
 	username: '',
 	password: '',
@@ -50,6 +52,7 @@ const loginIn = async () => {
 	if (flag && !isNil(data)) {
 		localStorage.setItem('xingToken', data.token ?? '')
 		localStorage.setItem('user', ruleForm.username)
+		userStore.setUserInfo(data)
 		$router.push('/')
 	}
 }

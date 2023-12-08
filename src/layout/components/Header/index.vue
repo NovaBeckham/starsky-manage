@@ -18,6 +18,7 @@
 import { useUserStore } from '@/store/index'
 
 const userStore = useUserStore()
+console.log('avatar', userStore.userInfo.avatar)
 </script>
 
 <style scoped lang="scss">
@@ -26,7 +27,7 @@ const userStore = useUserStore()
   align-items: center;
   padding-left: 15px;
   padding-right: 30px;
-  height: 50px;
+  height: 64px;
 
 	.dropdown {
 		height: 64px;

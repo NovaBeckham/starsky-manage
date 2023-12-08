@@ -33,7 +33,6 @@ const $route = useRoute()
 
 <style>
 .main-container {
-  margin-left: 210px;
   min-height: 100vh;
 }
 .fade-transform-enter-active,
@@ -49,10 +48,8 @@ const $route = useRoute()
 	transform: translateX(30px);
 }
 .fade-transform-box {
-	position: raative;
-  top: 0px;
-  bottom: 0px;
   width: 100%;
+	height: 100%;
 	overflow: hidden;
 }
 </style>

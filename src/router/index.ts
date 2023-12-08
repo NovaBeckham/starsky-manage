@@ -10,12 +10,24 @@ import Layout from '@/layout/index.vue'
 export const constantRoutes: RouteRecordRaw[] = [
 	{
 		path: '/',
-		name: 'Home',
-		component: () => import('@/views/home/index.vue'),
+		name: 'Index',
+		component: Layout,
+		// component: () => import('@/views/home/index.vue'),
 		meta: {
+			// title: '文章管理',
 			alwaysShow: true,
-			title: '首页',
 		},
+		children: [
+			{
+				path: '',
+				name: 'Home',
+				component: () => import('@/views/home/index.vue'),
+				meta: {
+					title: '首页',
+					alwaysShow: true,
+				},
+			}
+		]
 	},
 	{
 		path: '/login',
