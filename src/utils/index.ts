@@ -4,7 +4,7 @@
  * @Date: 2023-01-10 15:42:45
  */
 
-import { notification } from 'ant-design-vue'
+import { ElNotification } from 'element-plus'
 import { curry } from 'lodash'
 
 type TipsStatus = 'success' | 'error' | 'warning' | 'info'
@@ -18,9 +18,10 @@ const tipsMap = {
 
 /** 提示信息优化 */
 const notificationTips = (status: TipsStatus, description: string) => {
-	notification[status]({
-		message: tipsMap[status],
-		description,
+	ElNotification[status]({
+		type: status,
+		title: tipsMap[status],
+		message: description,
 	})
 }
 const curryTips = curry(notificationTips)

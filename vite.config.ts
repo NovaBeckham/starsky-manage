@@ -7,8 +7,9 @@
 import { resolve } from 'path'
 import { UserConfigExport } from 'vite'
 import vue from '@vitejs/plugin-vue'
+import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
-import { AntDesignVueResolver } from 'unplugin-vue-components/resolvers'
+import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 import vueJsx from '@vitejs/plugin-vue-jsx'
 
 // https://vitejs.dev/config/
@@ -50,12 +51,11 @@ export default (): UserConfigExport => {
 		plugins: [
 			vue(),
 			vueJsx(),
+			AutoImport({
+				resolvers: [ElementPlusResolver()],
+			}),
 			Components({
-				resolvers: [
-					AntDesignVueResolver({
-						importStyle: false,
-					}),
-				],
+				resolvers: [ElementPlusResolver({})],
 			}),
 		],
 	}

@@ -7,7 +7,8 @@
 import { PropType, defineComponent } from 'vue'
 import { RouteRecordRaw } from 'vue-router'
 import { isNil } from 'lodash'
-import { MenuItem, SubMenu } from 'ant-design-vue'
+import 'element-plus/es/components/menu/style/css'
+import { ElMenuItem, ElSubMenu } from 'element-plus'
 
 const Props = {
 	menuInfo: Object as PropType<RouteRecordRaw>,
@@ -22,19 +23,19 @@ const SidebarItem = defineComponent({
 				return null
 			}
 			return props.menuInfo.meta?.alwaysShow ? (
-				<SubMenu key={props.menuInfo.path} v-slots={{ title: () => <span>{props.menuInfo?.meta?.title}</span> } }>
+				<ElSubMenu index={props.menuInfo.path} v-slots={{ title: () => <span>{props.menuInfo?.meta?.title}</span> } }>
 					{isNil(props.menuInfo.children)
 						? null
 						: props.menuInfo.children.map((item) => {
 								return item.children ? (
 									<SidebarItem key={item.path} menuInfo={item as any} />
 								) : item.meta?.alwaysShow ? (
-									<MenuItem key={item.path}>
+									<ElMenuItem index={item.path}>
 										<span>{item.meta.title}</span>
-									</MenuItem>
+									</ElMenuItem>
 								) : null
 						  })}
-				</SubMenu>
+				</ElSubMenu>
 			) : null
 		}
 	},

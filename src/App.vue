@@ -1,9 +1,8 @@
 <template>
-	<a-config-provider :locale="zh_CN" :theme="{ algorithm: theme.darkAlgorithm }">
+	<el-config-provider :locale="zhCn">
 		<router-view> </router-view>
-	</a-config-provider>
+	</el-config-provider>
 </template>
 <script lang="ts" setup>
-import zh_CN from 'ant-design-vue/es/locale/zh_CN'
-import { theme } from 'ant-design-vue'
+import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
 </script>

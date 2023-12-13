@@ -1,15 +1,15 @@
 <template>
 	<div class="nav-bar">
 		<div class="right-menu">
-			<a-dropdown class="dropdown">
-				<a-avatar :size="40" :src="userStore.userInfo.avatar" />
-				<template #overlay>
-					<a-menu>
-						<a-menu-item key="rePassword">修改密码</a-menu-item>
-						<a-menu-item key="logout">退出登录</a-menu-item>
-					</a-menu>
+			<el-dropdown class="dropdown">
+				<el-avatar :size="40" :src="userStore.userInfo.avatar" />
+				<template #dropdown>
+					<el-dropdown-menu>
+						<el-dropdown-item command="rePassword">修改密码</el-dropdown-item>
+						<el-dropdown-item command="logout">退出登录</el-dropdown-item>
+					</el-dropdown-menu>
 				</template>
-			</a-dropdown>
+			</el-dropdown>
 		</div>
 	</div>
 </template>
@@ -18,7 +18,6 @@
 import { useUserStore } from '@/store/index'
 
 const userStore = useUserStore()
-console.log('avatar', userStore.userInfo.avatar)
 </script>
 
 <style scoped lang="scss">
@@ -28,6 +27,7 @@ console.log('avatar', userStore.userInfo.avatar)
   padding-left: 15px;
   padding-right: 30px;
   height: 64px;
+	border-bottom: 1px solid #e6e6e6;
 
 	.dropdown {
 		height: 64px;

@@ -1,13 +1,13 @@
 <template>
-	<a-layout>
-		<a-layout-sider>
+	<el-container>
+		<el-aside style="backgroundColor: #304156;">
 			<Aside></Aside>
-		</a-layout-sider>
-		<a-layout class="main-container">
-			<a-layout-header height="84px" style="padding: 0">
+		</el-aside>
+		<el-container class="main-container">
+			<el-header height="64px" style="padding: 0">
         <Header :key="$route.fullPath"></Header>
-      </a-layout-header>
-			<a-layout-content>
+      </el-header>
+			<el-main>
 				<div class="fade-transform-box">
 					<router-view v-slot="{ Component }">
 						<transition name="fade-transform" mode="out-in">
@@ -18,9 +18,9 @@
 						</transition>
 					</router-view>
 				</div>
-			</a-layout-content>
-		</a-layout>
-	</a-layout>
+			</el-main>
+		</el-container>
+	</el-container>
 </template>
 
 <script lang="ts" setup>

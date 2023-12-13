@@ -12,7 +12,7 @@ interface ZhCN {
 }
 declare module 'element-plus/dist/locale/zh-cn.mjs' {
 	import zh from 'element-plus/dist/locale/zh-cn.mjs'
-	const zh_CN: ZhCN
+	const zhCn: zhCn
 
-	export default zh_CN
+	export default zhCn
 }
