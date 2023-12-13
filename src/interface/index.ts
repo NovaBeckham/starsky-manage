@@ -68,17 +68,17 @@ export interface PageResult<T> {
   /**
    * 分页结果
    */
-  records: T;
+  records?: T;
   /**
    * 总数
    */
-  total: number;
+  total?: number;
   /**
    * 当前页数
    */
-  current: number;
+  current?: number;
   /**
    * 每页个数
    */
-  size: number;
+  size?: number;
 }

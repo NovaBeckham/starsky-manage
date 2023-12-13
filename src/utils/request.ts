@@ -15,7 +15,7 @@ const requests = axios.create({
 requests.interceptors.request.use(
 	(config: InternalAxiosRequestConfig) => {
 		if (localStorage.getItem('xingToken')) {
-			config.headers['Authorization'] = 'Bearer ' + localStorage.getItem('xingToken')
+			config.headers['Authorization'] = localStorage.getItem('xingToken')
 		}
 		return config
 	},

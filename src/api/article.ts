@@ -6,7 +6,6 @@
 
 import { PageQuery, PageResult, Result } from '@/interface'
 import requests from '@/utils/request'
-import { TagListOptions } from './tag'
 
 /**
  * 文章
@@ -17,99 +16,64 @@ export interface Article {
 	 */
 	id?: number
 	/**
-	 * 文章缩略图
+	 * userId
 	 */
-	articleCover?: string
+	userId?: string
 	/**
 	 * 文章标题
 	 */
-	articleTitle?: string
+	title?: string
 	/**
-	 * 文章内容
+	 * 文章作者
 	 */
-	articleContent?: string
+	nickname?: string
 	/**
-	 * 文章分类
+	 * 文章缩略图
 	 */
-	categoryId?: number
+	avatar?: number
 	/**
-	 * 是否删除 (0否 1是)
+	 * 阅读方式
 	 */
-	isDelete?: number
+	readType?: number
 	/**
-	 * 状态 (1公开 2私密 3草稿)
+	 * isStick
 	 */
-	status?: number
+	isStick?: number
 	/**
-	 * 标签
+	 * 类型
 	 */
-	tagList?: Array<TagListOptions>
+	isOriginal?: number
 	/**
-	 * 发表时间
+	 * quantity
+	 */
+	quantity?: number
+	/**
+	 * 创建时间
 	 */
 	createTime?: string
 	/**
-	 * 更新时间
+	 * 发布状态
 	 */
-	updateTime?: string
+	isPublish?: number
+	/**
+	 * 分类名称
+	 */
+	categoryName?: string
+	/**
+	 * 标签名称
+	 */
+	tagNames?: string
 }
 
 /**
  * 查看分类列表
- * @param params 查询条件
+ * @param data 查询条件
  * @returns 分类列表
  */
-export const getArticleList: (params: PageQuery) => Promise<Result<PageResult<Article[]>>> = (params) => {
-	return requests({
-		url: '/admin/articles',
-		method: 'get',
-		params,
-	})
-}
 
-/**
- * 添加文章
- * @param data 文章信息
- */
-export function addArticle(data: Article): Promise<Result<null>> {
+export const getArticleList: (data: PageQuery) => Promise<Result<PageResult<Article[]>>> = (data) => {
 	return requests({
-		url: '/admin/article/add',
-		method: 'post',
-		data,
-	})
-}
-
-/**
- * 修改文章
- * @param data 文章信息
- */
-export function updateArticle(data: Article): Promise<Result<null>> {
-	return requests({
-		url: '/admin/article/update',
-		method: 'put',
-		data,
-	})
-}
-
-/**
- * 文章详情
- * @param articleId 文章id
- */
-export function getInfo(articleId: number): Promise<Result<Article>> {
-	return requests({
-		url: `/admin/article/getInfo/${articleId}`,
-		method: 'get',
-	})
-}
-
-/**
- * 上传文章图片
- * @returns 图片链接
- */
-export const uploadArticleCover: (data: FormData) => Promise<Result<string>> = (data) => {
-	return requests({
-		url: '/admin/article/upload',
-		headers: { 'content-type': 'multipart/form-data' },
+		url: '/article/system/list',
 		method: 'post',
 		data,
 	})
