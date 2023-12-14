@@ -2,23 +2,26 @@
 	<div class="login-wrap">
 		<div class="login">
 			<div class="title">后台管理系统</div>
-			<el-form ref="loginRef" :model="ruleForm" :rules="rules" class="login-content">
-				<el-form-item prop="username">
-					<el-input v-model="ruleForm.username" :prefix-icon="User" />
-				</el-form-item>
-				<el-form-item prop="password">
-					<el-input v-model="ruleForm.password" type="password" show-password :prefix-icon="Lock" />
-				</el-form-item>
-				<el-form-item>
-					<el-button type="primary" style="width: 100%" :loading="loading" @click="loginIn(loginRef)">登录</el-button>
-				</el-form-item>
-			</el-form>
+			<a-form ref="loginRef" :model="ruleForm" :rules="rules" class="login-content">
+				<a-form-item name="username">
+					<a-input v-model:value="ruleForm.username">
+						<template #prefix><UserOutlined /></template>
+					</a-input>
+				</a-form-item>
+				<a-form-item name="password">
+					<a-input-password v-model:value="ruleForm.password">
+						<template #prefix><LockOutlined /></template>
+					</a-input-password>
+				</a-form-item>
+				<a-form-item>
+					<a-button type="primary" style="width: 100%" :loading="loading" @click="loginIn">登录</a-button>
+				</a-form-item>
+			</a-form>
 		</div>
 	</div>
 </template>
 <script lang="ts" setup>
-import { User, Lock } from '@element-plus/icons-vue'
-import { FormInstance } from 'element-plus'
+import { UserOutlined, LockOutlined } from '@ant-design/icons-vue'
 import { reactive, ref } from 'vue'
 import { login } from '@/api/login'
 import { isNil } from 'lodash'
@@ -31,15 +34,14 @@ const rules = {
 
 const $router = useRouter()
 const loading = ref(false)
-const loginRef = ref<FormInstance>()
+const loginRef = ref()
 const ruleForm = reactive({
 	username: '',
 	password: '',
 	rememberMe: false
 })
-const loginIn = async (formEl: FormInstance | undefined) => {
-	if (!formEl) return
-	await formEl.validate()
+const loginIn = async () => {
+	await loginRef.value?.validate()
 	loading.value = true
 	const { flag, data } = await login(ruleForm)
 	loading.value = false

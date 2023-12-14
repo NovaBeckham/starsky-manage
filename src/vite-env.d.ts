@@ -10,9 +10,3 @@ declare module '*.min.js'
 interface ZhCN {
 	[key: string]: any
 }
-declare module 'element-plus/dist/locale/zh-cn.mjs' {
-	import zh from 'element-plus/dist/locale/zh-cn.mjs'
-	const zhCn: zhCn
-
-	export default zhCn
-}

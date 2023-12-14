@@ -6,52 +6,45 @@
 
 import { constantRoutes } from '@/router'
 import { isNil, map } from 'lodash'
-import { defineComponent } from 'vue'
-import { RouteRecordRaw, useRoute } from 'vue-router'
+import { computed, defineComponent } from 'vue'
+import { RouteRecordRaw, useRoute, useRouter } from 'vue-router'
 import SidebarItem from './item'
-import $styles from './index.module.scss'
-import 'element-plus/es/components/menu/style/css'
-import 'element-plus/es/components/scrollbar/style/css'
-import { ElMenu, ElMenuItem, ElScrollbar } from 'element-plus'
 
 export default defineComponent({
 	setup() {
 		const $route = useRoute()
-		// const $router = useRouter()
+		const $router = useRouter()
 		function alwaysShow(data: RouteRecordRaw) {
 			if (data.meta?.alwaysShow) {
 				if (data.children) {
 					return (
-						<ElMenuItem index={data.path}>
+						<a-menu-item key={data.path}>
 							<span>{data.children[0].meta?.title}</span>
-						</ElMenuItem>
+						</a-menu-item>
 					)
 				}
 			}
 			return null
 		}
-		// const handleMenuClick = (menuProp: any) => {
-		// 	$router.push(menuProp.key)
-		// }
+		const handleMenuClick = (menuProp: any) => {
+			$router.push(menuProp.key)
+		}
+		const selectedKeys = computed(() => {
+			return map($route.matched, (item) => item.path)
+		})
+		const defaultOpenKeys = map($route.matched, (item) => item.path)
 		return () => (
-			<ElScrollbar class="theme-dark">
-				<ElMenu
-					defaultActive={$route.path}
-					class={$styles.sideNavBar}
-					backgroundColor="#304156"
-					textColor="#bfcbd9"
-					activeTextColor="#409EFF"
-					router
-				>
-					{map(constantRoutes, (item) =>
-						item.children && !isNil(item.meta?.title) ? (
-							<SidebarItem key={item.name} menuInfo={item} />
-						) : (
-							alwaysShow(item)
-						)
-					)}
-				</ElMenu>
-			</ElScrollbar>
+			<a-menu
+				mode="inline"
+				selectedKeys={selectedKeys.value}
+				openKeys={defaultOpenKeys}
+				onClick={handleMenuClick}
+				theme="dark"
+			>
+				{map(constantRoutes, (item) =>
+					item.children && !isNil(item.meta?.title) ? <SidebarItem key={item.path} menuInfo={item} /> : alwaysShow(item)
+				)}
+			</a-menu>
 		)
 	},
 })
