@@ -5,11 +5,24 @@
  */
 
 import 'ant-design-vue/dist/reset.css'
-import { ConfigProvider, Button, Layout, Dropdown, Avatar, Menu, Table, Space, Tag, Image } from 'ant-design-vue'
+import {
+	ConfigProvider,
+	Button,
+	Layout,
+	Dropdown,
+	Avatar,
+	Menu,
+	Table,
+	Space,
+	Tag,
+	Image,
+	Form,
+	Input,
+} from 'ant-design-vue'
 import { App } from 'vue'
 
 export function useAnt(app: App) {
-  app.use(ConfigProvider)
+	app.use(ConfigProvider)
 	app.use(Button)
 	app.use(Layout)
 	app.use(Dropdown)
@@ -19,4 +32,6 @@ export function useAnt(app: App) {
 	app.use(Space)
 	app.use(Tag)
 	app.use(Image)
+	app.use(Form)
+	app.use(Input)
 }

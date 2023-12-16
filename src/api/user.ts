@@ -6,49 +6,33 @@
 
 import { PageQuery, PageResult, Result } from '@/interface'
 import requests from '@/utils/request'
-import { Menu } from './menu'
-
-interface UserRole {
-	id: number
-	roleName: string
-}
 
 interface UserParams extends PageQuery {
 	nickname?: string
 }
 
 export interface UserInfo {
-	/** 头像 */
-	avatar?: string
-	/** 邮箱 */
-	email?: string
 	/** id */
-	id?: number
-	/** 登录IP */
-	ipAddress?: string
-	/** 登录地址 */
-	ipSource?: string
-	/** 上次登录时间 */
-	lastLoginTime?: string
-	/** 登录状态 */
-	loginType?: number
-	/** 昵称 */
-	nickname?: string
-	/** token */
-	token?: string
-	/** userInfoId */
-	userInfoId?: string
+	id?: string
 	/** 用户名 */
 	username?: string
+	/** 昵称 */
+	nickname?: string
+	/** 头像 */
+	avatar?: string
+	/** 状态 */
+	status?: number
+	/** 角色 */
+	roleId?: number
 }
 
 /**
  * 用户详情
  */
-export function getInfo(): Promise<Result<UserInfo>> {
+export function getUserInfo(): Promise<Result<UserInfo>> {
 	return requests({
-		url: '/user/getInfo',
-		method: 'get',
+		url: '/user/getCurrentUserInfo',
+		method: 'post',
 	})
 }
 

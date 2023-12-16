@@ -4,7 +4,7 @@
 			<a-dropdown class="dropdown">
 				<a-avatar :size="40" :src="userStore.userInfo.avatar" />
 				<template #overlay>
-					<a-menu>
+					<a-menu @click="handleMenu">
 						<a-menu-item key="rePassword">修改密码</a-menu-item>
 						<a-menu-item key="logout">退出登录</a-menu-item>
 					</a-menu>
@@ -18,6 +18,9 @@
 import { useUserStore } from '@/store/index'
 
 const userStore = useUserStore()
+function handleMenu(data: any) {
+	console.log('data', data)
+}
 </script>
 
 <style scoped lang="scss">

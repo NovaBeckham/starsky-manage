@@ -5,8 +5,8 @@
  */
 
 import { logout } from '@/api/login'
-import { UserInfo } from '@/api/user'
-import { clone } from 'lodash'
+import { UserInfo, getUserInfo } from '@/api/user'
+import { clone, isNil } from 'lodash'
 import { defineStore } from 'pinia'
 
 interface UserState {
@@ -29,8 +29,11 @@ const useUserStore = defineStore('useUserStore', {
 			}
 		},
 
-		setUserInfo(data: UserInfo) {
-			this.userInfo = clone(data)
+		async getInfo() {
+			const { flag, data } = await getUserInfo()
+			if (flag && !isNil(data)) {
+				this.userInfo = data
+			}
 		}
 	},
 })
