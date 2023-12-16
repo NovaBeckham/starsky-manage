@@ -1,11 +1,18 @@
 <template>
-	<div>
-		<a-table border :dataSource="tableData" :columns="columns">
+	<a-card title="文章列表" :loading="loading">
+		<a-button type="primary" :loading="loading" style="margin: 8px 0">添加</a-button>
+		<a-table rowKey="id" bordered :dataSource="tableData" :columns="columns" :pagination="false">
 			<template #bodyCell="{ column, record }: ATableColumnProp<Article>">
 				<template v-if="column.key === 'action'">
 					<a-space size="middle">
 						<a-button :loading="loading" v-if="record.isPublish === 1">下架</a-button>
-						<a-button type="primary" :loading="loading" v-if="record.isPublish === 0">发布</a-button>
+						<a-button
+							type="primary"
+							:style="{ backgroundColor: '#00b96b' }"
+							:loading="loading"
+							v-if="record.isPublish === 0"
+							>发布</a-button
+						>
 						<a-button type="primary" :loading="loading">编辑</a-button>
 						<a-button type="primary" danger :loading="loading">删除</a-button>
 					</a-space>
@@ -15,7 +22,18 @@
 				</template>
 			</template>
 		</a-table>
-	</div>
+		<div class="fenye">
+			<a-pagination
+				:current="current"
+				:total="total"
+				:show-total="(total: number) => `共 ${total} 条`"
+				@Change="handleCurrentChange"
+				show-size-changer
+				:showQuickJumper="total / pageSize > 5"
+				:pageSize="pageSize"
+			/>
+		</div>
+	</a-card>
 </template>
 
 <script lang="ts" setup>
@@ -23,19 +41,29 @@ import { Article, getArticleList } from '@/api/article'
 import { isNil } from 'lodash'
 import { onMounted, ref } from 'vue'
 import { columns } from './utils'
-import { ATableColumnProp } from '@/interface';
+import { ATableColumnProp } from '@/interface'
 
 const loading = ref(false)
-// const searchForm = ref<{ current: number; size: number }>({ current: 1, size: 10 })
+const current = ref(0)
+const pageSize = ref(10)
+const total = ref(0)
 const tableData = ref<Article[]>()
 
-const search = async (params?: { current: number; size: number }) => {
+const search = async () => {
 	loading.value = true
-	const { flag, data } = await getArticleList(params ?? { current: 1, size: 10 })
+	const { flag, data } = await getArticleList({ current: current.value, size: pageSize.value })
 	loading.value = false
 	if (flag && !isNil(data)) {
 		tableData.value = data.records
+		current.value = data.current ?? 1
+		total.value = data.total ?? 0
 	}
+}
+
+const handleCurrentChange = (pageNo: number, size: number) => {
+	current.value = pageNo
+	pageSize.value = size
+	search()
 }
 
 onMounted(() => {

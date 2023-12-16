@@ -18,6 +18,8 @@ import {
 	Image,
 	Form,
 	Input,
+	Card,
+	Pagination,
 } from 'ant-design-vue'
 import { App } from 'vue'
 
@@ -34,4 +36,6 @@ export function useAnt(app: App) {
 	app.use(Image)
 	app.use(Form)
 	app.use(Input)
+	app.use(Card)
+	app.use(Pagination)
 }
