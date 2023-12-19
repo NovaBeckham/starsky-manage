@@ -20,6 +20,11 @@ import {
 	Input,
 	Card,
 	Pagination,
+	Modal,
+	Row,
+	Col,
+	Upload,
+	Popover,
 } from 'ant-design-vue'
 import { App } from 'vue'
 
@@ -38,4 +43,9 @@ export function useAnt(app: App) {
 	app.use(Input)
 	app.use(Card)
 	app.use(Pagination)
+	app.use(Modal)
+	app.use(Row)
+	app.use(Col)
+	app.use(Upload)
+	app.use(Popover)
 }

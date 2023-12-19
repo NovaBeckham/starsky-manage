@@ -30,7 +30,7 @@ export interface Article {
 	/**
 	 * 文章缩略图
 	 */
-	avatar?: number
+	avatar?: string
 	/**
 	 * 阅读方式
 	 */
@@ -63,6 +63,14 @@ export interface Article {
 	 * 标签名称
 	 */
 	tagNames?: string
+	/**
+	 * 文章简介
+	 */
+	summary?: string
+	/**
+	 * 文章内容
+	 */
+	contentMd?: string
 }
 
 /**
@@ -70,11 +78,32 @@ export interface Article {
  * @param data 查询条件
  * @returns 分类列表
  */
-
 export const getArticleList: (data: PageQuery) => Promise<Result<PageResult<Article[]>>> = (data) => {
 	return requests({
 		url: '/article/system/list',
 		method: 'post',
 		data,
+	})
+}
+
+/**
+ * 上传图片
+ */
+export const uploadImage: (data: FormData) => Promise<Result<string>> = (data) => {
+	return requests({
+		url: '/article/system/images',
+		method: 'post',
+    headers: { 'Content-Type': 'multipart/form-data' },
+		data,
+	})
+}
+
+/**
+ * 随机获取一张图片
+ */
+export const getRandomImg: () => Promise<Result<string>> = () => {
+	return requests({
+		url: '/system/article/randomImg',
+		method: 'get',
 	})
 }

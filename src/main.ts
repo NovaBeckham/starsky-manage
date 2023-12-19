@@ -12,11 +12,13 @@ import { createPinia } from 'pinia'
 import '@/assets/styles/index.scss'
 import func from '@/utils/permission'
 import { useAnt } from '@/plugin/ant-design'
+import 'mavon-editor/dist/css/index.css'
+import mavonEditor from 'mavon-editor'
 import dayjs from 'dayjs'
 dayjs.locale('zh-cn')
 
 const app = createApp(App)
 
 func(router)
-app.use(router).use(createPinia()).mount('#app')
+app.use(router).use(createPinia()).use(mavonEditor).mount('#app')
 useAnt(app)

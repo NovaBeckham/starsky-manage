@@ -1,6 +1,6 @@
 <template>
 	<a-card title="文章列表" :loading="loading">
-		<a-button type="primary" :loading="loading" style="margin: 8px 0">添加</a-button>
+		<a-button type="primary" :loading="loading" style="margin: 8px 0" @click="addArticle">添加</a-button>
 		<a-table rowKey="id" bordered :dataSource="tableData" :columns="columns" :pagination="false">
 			<template #bodyCell="{ column, record }: ATableColumnProp<Article>">
 				<template v-if="column.key === 'action'">
@@ -33,6 +33,7 @@
 				:pageSize="pageSize"
 			/>
 		</div>
+		<Details :visible="detailsVisible" @close="detailsClose" />
 	</a-card>
 </template>
 
@@ -42,12 +43,14 @@ import { isNil } from 'lodash'
 import { onMounted, ref } from 'vue'
 import { columns } from './utils'
 import { ATableColumnProp } from '@/interface'
+import Details from './components/details.vue'
 
 const loading = ref(false)
 const current = ref(0)
 const pageSize = ref(10)
 const total = ref(0)
 const tableData = ref<Article[]>()
+const detailsVisible = ref(false)
 
 const search = async () => {
 	loading.value = true
@@ -58,6 +61,14 @@ const search = async () => {
 		current.value = data.current ?? 1
 		total.value = data.total ?? 0
 	}
+}
+
+const addArticle = () => {
+	detailsVisible.value = true
+}
+
+const detailsClose = () => {
+	detailsVisible.value = false
 }
 
 const handleCurrentChange = (pageNo: number, size: number) => {
