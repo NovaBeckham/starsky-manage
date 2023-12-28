@@ -93,7 +93,7 @@ export const uploadImage: (data: FormData) => Promise<Result<string>> = (data) =
 	return requests({
 		url: '/article/system/images',
 		method: 'post',
-    headers: { 'Content-Type': 'multipart/form-data' },
+		headers: { 'Content-Type': 'multipart/form-data' },
 		data,
 	})
 }
@@ -103,7 +103,7 @@ export const uploadImage: (data: FormData) => Promise<Result<string>> = (data) =
  */
 export const getRandomImg: () => Promise<Result<string>> = () => {
 	return requests({
-		url: '/system/article/randomImg',
+		url: '/article/system/randomImg',
 		method: 'get',
 	})
 }

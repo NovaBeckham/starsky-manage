@@ -1,37 +1,33 @@
 /*
- * @Description: 
+ * @Description:
  * @Author: hyx
  * @Date: 2023-08-18 11:51:14
  */
 
-import { PageQuery, PageResult, Result } from "@/interface"
-import requests from "@/utils/request"
+import { PageResult, Result } from '@/interface'
+import requests from '@/utils/request'
 
-export interface TagListOptions {
-  id?: number
-  tagName?: string
-  articleCount?: number
+export interface Tags {
+	id?: number
+	name?: string
+	avatar?: string
+	sort?: number
+	clickVolume?: number
+	articleCount?: number
 	createTime?: string
+	updateTime?: string
 }
 
 /**
  * 标签列表
  */
-export function getList(): Promise<Result<TagListOptions[]>> {
+export function getList(params: {
+	current?: number
+	size?: number
+	name?: string
+}): Promise<Result<PageResult<Tags[]>>> {
 	return requests({
-		url: '/tag/list',
-		method: 'get',
-	})
-}
-
-/**
- * 查看分类页
- * @param params 查询条件
- * @returns 分类页
- */
-export const getPage: (params: PageQuery) => Promise<Result<PageResult<TagListOptions[]>>> = (params) => {
-	return requests({
-		url: '/admin/tag/list',
+		url: '/tags/system/list',
 		method: 'get',
 		params,
 	})
@@ -41,9 +37,9 @@ export const getPage: (params: PageQuery) => Promise<Result<PageResult<TagListOp
  * 添加标签
  * @param data 标签信息
  */
-export function addTag(data: TagListOptions): Promise<Result<null>> {
+export function addTagRequest(data: Tags): Promise<Result<null>> {
 	return requests({
-		url: '/admin/tag/add',
+		url: '/tags/system/add',
 		method: 'post',
 		data,
 	})
@@ -53,10 +49,10 @@ export function addTag(data: TagListOptions): Promise<Result<null>> {
  * 修改标签
  * @param data 标签信息
  */
-export function updateTag(data: TagListOptions): Promise<Result<null>> {
+export function updateTagRequest(data: Tags): Promise<Result<null>> {
 	return requests({
-		url: '/admin/tag/update',
-		method: 'put',
+		url: '/tags/system/update',
+		method: 'post',
 		data,
 	})
 }

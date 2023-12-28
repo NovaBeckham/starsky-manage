@@ -25,6 +25,8 @@ import {
 	Col,
 	Upload,
 	Popover,
+	Select,
+	InputNumber,
 } from 'ant-design-vue'
 import { App } from 'vue'
 
@@ -48,4 +50,6 @@ export function useAnt(app: App) {
 	app.use(Col)
 	app.use(Upload)
 	app.use(Popover)
+	app.use(Select)
+	app.use(InputNumber)
 }

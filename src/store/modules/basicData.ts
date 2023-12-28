@@ -5,12 +5,12 @@
  */
 
 import { defineStore } from 'pinia'
-// import { isNil, map, throttle } from 'lodash'
+import { isNil, map, throttle } from 'lodash'
 // import { getList as categoryListRequest } from '@/api/category'
-// import { getList as tagListRequest } from '@/api/tag'
+import { getList as tagListRequest } from '@/api/tag'
 
 // const getCategoryListThrottled = throttle(categoryListRequest, 1000)
-// const getTagListThrottled = throttle(tagListRequest, 100)
+const getTagListThrottled = throttle(tagListRequest, 100)
 
 export interface Options {
 	value: string | number
@@ -50,20 +50,20 @@ const useBasicDataStore = defineStore('basicDataStore', {
 		// 		}
 		// 	}
 		// },
-		// async getTagList() {
-		// 	const result = await getTagListThrottled()
-		// 	if (result) {
-		// 		const { success, data } = result
-		// 		if (success && !isNil(data)) {
-		// 			this.tagList = map(data, (item) => {
-		// 				return {
-		// 					value: item.id as number,
-		// 					label: item.tagName ?? '',
-		// 				}
-		// 			})
-		// 		}
-		// 	}
-		// }
+		async getTagList() {
+			const result = await getTagListThrottled({ current: 1, size: 9999 })
+			if (result) {
+				const { flag, data } = result
+				if (flag && !isNil(data) && !isNil(data.records)) {
+					this.tagList = map(data.records, (item) => {
+						return {
+							value: item.id as number,
+							label: item.name ?? '',
+						}
+					})
+				}
+			}
+		}
 	},
 })
 

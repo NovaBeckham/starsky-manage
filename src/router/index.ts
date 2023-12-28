@@ -57,6 +57,15 @@ export const constantRoutes: RouteRecordRaw[] = [
 					alwaysShow: true,
 				},
 			},
+			{
+				path: '/article/tags',
+				name: 'TagsList',
+				component: () => import('@/views/article/tags/index.vue'),
+				meta: {
+					title: '标签列表',
+					alwaysShow: true,
+				},
+			},
 		],
 	}
 ]
