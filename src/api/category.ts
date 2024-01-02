@@ -8,36 +8,22 @@ import { PageQuery, PageResult, Result } from '@/interface'
 import requests from '@/utils/request'
 
 export interface Category {
-	/**
-	 * 分类id
-	 */
-	id: number
-	/**
-	 * 分类名
-	 */
-	categoryName: string
-	/**
-	 * 文章数量
-	 */
-	articleCount: number
-	/**
-	 * 创建时间
-	 */
-	createTime: string
-}
-
-/**
- * 分类表单
- */
-interface CategoryForm {
-	/**
-	 * 分类id
-	 */
+	/** 分类id */
 	id?: number
-	/**
-	 * 分类名
-	 */
-	categoryName: string
+	/** 分类名 */
+	name?: string
+	/** 点击量 */
+	clickVolume?: number
+	/** 排序 */
+	sort?: number
+	/** 图标 */
+	icon?: string
+	/** 文章量 */
+	articleCount?: number
+	/** 创建时间 */
+	createTime?: string
+	/** 更新时间 */
+	updateTime?: string
 }
 
 /**
@@ -47,7 +33,7 @@ interface CategoryForm {
  */
 export const getPage: (params: PageQuery) => Promise<Result<PageResult<Category[]>>> = (params) => {
 	return requests({
-		url: '/admin/category/page',
+		url: 'category/system/list',
 		method: 'get',
 		params,
 	})
@@ -55,13 +41,13 @@ export const getPage: (params: PageQuery) => Promise<Result<PageResult<Category[
 
 /**
  * 删除分类
- * @param data 分类id集合
+ * @param id 分类id
  */
-export function deleteCategory(data: number[]): Promise<Result<null>> {
+export function deleteCategory(id: number): Promise<Result<null>> {
 	return requests({
-		url: '/admin/category/delete',
+		url: '/category/delete',
 		method: 'delete',
-		data,
+		params: { id },
 	})
 }
 
@@ -69,9 +55,9 @@ export function deleteCategory(data: number[]): Promise<Result<null>> {
  * 添加分类
  * @param data 分类信息
  */
-export function addCategory(data: CategoryForm): Promise<Result<null>> {
+export function addCategoryRequest(data: Category): Promise<Result<null>> {
 	return requests({
-		url: '/admin/category/add',
+		url: '/category/system/add',
 		method: 'post',
 		data,
 	})
@@ -81,22 +67,10 @@ export function addCategory(data: CategoryForm): Promise<Result<null>> {
  * 修改分类
  * @param data 分类信息
  */
-export function updateCategory(data: CategoryForm): Promise<Result<null>> {
+export function updateCategoryRequest(data: Category): Promise<Result<null>> {
 	return requests({
-		url: '/admin/category/update',
-		method: 'put',
+		url: '/system/category/update',
+		method: 'post',
 		data,
-	})
-}
-
-/**
- * 查看分类页
- * @param params 查询条件
- * @returns 分类页
- */
-export function getList(): Promise<Result<Category[]>> {
-	return requests({
-		url: '/category/list',
-		method: 'get',
 	})
 }

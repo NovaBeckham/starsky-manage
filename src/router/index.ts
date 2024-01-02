@@ -66,6 +66,15 @@ export const constantRoutes: RouteRecordRaw[] = [
 					alwaysShow: true,
 				},
 			},
+			{
+				path: '/article/category',
+				name: 'CategoryList',
+				component: () => import('@/views/article/category/index.vue'),
+				meta: {
+					title: '分类列表',
+					alwaysShow: true,
+				},
+			},
 		],
 	}
 ]
