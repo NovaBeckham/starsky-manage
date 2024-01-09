@@ -1,6 +1,6 @@
 <template>
 	<a-card title="文章列表" :loading="loading">
-		<a-button type="primary" :loading="loading" style="margin: 8px 0" @click="addArticle">添加</a-button>
+		<a-button type="primary" :loading="loading" style="margin: 8px 0" @click="showArticle()">添加</a-button>
 		<a-table rowKey="id" bordered :dataSource="tableData" :columns="columns" :pagination="false">
 			<template #bodyCell="{ column, record }: ATableColumnProp<Article>">
 				<template v-if="column.key === 'action'">
@@ -13,7 +13,7 @@
 							v-if="record.isPublish === 0"
 							>发布</a-button
 						>
-						<a-button type="primary" :loading="loading">编辑</a-button>
+						<a-button type="primary" :loading="loading" @click="showArticle(record.id)">编辑</a-button>
 						<a-button type="primary" danger :loading="loading">删除</a-button>
 					</a-space>
 				</template>
@@ -33,7 +33,7 @@
 				:pageSize="pageSize"
 			/>
 		</div>
-		<Details :visible="detailsVisible" @close="detailsClose" />
+		<Details :visible="detailsVisible" :id="detailsId" @close="detailsClose" @search="search" />
 	</a-card>
 </template>
 
@@ -51,6 +51,7 @@ const pageSize = ref(10)
 const total = ref(0)
 const tableData = ref<Article[]>()
 const detailsVisible = ref(false)
+const detailsId = ref<number>()
 
 const search = async () => {
 	loading.value = true
@@ -63,12 +64,14 @@ const search = async () => {
 	}
 }
 
-const addArticle = () => {
+const showArticle = (id?: number) => {
+	detailsId.value = id
 	detailsVisible.value = true
 }
 
 const detailsClose = () => {
 	detailsVisible.value = false
+	detailsId.value = undefined
 }
 
 const handleCurrentChange = (pageNo: number, size: number) => {

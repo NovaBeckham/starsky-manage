@@ -5,6 +5,7 @@
  */
 
 import { Article } from '@/api/article'
+import { categoryFilter, tagFilter } from '@/filter'
 import { ATableColumnProp } from '@/interface'
 import { isEmpty, isNil, map, split } from 'lodash'
 
@@ -54,23 +55,27 @@ export const columns = [
 	},
 	{
 		title: '分类',
-		key: 'categoryName',
+		key: 'categoryId',
 		customRender: ({ record }: ATableColumnProp<Article>) => {
-			return <a-tag color="warning">{record.categoryName}</a-tag>
+			return <a-tag color="warning">{categoryFilter(record.categoryId as number)}</a-tag>
 		},
 		align: 'center',
 	},
 	{
 		title: '标签',
-		key: 'tagNames',
+		key: 'tagIds',
 		customRender: ({ record }: ATableColumnProp<Article>) => {
-			if (isNil(record.tagNames) || isEmpty(record.tagNames)) {
+			if (isNil(record.tagIds) || isEmpty(record.tagIds)) {
 				return null
 			}
-			const tagList = split(record.tagNames, ',')
-			return map(tagList, (item) => {
-				return <a-tag color="processing">{item}</a-tag>
-			})
+			const tagList = split(record.tagIds, ',')
+			return (
+				<div>
+					{map(tagList, (item) => {
+						return <a-tag color="processing">{tagFilter(Number(item))}</a-tag>
+					})}
+				</div>
+			)
 		},
 		align: 'center',
 	},

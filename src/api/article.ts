@@ -32,9 +32,9 @@ export interface Article {
 	/** 发布状态 */
 	isPublish?: number
 	/** 分类名称 */
-	categoryName?: string
+	categoryId?: number
 	/** 标签名称 */
-	tagNames?: string
+	tagIds?: string
 	/** 文章简介 */
 	summary?: string
 	/** 文章内容 */
@@ -121,5 +121,23 @@ export const getArticleInfo: (id: number) => Promise<Result<ArticleDto>> = (id) 
 		url: '/article/system/info',
 		method: 'get',
 		params: { id },
+	})
+}
+
+/** 保存文章 */
+export const saveArticle: (data: ArticleDto) => Promise<Result<null>> = (data) => {
+	return requests({
+		url: '/article/system/add',
+		method: 'post',
+		data,
+	})
+}
+
+/** 更新文章 */
+export const updateArticle: (data: ArticleDto) => Promise<Result<null>> = (data) => {
+	return requests({
+		url: '/article/system/update',
+		method: 'post',
+		data,
 	})
 }

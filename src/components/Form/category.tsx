@@ -55,7 +55,7 @@ const FormCategory = defineComponent({
 				disabled={props.disabled}
 				allowClear={props.allowClear}
 				showSearch={props.showSearch}
-				options={basicDataStore.tagList}
+				options={basicDataStore.categoryList}
 			/>
 		)
 	},

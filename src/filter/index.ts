@@ -29,3 +29,19 @@ export const categoryFilter = function (key: Key) {
 	}
 	return key
 }
+
+export const tagFilter = function (key: Key) {
+	const basicDataStore = useBasicDataStore()
+	if (isATableColumnProp(key)) {
+		key = key.text
+	}
+	if (isEmpty(basicDataStore.tagList)) {
+		basicDataStore.getTagList()
+		return key
+	}
+	const data = basicDataStore.tagList.find((item) => item.value === key)
+	if (data) {
+		return data.label
+	}
+	return key
+}

@@ -33,7 +33,7 @@ export interface Category {
  */
 export const getPage: (params: PageQuery) => Promise<Result<PageResult<Category[]>>> = (params) => {
 	return requests({
-		url: 'category/system/list',
+		url: '/category/system/list',
 		method: 'get',
 		params,
 	})

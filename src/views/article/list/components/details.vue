@@ -94,19 +94,19 @@
 				</a-form-item>
 			</div>
 		</a-form>
-		<mavon-editor ref="mavon" v-model="searchForm.contentMd" />
+		<mavon-editor ref="mavon" style="height: 500px;" v-model="searchForm.contentMd" />
 	</a-modal>
 </template>
 
 <script lang="ts" setup>
 import { ref, defineProps, defineEmits, watch } from 'vue'
 import { PlusOutlined, LoadingOutlined, QuestionCircleOutlined } from '@ant-design/icons-vue'
-import { ArticleDto, getRandomImg, uploadImage, getArticleInfo } from '@/api/article'
+import { ArticleDto, getRandomImg, uploadImage, getArticleInfo, saveArticle, updateArticle } from '@/api/article'
 import { isEmpty, isNil } from 'lodash'
 import { UploadRequestOption } from 'ant-design-vue/es/vc-upload/interface'
 import { FormTags, FormCategory } from '@/components'
 import { publishList, readTypeList, rules } from '../utils'
-import { infoTips } from '@/utils'
+import { infoTips, successTips } from '@/utils'
 
 const baseUrl = import.meta.env.VITE_API_BASE_URL
 
@@ -119,7 +119,7 @@ const Props = defineProps({
 		type: Number,
 	},
 })
-const emits = defineEmits(['close'])
+const emits = defineEmits(['close', 'search'])
 
 const loading = ref(false)
 const popoverVisible = ref(false)
@@ -145,7 +145,6 @@ watch(
 )
 
 async function uploadSectionFile(param: UploadRequestOption) {
-	console.log('param', param)
 	const formData = new FormData()
 	formData.append('file', param.file)
 	loading.value = true
@@ -167,22 +166,29 @@ async function randomImg() {
 }
 
 const onCancel = () => {
-	console.log('onCancel')
 	searchForm.value = {}
 	mavon.value = null
 	emits('close')
 }
-const onSubmit = () => {
-	formRef.value.validate().then(() => {
-		if (isNil(searchForm.value.avatar) || isEmpty(searchForm.value.avatar)) {
-			infoTips('请上传缩略图')
-			return false
-		}
-		if (isNil(searchForm.value.contentMd) || isEmpty(searchForm.value.contentMd)) {
-			infoTips('请输入文章内容')
-			return false
-		}
-	})
+const onSubmit = async () => {
+	await formRef.value.validate()
+	if (isNil(searchForm.value.avatar) || isEmpty(searchForm.value.avatar)) {
+		infoTips('请上传缩略图')
+		return false
+	}
+	if (isNil(searchForm.value.contentMd) || isEmpty(searchForm.value.contentMd)) {
+		infoTips('请输入文章内容')
+		return false
+	}
+	const func = isNil(Props.id) ? saveArticle : updateArticle
+	loading.value = true
+	const { flag } = await func(searchForm.value)
+	loading.value = false
+	if (flag) {
+		successTips('操作成功')
+		emits('search')
+		onCancel()
+	}
 }
 </script>
 <style lang="scss">

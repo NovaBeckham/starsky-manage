@@ -5,12 +5,13 @@
  */
 
 import { defineStore } from 'pinia'
-import { isNil, map, throttle } from 'lodash'
+import { isNil, map } from 'lodash'
 import { getPage as categoryListRequest } from '@/api/category'
 import { getList as tagListRequest } from '@/api/tag'
+import debounce from '@/utils/debounce'
 
-const getCategoryListThrottled = throttle(categoryListRequest, 100)
-const getTagListThrottled = throttle(tagListRequest, 100)
+const getCategoryListThrottled = debounce(categoryListRequest, 1000)
+const getTagListThrottled = debounce(tagListRequest, 1000)
 
 export interface Options {
 	value: string | number
