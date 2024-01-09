@@ -27,6 +27,7 @@ import {
 	Popover,
 	Select,
 	InputNumber,
+	Radio,
 } from 'ant-design-vue'
 import { App } from 'vue'
 
@@ -52,4 +53,5 @@ export function useAnt(app: App) {
 	app.use(Popover)
 	app.use(Select)
 	app.use(InputNumber)
+	app.use(Radio)
 }

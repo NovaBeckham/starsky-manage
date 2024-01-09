@@ -7,77 +7,84 @@
 import { PageQuery, PageResult, Result } from '@/interface'
 import requests from '@/utils/request'
 
-/**
- * 文章
- */
+/** 文章 */
 export interface Article {
-	/**
-	 * 文章id
-	 */
+	/** 文章id */
 	id?: number
-	/**
-	 * userId
-	 */
+	/** userId */
 	userId?: string
-	/**
-	 * 文章标题
-	 */
+	/** 文章标题 */
 	title?: string
-	/**
-	 * 文章作者
-	 */
+	/** 文章作者 */
 	nickname?: string
-	/**
-	 * 文章缩略图
-	 */
+	/** 文章缩略图 */
 	avatar?: string
-	/**
-	 * 阅读方式
-	 */
+	/** 阅读方式 */
 	readType?: number
-	/**
-	 * isStick
-	 */
+	/** 是否置顶 */
 	isStick?: number
-	/**
-	 * 类型
-	 */
+	/** 类型 */
 	isOriginal?: number
-	/**
-	 * quantity
-	 */
+	/** 文章阅读量 */
 	quantity?: number
-	/**
-	 * 创建时间
-	 */
+	/** 创建时间 */
 	createTime?: string
-	/**
-	 * 发布状态
-	 */
+	/** 发布状态 */
 	isPublish?: number
-	/**
-	 * 分类名称
-	 */
+	/** 分类名称 */
 	categoryName?: string
-	/**
-	 * 标签名称
-	 */
+	/** 标签名称 */
 	tagNames?: string
-	/**
-	 * 文章简介
-	 */
+	/** 文章简介 */
 	summary?: string
-	/**
-	 * 文章内容
-	 */
+	/** 文章内容 */
 	contentMd?: string
 }
 
-/**
- * 查看分类列表
- * @param data 查询条件
- * @returns 分类列表
- */
+export interface ArticleDto {
+	/** 文章id */
+	id?: number
+	/** userId */
+	userId?: string
+	/** 文章标题 */
+	title?: string
+	/** 文章作者 */
+	nickname?: string
+	/** 文章缩略图 */
+	avatar?: string
+	/** 阅读方式 */
+	readType?: number
+	/** 是否置顶 */
+	isStick?: number
+	/** 类型 */
+	isOriginal?: number
+	/** 文章阅读量 */
+	quantity?: number
+	/** 创建时间 */
+	createTime?: string
+	/** 发布状态 */
+	isPublish?: number
+	/** 分类 */
+	categoryId?: number
+	/** 标签 */
+	tags?: number[]
+	/** 文章简介 */
+	summary?: string
+	/** 文章内容 */
+	contentMd?: string
+	/** 原文链接 */
+	originalUrl?: string
+	/** 是否推荐 */
+	isRecommend?: number
+	/** 是否首页轮播 */
+	isCarousel?: number
+	/** SEO关键词 */
+	keywords?: string
+	/** 文章内容 */
+	content?: string
+}
+
+/** 文章列表 */
 export const getArticleList: (data: PageQuery) => Promise<Result<PageResult<Article[]>>> = (data) => {
 	return requests({
 		url: '/article/system/list',
@@ -105,5 +112,14 @@ export const getRandomImg: () => Promise<Result<string>> = () => {
 	return requests({
 		url: '/article/system/randomImg',
 		method: 'get',
+	})
+}
+
+/** 文章详情 */
+export const getArticleInfo: (id: number) => Promise<Result<ArticleDto>> = (id) => {
+	return requests({
+		url: '/article/system/info',
+		method: 'get',
+		params: { id },
 	})
 }

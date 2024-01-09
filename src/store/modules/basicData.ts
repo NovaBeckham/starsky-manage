@@ -6,10 +6,10 @@
 
 import { defineStore } from 'pinia'
 import { isNil, map, throttle } from 'lodash'
-// import { getList as categoryListRequest } from '@/api/category'
+import { getPage as categoryListRequest } from '@/api/category'
 import { getList as tagListRequest } from '@/api/tag'
 
-// const getCategoryListThrottled = throttle(categoryListRequest, 1000)
+const getCategoryListThrottled = throttle(categoryListRequest, 100)
 const getTagListThrottled = throttle(tagListRequest, 100)
 
 export interface Options {
@@ -36,20 +36,20 @@ const useBasicDataStore = defineStore('basicDataStore', {
 		} as BasicDataState
 	},
 	actions: {
-		// async getCategoryList() {
-		// 	const result = await getCategoryListThrottled()
-		// 	if (result) {
-		// 		const { success, data } = result
-		// 		if (success && !isNil(data)) {
-		// 			this.categoryList = map(data, (item) => {
-		// 				return {
-		// 					value: item.id,
-		// 					label: item.categoryName,
-		// 				}
-		// 			})
-		// 		}
-		// 	}
-		// },
+		async getCategoryList() {
+			const result = await getCategoryListThrottled({ current: 1, size: 9999 })
+			if (result) {
+				const { flag, data } = result
+				if (flag && !isNil(data) && !isNil(data.records)) {
+					this.categoryList = map(data.records, (item) => {
+						return {
+							value: item.id as number,
+							label: item.name ?? '',
+						}
+					})
+				}
+			}
+		},
 		async getTagList() {
 			const result = await getTagListThrottled({ current: 1, size: 9999 })
 			if (result) {

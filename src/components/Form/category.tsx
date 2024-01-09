@@ -1,17 +1,16 @@
 /*
  * @Description:
  * @Author: hyx
- * @Date: 2023-12-20 11:01:06
+ * @Date: 2024-01-02 10:56:54
  */
 
-import { ObjectMap } from '@/interface'
 import { useBasicDataStore } from '@/store'
-import { forEach, isArray, isEmpty } from 'lodash'
+import { isEmpty } from 'lodash'
 import { PropType, defineComponent, onMounted } from 'vue'
 
 const Props = {
-	value: [String, Number, Array] as PropType<string | number | Array<string | number>>,
-	label: [String, Number, Array] as PropType<string | number | Array<string | number>>,
+	value: [String, Number] as PropType<string | number>,
+	label: [String, Number] as PropType<string | number>,
 	disabled: {
 		type: Boolean as PropType<boolean>,
 		default: false,
@@ -27,32 +26,16 @@ const Props = {
 	},
 }
 
-const FormTags = defineComponent({
-	name: 'form-tags',
+const FormCategory = defineComponent({
+	name: 'form-category',
 	props: Props,
 	emits: ['update:value', 'update:label', 'search'],
 	setup(props, { emit }) {
 		const basicDataStore = useBasicDataStore()
-		function onChange(value: string | string[], option?: any) {
+		function onChange(value: string, option?: any) {
 			if (option) {
-				if (isArray(option)) {
-					if (option.length > 0) {
-						const values: string[] = []
-						const labels: string[] = []
-						forEach(option, (item: ObjectMap) => {
-							values.push(item.value)
-							labels.push(item.label)
-						})
-						emit('update:value', values)
-						emit('update:label', labels)
-					} else {
-						emit('update:value', undefined)
-						emit('update:label', undefined)
-					}
-				} else {
-					emit('update:value', option.value)
-					emit('update:label', option.label)
-				}
+				emit('update:value', option.value)
+				emit('update:label', option.label)
 			} else {
 				emit('update:value', undefined)
 				emit('update:label', undefined)
@@ -60,8 +43,8 @@ const FormTags = defineComponent({
 			emit('search', value)
 		}
 		onMounted(() => {
-			if (isEmpty(basicDataStore.tagList)) {
-				basicDataStore.getTagList()
+			if (isEmpty(basicDataStore.categoryList)) {
+				basicDataStore.getCategoryList()
 			}
 		})
 		return () => (
@@ -78,4 +61,4 @@ const FormTags = defineComponent({
 	},
 })
 
-export default FormTags
+export default FormCategory

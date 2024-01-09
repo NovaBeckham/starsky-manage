@@ -76,3 +76,12 @@ div:focus {
 .grid {
 	display: grid;
 }
+.grid-template-columns3 {
+	grid-template-columns: 1fr 1fr 1fr;
+}
+.grid-template-columns2 {
+	grid-template-columns: 1fr 1fr;
+}
+.grid-template-columns4 {
+	grid-template-columns: 1fr 1fr 1fr 1fr;
+}
