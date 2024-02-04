@@ -12,18 +12,17 @@ interface UserParams extends PageQuery {
 }
 
 export interface UserInfo {
-	/** id */
-	id?: string
-	/** 用户名 */
-	username?: string
-	/** 昵称 */
-	nickname?: string
-	/** 头像 */
 	avatar?: string
-	/** 状态 */
-	status?: number
-	/** 角色 */
-	roleId?: number
+	email?: string
+	id?: number
+	ipAddress?: string
+	ipSource?: string
+	lastLoginTime?: string
+	loginType?: number
+	nickname?: string
+	token?: string
+	userInfoId?: number
+	username?: string
 }
 
 /**

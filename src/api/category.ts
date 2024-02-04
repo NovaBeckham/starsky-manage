@@ -11,7 +11,7 @@ export interface Category {
 	/** 分类id */
 	id?: number
 	/** 分类名 */
-	name?: string
+	categoryName?: string
 	/** 点击量 */
 	clickVolume?: number
 	/** 排序 */

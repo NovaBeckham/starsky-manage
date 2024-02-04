@@ -45,7 +45,7 @@ const useBasicDataStore = defineStore('basicDataStore', {
 					this.categoryList = map(data.records, (item) => {
 						return {
 							value: item.id as number,
-							label: item.name ?? '',
+							label: item.categoryName ?? '',
 						}
 					})
 				}

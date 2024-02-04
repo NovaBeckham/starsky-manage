@@ -5,5 +5,4 @@
  */
 
 import useBasicDataStore from './modules/basicData'
-import useUserStore from './modules/user'
-export { useUserStore, useBasicDataStore }
+export { useBasicDataStore }

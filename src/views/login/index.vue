@@ -24,9 +24,8 @@
 import { UserOutlined, LockOutlined } from '@ant-design/icons-vue'
 import { reactive, ref } from 'vue'
 import { login } from '@/api/login'
-import { isNil } from 'lodash'
+import { isNil, omit } from 'lodash'
 import { useRouter } from 'vue-router'
-import { useUserStore } from '@/store'
 
 const rules = {
 	username: [{ required: true, message: '请输入账号', trigger: 'blur' }],
@@ -35,21 +34,22 @@ const rules = {
 
 const $router = useRouter()
 const loading = ref(false)
-const userStore = useUserStore()
 const loginRef = ref()
 const ruleForm = reactive({
 	username: '',
 	password: '',
-	rememberMe: false
 })
 const loginIn = async () => {
 	await loginRef.value?.validate()
+	const params = new URLSearchParams()
 	loading.value = true
-	const { flag, data } = await login(ruleForm)
+	params.append('username', ruleForm.username)
+	params.append('password', ruleForm.password)
+	const { flag, data } = await login(params)
 	loading.value = false
 	if (flag && !isNil(data)) {
-		localStorage.setItem('xingToken', data)
-		await userStore.getInfo()
+		sessionStorage.setItem('xingToken', data.token ?? '')
+		sessionStorage.setItem('userInfo', JSON.stringify(omit(data, ['token'])))
 		$router.push('/')
 	}
 }
@@ -60,8 +60,9 @@ const loginIn = async () => {
 	justify-content: center;
 	align-items: center;
 	height: 100%;
-	background-image: url('https://hyx-1999.github.io/starsku-static/images/loginBj.jpg');
+	background-image: url('https://nova-blog.oss-cn-guangzhou.aliyuncs.com/images/bg2.jpg');
 	background-size: cover;
+	background-position: 0% 100%;
 
 	.login {
 		position: absolute;

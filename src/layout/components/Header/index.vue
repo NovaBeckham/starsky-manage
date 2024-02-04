@@ -2,7 +2,7 @@
 	<div class="nav-bar">
 		<div class="right-menu">
 			<a-dropdown class="dropdown">
-				<a-avatar :size="40" :src="userStore.userInfo.avatar" />
+				<a-avatar :size="40" :src="avatar" />
 				<template #overlay>
 					<a-menu @click="handleMenu">
 						<a-menu-item key="rePassword">修改密码</a-menu-item>
@@ -11,13 +11,21 @@
 				</template>
 			</a-dropdown>
 		</div>
-	</div>
+	</div> 
 </template>
 
 <script lang="ts" setup>
-import { useUserStore } from '@/store/index'
+import { computed } from 'vue';
 
-const userStore = useUserStore()
+const avatar = computed(() => {
+	const userInfo = sessionStorage.getItem('userInfo')
+	if (userInfo) {
+		return JSON.parse(userInfo).avatar as string
+	}
+	return null
+})
+
+const userInfoStr = sessionStorage.getItem('userInfo')
 function handleMenu(data: any) {
 	console.log('data', data)
 }

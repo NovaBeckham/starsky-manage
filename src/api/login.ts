@@ -6,15 +6,13 @@
 
 import { Result } from '@/interface'
 import requests from '@/utils/request'
+import { UserInfo } from './user'
 
 /**
  * 用户登录
  */
-export const login: (params: {
-	username: string
-	password: string
-	rememberMe: boolean
-}) => Promise<Result<string>> = (params) => requests.post('/login', params)
+export const login: (params: URLSearchParams) => Promise<Result<UserInfo>> = (params) =>
+	requests.post('/users/login', params)
 
 /**
  * 用户退出

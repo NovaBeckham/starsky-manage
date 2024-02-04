@@ -10,8 +10,8 @@ import { ATableColumnProp } from '@/interface'
 export const columns = [
 	{
 		title: '分类名',
-		dataIndex: 'name',
-		key: 'name',
+		dataIndex: 'categoryName',
+		key: 'categoryName',
 		align: 'center',
 	},
 	{
