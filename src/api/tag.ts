@@ -9,13 +9,9 @@ import requests from '@/utils/request'
 
 export interface Tags {
 	id?: number
-	name?: string
-	avatar?: string
-	sort?: number
-	clickVolume?: number
-	articleCount?: number
+	tagName?: string
 	createTime?: string
-	updateTime?: string
+	articleCount?: number
 }
 
 /**
@@ -27,7 +23,7 @@ export function getList(params: {
 	name?: string
 }): Promise<Result<PageResult<Tags[]>>> {
 	return requests({
-		url: '/tags/system/list',
+		url: '/admin/tags',
 		method: 'get',
 		params,
 	})
@@ -37,21 +33,9 @@ export function getList(params: {
  * 添加标签
  * @param data 标签信息
  */
-export function addTagRequest(data: Tags): Promise<Result<null>> {
+export function saveTagRequest(data: Tags): Promise<Result<null>> {
 	return requests({
-		url: '/tags/system/add',
-		method: 'post',
-		data,
-	})
-}
-
-/**
- * 修改标签
- * @param data 标签信息
- */
-export function updateTagRequest(data: Tags): Promise<Result<null>> {
-	return requests({
-		url: '/tags/system/update',
+		url: '/admin/tags',
 		method: 'post',
 		data,
 	})

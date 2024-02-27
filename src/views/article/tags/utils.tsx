@@ -6,13 +6,18 @@
 
 import { Tags } from "@/api/tag"
 import { ATableColumnProp } from "@/interface"
+import dayjs from "dayjs"
 
 export const columns = [
 	{
 		title: '标签名',
-		dataIndex: 'name',
-		key: 'name',
+		key: 'tagName',
 		align: 'center',
+		customRender: ({ record }: ATableColumnProp<Tags>) => {
+			return (
+				<a-tag color="processing">{record.tagName}</a-tag>
+			)
+		},
 	},
 	{
 		title: '文章量',
@@ -21,29 +26,9 @@ export const columns = [
 		align: 'center',
 	},
 	{
-		title: '排序',
-		key: 'sort',
-		customRender: ({ record }: ATableColumnProp<Tags>) => {
-			return (
-				<a-tag color="warning">{record.sort}</a-tag>
-			)
-		},
-		align: 'center',
-	},
-	{
-		title: '点击量',
-		key: 'clickVolume',
-		customRender: ({ record }: ATableColumnProp<Tags>) => {
-			return (
-				<a-tag color="warning">{record.clickVolume}</a-tag>
-			)
-		},
-		align: 'center',
-	},
-	{
-		title: '添加时间',
+		title: '创建时间',
 		key: 'createTime',
-		dataIndex: 'createTime',
+		customRender: ({ record }: ATableColumnProp<Tags>) => dayjs(record.createTime).format('YYYY-MM-DD HH:mm:ss'),
 		align: 'center',
 	},
 	{

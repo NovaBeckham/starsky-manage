@@ -14,8 +14,8 @@ const requests = axios.create({
 
 requests.interceptors.request.use(
 	(config: InternalAxiosRequestConfig) => {
-		if (localStorage.getItem('xingToken')) {
-			config.headers['Authorization'] = localStorage.getItem('xingToken')
+		if (sessionStorage.getItem('xingToken')) {
+			config.headers['Authorization'] = 'Bearer ' + sessionStorage.getItem('xingToken')
 		}
 		return config
 	},
@@ -32,7 +32,7 @@ requests.interceptors.response.use(
 				break
 			case 402:
 				infoTips('登录状态已过期，您可以继续留在该页面，或者重新登录')
-				localStorage.removeItem('xingToken')
+				sessionStorage.removeItem('xingToken')
 				location.href = '/login'
 			case 500:
 				errorTips(response.data.message)

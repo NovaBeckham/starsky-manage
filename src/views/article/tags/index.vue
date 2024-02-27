@@ -35,9 +35,6 @@
 				<a-form-item label="标签名">
 					<a-input v-model:value="editTagName" />
 				</a-form-item>
-				<a-form-item label="排序">
-					<a-input-number v-model:value="editTagSort" />
-				</a-form-item>
 			</a-form>
 		</a-modal>
 	</a-card>
@@ -45,21 +42,20 @@
 
 <script lang="ts" setup>
 import { onMounted, ref } from 'vue'
-import { Tags, getList, addTagRequest, updateTagRequest } from '@/api/tag'
+import { Tags, getList, saveTagRequest } from '@/api/tag'
 import { isEmpty, isNil } from 'lodash'
 import { columns } from './utils'
 import { ATableColumnProp } from '@/interface'
 import { infoTips, successTips } from '@/utils'
 
 const loading = ref(false)
-const current = ref(0)
-const pageSize = ref(10)
+const current = ref(1)
+const pageSize = ref(5)
 const total = ref(0)
 const tableData = ref<Tags[]>()
 const visible = ref(false)
 const editTagId = ref<number>()
 const editTagName = ref<string>()
-const editTagSort = ref<number>()
 
 const search = async () => {
 	loading.value = true
@@ -78,8 +74,7 @@ const addTag = () => {
 
 const editTag = (record: Tags) => {
 	editTagId.value = record.id
-	editTagName.value = record.name
-	editTagSort.value = record.sort
+	editTagName.value = record.tagName
 	visible.value = true
 }
 
@@ -92,7 +87,6 @@ const handleCurrentChange = (pageNo: number, size: number) => {
 const onCancel = () => {
 	editTagId.value = undefined
 	editTagName.value = undefined
-	editTagSort.value = undefined
 	visible.value = false
 }
 
@@ -101,13 +95,8 @@ const submit = async () => {
 		infoTips('请输入标签名')
 		return
 	}
-	if (isNil(editTagSort.value)) {
-		infoTips('请输入排序')
-		return
-	}
-	const func = isNil(editTagId.value) ? addTagRequest : updateTagRequest
 	loading.value = true
-	const { flag } = await func({ id: editTagId.value, name: editTagName.value, sort: editTagSort.value })
+	const { flag } = await saveTagRequest({ id: editTagId.value, tagName: editTagName.value })
 	loading.value = false
 	if (flag) {
 		successTips('操作成功')

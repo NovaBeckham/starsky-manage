@@ -12,18 +12,10 @@ export interface Category {
 	id?: number
 	/** 分类名 */
 	categoryName?: string
-	/** 点击量 */
-	clickVolume?: number
-	/** 排序 */
-	sort?: number
-	/** 图标 */
-	icon?: string
 	/** 文章量 */
 	articleCount?: number
 	/** 创建时间 */
 	createTime?: string
-	/** 更新时间 */
-	updateTime?: string
 }
 
 /**
@@ -33,7 +25,7 @@ export interface Category {
  */
 export const getPage: (params: PageQuery) => Promise<Result<PageResult<Category[]>>> = (params) => {
 	return requests({
-		url: '/category/system/list',
+		url: '/admin/categories',
 		method: 'get',
 		params,
 	})
@@ -55,21 +47,9 @@ export function deleteCategory(id: number): Promise<Result<null>> {
  * 添加分类
  * @param data 分类信息
  */
-export function addCategoryRequest(data: Category): Promise<Result<null>> {
+export function saveCategoryRequest(data: Category): Promise<Result<null>> {
 	return requests({
-		url: '/category/system/add',
-		method: 'post',
-		data,
-	})
-}
-
-/**
- * 修改分类
- * @param data 分类信息
- */
-export function updateCategoryRequest(data: Category): Promise<Result<null>> {
-	return requests({
-		url: '/system/category/update',
+		url: '/admin/categories',
 		method: 'post',
 		data,
 	})

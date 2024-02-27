@@ -4,8 +4,9 @@
  * @Date: 2023-12-29 11:17:02
  */
 
-import { Tags } from '@/api/tag'
+import { Category } from '@/api/category'
 import { ATableColumnProp } from '@/interface'
+import dayjs from 'dayjs'
 
 export const columns = [
 	{
@@ -21,25 +22,9 @@ export const columns = [
 		align: 'center',
 	},
 	{
-		title: '排序',
-		key: 'sort',
-		customRender: ({ record }: ATableColumnProp<Tags>) => {
-			return <a-tag color="warning">{record.sort}</a-tag>
-		},
-		align: 'center',
-	},
-	{
-		title: '点击量',
-		key: 'clickVolume',
-		customRender: ({ record }: ATableColumnProp<Tags>) => {
-			return <a-tag color="warning">{record.clickVolume}</a-tag>
-		},
-		align: 'center',
-	},
-	{
-		title: '添加时间',
+		title: '创建时间',
 		key: 'createTime',
-		dataIndex: 'createTime',
+		customRender: ({ record }: ATableColumnProp<Category>) => dayjs(record.createTime).format('YYYY-MM-DD HH:mm:ss'),
 		align: 'center',
 	},
 	{
