@@ -51,7 +51,7 @@ export const constantRoutes: RouteRecordRaw[] = [
 			{
 				path: '/article/list',
 				name: 'ArticleList',
-				component: () => import('@/views/article/list/index.vue'),
+				component: () => import('@/views/article/index.vue'),
 				meta: {
 					title: '文章列表',
 					alwaysShow: true,
@@ -60,7 +60,7 @@ export const constantRoutes: RouteRecordRaw[] = [
 			{
 				path: '/article/tags',
 				name: 'TagsList',
-				component: () => import('@/views/article/tags/index.vue'),
+				component: () => import('@/views/tags/index.vue'),
 				meta: {
 					title: '标签列表',
 					alwaysShow: true,
@@ -69,7 +69,7 @@ export const constantRoutes: RouteRecordRaw[] = [
 			{
 				path: '/article/category',
 				name: 'CategoryList',
-				component: () => import('@/views/article/category/index.vue'),
+				component: () => import('@/views/category/index.vue'),
 				meta: {
 					title: '分类列表',
 					alwaysShow: true,
