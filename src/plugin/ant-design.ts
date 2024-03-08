@@ -28,6 +28,7 @@ import {
 	Select,
 	InputNumber,
 	Radio,
+	Switch,
 } from 'ant-design-vue'
 import { App } from 'vue'
 
@@ -54,4 +55,5 @@ export function useAnt(app: App) {
 	app.use(Select)
 	app.use(InputNumber)
 	app.use(Radio)
+	app.use(Switch)
 }

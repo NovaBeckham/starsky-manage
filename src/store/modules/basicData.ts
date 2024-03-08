@@ -59,7 +59,7 @@ const useBasicDataStore = defineStore('basicDataStore', {
 					this.tagList = map(data.records, (item) => {
 						return {
 							value: item.id as number,
-							label: item.name ?? '',
+							label: item.tagName ?? '',
 						}
 					})
 				}

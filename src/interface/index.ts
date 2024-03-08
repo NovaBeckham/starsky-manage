@@ -59,6 +59,8 @@ export interface PageQuery {
 	 * 每页大小
 	 */
 	size?: number
+	/** 是否删除状态 */
+	isDelete?: number
 }
 
 /**

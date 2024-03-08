@@ -5,20 +5,21 @@
 			<template #bodyCell="{ column, record }: ATableColumnProp<Article>">
 				<template v-if="column.key === 'action'">
 					<a-space size="middle">
-						<a-button :loading="loading" v-if="record.isPublish === 1">下架</a-button>
 						<a-button
 							type="primary"
-							:style="{ backgroundColor: '#00b96b' }"
+							:style="{ backgroundColor: '#4e8e2f' }"
 							:loading="loading"
-							v-if="record.isPublish === 0"
-							>发布</a-button
+							v-if="record.isDelete === 1"
+							>恢复</a-button
 						>
-						<a-button type="primary" :loading="loading" @click="showArticle(record.id)">编辑</a-button>
+						<a-button type="primary" :loading="loading" @click="showArticle(record.id)" v-if="record.isDelete == 0"
+							>编辑</a-button
+						>
 						<a-button type="primary" danger :loading="loading">删除</a-button>
 					</a-space>
 				</template>
-				<template v-if="column.key === 'avatar'">
-					<a-image :width="100" :src="record.avatar" />
+				<template v-if="column.key === 'articleCover'">
+					<a-image :width="100" :src="record.articleCover" />
 				</template>
 			</template>
 		</a-table>
@@ -46,7 +47,7 @@ import { ATableColumnProp } from '@/interface'
 import Details from './components/details.vue'
 
 const loading = ref(false)
-const current = ref(0)
+const current = ref(1)
 const pageSize = ref(10)
 const total = ref(0)
 const tableData = ref<Article[]>()
@@ -55,7 +56,7 @@ const detailsId = ref<number>()
 
 const search = async () => {
 	loading.value = true
-	const { flag, data } = await getArticleList({ current: current.value, size: pageSize.value })
+	const { flag, data } = await getArticleList({ current: current.value, size: pageSize.value, isDelete: 0 })
 	loading.value = false
 	if (flag && !isNil(data)) {
 		tableData.value = data.records

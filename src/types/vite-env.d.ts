@@ -7,6 +7,8 @@ declare module '*.vue' {
 }
 
 declare module '*.min.js'
+declare module 'markdown-it'
+declare module '@iktakahiro/markdown-it-katex'
 interface ZhCN {
 	[key: string]: any
 }

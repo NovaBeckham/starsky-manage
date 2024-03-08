@@ -45,9 +45,6 @@ export default (): UserConfigExport => {
 				'@': resolve(__dirname, './src'),
 			},
 		},
-		plugins: [
-			vue(),
-			vueJsx(),
-		],
+		plugins: [vue(), vueJsx()],
 	}
 }

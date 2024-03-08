@@ -11,104 +11,76 @@
 		<a-form :model="searchForm" ref="formRef" :rules="rules" :wrapperCol="{ span: 14 }">
 			<a-row>
 				<a-col :span="14">
-					<a-form-item label="文章名称" name="title">
-						<a-input v-model:value="searchForm.title" />
+					<a-form-item label="文章标题" name="articleTitle">
+						<a-input v-model:value="searchForm.articleTitle" />
 					</a-form-item>
-					<a-form-item label="文章简介" name="summary">
-						<a-input v-model:value="searchForm.summary" />
+					<a-form-item label="文章摘要" name="articleAbstract">
+						<a-input v-model:value="searchForm.articleAbstract" />
 					</a-form-item>
 				</a-col>
 				<a-col :span="8">
-					<a-form-item label="缩略图">
-						<a-row>
-							<a-col :span="2">
-								<a-popover title="随机获取一张图片" v-model:open="popoverVisible" trigger="hover">
-									<template #content>
-										<a-button type="link" :loading="loading" @click="popoverVisible = false">取消</a-button>
-										<a-button type="primary" :loading="loading" @click="randomImg">确定</a-button>
-									</template>
-									<QuestionCircleOutlined />
-								</a-popover>
-							</a-col>
-							<a-col :span="2">
-								<a-upload
-									:action="uploadPictureHost"
-									:show-upload-list="false"
-									:customRequest="uploadSectionFile"
-									style="width: 80px; height: 80px"
-									class="avatar-uploader"
-								>
-									<img v-if="searchForm.avatar" :src="searchForm.avatar" class="imgAvatar" />
-									<div v-else :style="{ lineHeight: '110px' }">
-										<LoadingOutlined v-if="loading" />
-										<PlusOutlined v-else />
-									</div>
-								</a-upload>
-							</a-col>
-						</a-row>
+					<a-form-item label="上传封面">
+						<a-upload
+							:show-upload-list="false"
+							:beforeUpload="beforeUpload"
+							:customRequest="uploadSectionFile"
+							style="width: 80px; height: 80px"
+							class="avatar-uploader"
+						>
+							<img v-if="searchForm.articleCover" :src="searchForm.articleCover" class="imgAvatar" />
+							<div v-else :style="{ lineHeight: '110px' }">
+								<LoadingOutlined v-if="loading" />
+								<PlusOutlined v-else />
+							</div>
+						</a-upload>
 					</a-form-item>
 				</a-col>
 			</a-row>
 			<div class="grid grid-template-columns3">
-				<a-form-item label="标签" name="tags">
-					<FormTags v-model:value="searchForm.tags" mode="multiple" />
+				<a-form-item label="标签" name="tagIds">
+					<FormTags v-model:value="searchForm.tagIds" mode="multiple" />
 				</a-form-item>
 				<a-form-item label="分类" name="categoryId">
 					<FormCategory v-model:value="searchForm.categoryId" />
 				</a-form-item>
-				<a-form-item label="是否置顶" name="isStick">
-					<a-radio-group v-model:value="searchForm.isStick" name="isStick">
+				<a-form-item label="是否置顶" name="isTop">
+					<a-radio-group v-model:value="searchForm.isTop" name="isTop">
 						<a-radio :value="0">否</a-radio>
 						<a-radio :value="1">是</a-radio>
 					</a-radio-group>
 				</a-form-item>
-				<a-form-item label="是否发布" name="isPublish">
-					<a-radio-group v-model:value="searchForm.isPublish" :options="publishList" />
-				</a-form-item>
-				<a-form-item label="阅读方式" name="readType">
-					<a-select v-model:value="searchForm.readType" :options="readTypeList" />
-				</a-form-item>
-				<a-form-item label="创作类型" name="isOriginal">
-					<a-radio-group v-model:value="searchForm.isOriginal" name="isOriginal">
-						<a-radio :value="0">转载</a-radio>
-						<a-radio :value="1">原创</a-radio>
+				<a-form-item label="发布形式" name="status">
+					<a-radio-group v-model:value="searchForm.status" name="status">
+						<a-radio :value="1">公开</a-radio>
+						<a-radio :value="2">密码</a-radio>
 					</a-radio-group>
 				</a-form-item>
-				<a-form-item label="原文链接" name="originalUrl" v-if="searchForm.isOriginal === 0">
-					<a-input v-model="searchForm.originalUrl" />
+				<a-form-item label="访问密码" name="password" v-if="searchForm.status === 2">
+					<a-input v-model:value="searchForm.password" />
 				</a-form-item>
-				<a-form-item label="是否推荐" name="isRecommend">
-					<a-radio-group v-model:value="searchForm.isRecommend" name="isRecommend">
+				<a-form-item label="是否推荐" name="isFeatured">
+					<a-radio-group v-model:value="searchForm.isFeatured" name="isFeatured">
 						<a-radio :value="0">否</a-radio>
 						<a-radio :value="1">是</a-radio>
 					</a-radio-group>
-				</a-form-item>
-				<a-form-item label="是否首页轮播" name="isCarousel">
-					<a-radio-group v-model:value="searchForm.isCarousel" name="isCarousel">
-						<a-radio :value="0">否</a-radio>
-						<a-radio :value="1">是</a-radio>
-					</a-radio-group>
-				</a-form-item>
-				<a-form-item label="SEO关键词" name="keywords">
-					<a-input v-model:value="searchForm.keywords" />
 				</a-form-item>
 			</div>
 		</a-form>
-		<mavon-editor ref="mavon" style="height: 500px;" v-model="searchForm.contentMd" />
+		<mavon-editor ref="md" style="height: 500px" v-model="searchForm.articleContent" @imgAdd="uploadImg" />
 	</a-modal>
 </template>
 
 <script lang="ts" setup>
 import { ref, defineProps, defineEmits, watch } from 'vue'
-import { PlusOutlined, LoadingOutlined, QuestionCircleOutlined } from '@ant-design/icons-vue'
-import { ArticleDto, getRandomImg, uploadImage, getArticleInfo, saveArticle, updateArticle } from '@/api/article'
+import { PlusOutlined, LoadingOutlined } from '@ant-design/icons-vue'
+import { Article, uploadImage, saveArticle, getArticleInfo } from '@/api/article'
 import { isEmpty, isNil } from 'lodash'
 import { UploadRequestOption } from 'ant-design-vue/es/vc-upload/interface'
 import { FormTags, FormCategory } from '@/components'
-import { publishList, readTypeList, rules } from '../utils'
+import { rules } from '../utils'
 import { infoTips, successTips } from '@/utils'
-
-const baseUrl = import.meta.env.VITE_API_BASE_URL
+import * as imageConversion from 'image-conversion'
+import markdownToHtml from '@/utils/markdown'
 
 const Props = defineProps({
 	visible: {
@@ -122,13 +94,9 @@ const Props = defineProps({
 const emits = defineEmits(['close', 'search'])
 
 const loading = ref(false)
-const popoverVisible = ref(false)
-const searchForm = ref<ArticleDto>({
-	// avatar: 'https://starsky-blog.oss-cn-guangzhou.aliyuncs.com/article/cc830ac85c406dc7586edf1eb7838316.jpg',
-})
+const searchForm = ref<Article>({})
 const mavon = ref()
 const formRef = ref()
-const uploadPictureHost = baseUrl + '/article/system/images'
 
 watch(
 	() => Props.visible,
@@ -138,11 +106,22 @@ watch(
 			const { flag, data } = await getArticleInfo(Props.id)
 			loading.value = false
 			if (flag && !isNil(data)) {
-				searchForm.value = data
+				searchForm.value = { ...data, articleContent: markdownToHtml(data.articleContent ?? '') }
 			}
 		}
 	}
 )
+
+function beforeUpload(file: File) {
+	return new Promise((resolve) => {
+		if (file.size / 1024 < 200) {
+			resolve(file)
+		}
+		imageConversion.compressAccurately(file, 200).then((res) => {
+			resolve(res)
+		})
+	})
+}
 
 async function uploadSectionFile(param: UploadRequestOption) {
 	const formData = new FormData()
@@ -151,17 +130,24 @@ async function uploadSectionFile(param: UploadRequestOption) {
 	const { flag, data } = await uploadImage(formData)
 	loading.value = false
 	if (flag && !isNil(data)) {
-		searchForm.value.avatar = data
+		searchForm.value.articleCover = data
 	}
 }
 
-async function randomImg() {
-	loading.value = true
-	const { flag, data } = await getRandomImg()
-	loading.value = false
-	if (flag && !isNil(data)) {
-		searchForm.value.avatar = data
-		popoverVisible.value = false
+async function uploadImg(pos: number, file: File) {
+	const formData = new FormData()
+	if (file.size / 1024 < 200) {
+		formData.append('file', file)
+		uploadImage(formData).then(({ data }) => {
+			mavon.value.md.$img2Url(pos, data)
+		})
+	} else {
+		imageConversion.compressAccurately(file, 200).then((res) => {
+			formData.append('file', new window.File([res], file.name, { type: file.type }))
+			uploadImage(formData).then(({ data }) => {
+				mavon.value.md.$img2Url(pos, data)
+			})
+		})
 	}
 }
 
@@ -172,17 +158,16 @@ const onCancel = () => {
 }
 const onSubmit = async () => {
 	await formRef.value.validate()
-	if (isNil(searchForm.value.avatar) || isEmpty(searchForm.value.avatar)) {
-		infoTips('请上传缩略图')
+	if (isNil(searchForm.value.articleCover) || isEmpty(searchForm.value.articleCover)) {
+		infoTips('请上传封面')
 		return false
 	}
-	if (isNil(searchForm.value.contentMd) || isEmpty(searchForm.value.contentMd)) {
+	if (isNil(searchForm.value.articleContent) || isEmpty(searchForm.value.articleContent)) {
 		infoTips('请输入文章内容')
 		return false
 	}
-	const func = isNil(Props.id) ? saveArticle : updateArticle
 	loading.value = true
-	const { flag } = await func(searchForm.value)
+	const { flag } = await saveArticle(searchForm.value)
 	loading.value = false
 	if (flag) {
 		successTips('操作成功')
